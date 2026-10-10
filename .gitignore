@@ -1,0 +1,11 @@
+# Python
+__pycache__/
+*.pyc
+.venv/
+venv/
+
+# Heavy or local outputs
+data/
+runs/
+checkpoints/
+wandb/
