@@ -1,0 +1,18 @@
+2026-10-11 16:42:45.992 | INFO     | __main__:get_data:95 - Train: 57,369,768 bytes = 112,050 blocks (needed 57,344,512); validation: 104 blocks from the first of 1000 held-out documents
+2026-10-11 16:42:46.126 | INFO     | __main__:main:430 - Parameters: 4,194,304 in Muon-eligible matrices, 71,168 other (98.3% Muon-eligible)
+2026-10-11 16:42:52.097 | INFO     | __main__:log_val:451 - Step 0: validation 8.0405 bits/byte
+2026-10-11 16:43:08.599 | INFO     | __main__:main:498 - Step 10/100 LR 1.00e-04 train 7.7796 bits/byte opt step 73.7 ms
+2026-10-11 16:43:10.078 | INFO     | __main__:main:498 - Step 20/100 LR 2.00e-04 train 6.9545 bits/byte opt step 72.7 ms
+2026-10-11 16:43:11.551 | INFO     | __main__:main:498 - Step 30/100 LR 3.00e-04 train 5.9148 bits/byte opt step 75.9 ms
+2026-10-11 16:43:13.017 | INFO     | __main__:main:498 - Step 40/100 LR 4.00e-04 train 4.9815 bits/byte opt step 74.0 ms
+2026-10-11 16:43:14.499 | INFO     | __main__:main:498 - Step 50/100 LR 5.00e-04 train 4.6434 bits/byte opt step 77.0 ms
+2026-10-11 16:43:15.997 | INFO     | __main__:main:498 - Step 60/100 LR 6.00e-04 train 4.4979 bits/byte opt step 75.8 ms
+2026-10-11 16:43:17.497 | INFO     | __main__:main:498 - Step 70/100 LR 7.00e-04 train 4.0188 bits/byte opt step 75.3 ms
+2026-10-11 16:43:18.999 | INFO     | __main__:main:498 - Step 80/100 LR 8.00e-04 train 3.8394 bits/byte opt step 76.7 ms
+2026-10-11 16:43:20.506 | INFO     | __main__:main:498 - Step 90/100 LR 9.00e-04 train 3.8089 bits/byte opt step 77.2 ms
+2026-10-11 16:43:22.008 | INFO     | __main__:main:498 - Step 100/100 LR 1.00e-03 train 3.6741 bits/byte opt step 77.0 ms
+2026-10-11 16:43:22.187 | INFO     | __main__:log_val:451 - Step 100: validation 3.7252 bits/byte
+2026-10-11 16:43:22.190 | INFO     | __main__:main:527 - total_minutes: 0.5014954681833539
+2026-10-11 16:43:22.191 | INFO     | __main__:main:527 - first_opt_step_ms: 13350.705936998565
+2026-10-11 16:43:22.191 | INFO     | __main__:main:527 - median_opt_step_ms: 76.00446499964164
+2026-10-11 16:43:22.192 | INFO     | __main__:main:527 - minutes_per_100_steps: 0.5014954681833539

@@ -1,0 +1,777 @@
+2026-10-11 16:15:27.216 | INFO     | __main__:get_data:95 - Train: 57,369,768 bytes = 112,050 blocks (needed 57,344,512); validation: 104 blocks from the first of 1000 held-out documents
+2026-10-11 16:15:27.372 | INFO     | __main__:main:430 - Parameters: 4,194,304 in Muon-eligible matrices, 71,168 other (98.3% Muon-eligible)
+2026-10-11 16:15:33.373 | INFO     | __main__:log_val:451 - Step 0: validation 8.0405 bits/byte
+2026-10-11 16:15:37.907 | INFO     | __main__:main:498 - Step 10/7000 LR 1.00e-04 train 7.7796 bits/byte opt step 43.8 ms
+2026-10-11 16:15:39.205 | INFO     | __main__:main:498 - Step 20/7000 LR 2.00e-04 train 6.9545 bits/byte opt step 48.4 ms
+2026-10-11 16:15:40.406 | INFO     | __main__:main:498 - Step 30/7000 LR 3.00e-04 train 5.9148 bits/byte opt step 40.0 ms
+2026-10-11 16:15:41.584 | INFO     | __main__:main:498 - Step 40/7000 LR 4.00e-04 train 4.9815 bits/byte opt step 40.3 ms
+2026-10-11 16:15:42.765 | INFO     | __main__:main:498 - Step 50/7000 LR 5.00e-04 train 4.6434 bits/byte opt step 43.7 ms
+2026-10-11 16:15:43.936 | INFO     | __main__:main:498 - Step 60/7000 LR 6.00e-04 train 4.4982 bits/byte opt step 41.2 ms
+2026-10-11 16:15:45.119 | INFO     | __main__:main:498 - Step 70/7000 LR 7.00e-04 train 4.0190 bits/byte opt step 39.8 ms
+2026-10-11 16:15:46.309 | INFO     | __main__:main:498 - Step 80/7000 LR 8.00e-04 train 3.8394 bits/byte opt step 41.9 ms
+2026-10-11 16:15:47.607 | INFO     | __main__:main:498 - Step 90/7000 LR 9.00e-04 train 3.8090 bits/byte opt step 43.4 ms
+2026-10-11 16:15:48.857 | INFO     | __main__:main:498 - Step 100/7000 LR 1.00e-03 train 3.6741 bits/byte opt step 42.1 ms
+2026-10-11 16:15:49.067 | INFO     | __main__:log_val:451 - Step 100: validation 3.7252 bits/byte
+2026-10-11 16:15:50.246 | INFO     | __main__:main:498 - Step 110/7000 LR 1.00e-03 train 3.7749 bits/byte opt step 43.7 ms
+2026-10-11 16:15:51.428 | INFO     | __main__:main:498 - Step 120/7000 LR 1.00e-03 train 3.8927 bits/byte opt step 40.3 ms
+2026-10-11 16:15:52.603 | INFO     | __main__:main:498 - Step 130/7000 LR 1.00e-03 train 3.6129 bits/byte opt step 43.1 ms
+2026-10-11 16:15:53.778 | INFO     | __main__:main:498 - Step 140/7000 LR 1.00e-03 train 3.6281 bits/byte opt step 41.9 ms
+2026-10-11 16:15:54.953 | INFO     | __main__:main:498 - Step 150/7000 LR 1.00e-03 train 3.6568 bits/byte opt step 41.7 ms
+2026-10-11 16:15:56.146 | INFO     | __main__:main:498 - Step 160/7000 LR 1.00e-03 train 3.5637 bits/byte opt step 46.2 ms
+2026-10-11 16:15:57.378 | INFO     | __main__:main:498 - Step 170/7000 LR 1.00e-03 train 3.6265 bits/byte opt step 42.3 ms
+2026-10-11 16:15:58.549 | INFO     | __main__:main:498 - Step 180/7000 LR 1.00e-03 train 3.5543 bits/byte opt step 40.9 ms
+2026-10-11 16:15:59.738 | INFO     | __main__:main:498 - Step 190/7000 LR 1.00e-03 train 3.3985 bits/byte opt step 40.7 ms
+2026-10-11 16:16:00.909 | INFO     | __main__:main:498 - Step 200/7000 LR 9.99e-04 train 3.3874 bits/byte opt step 43.7 ms
+2026-10-11 16:16:01.119 | INFO     | __main__:log_val:451 - Step 200: validation 3.3521 bits/byte
+2026-10-11 16:16:02.292 | INFO     | __main__:main:498 - Step 210/7000 LR 9.99e-04 train 3.3974 bits/byte opt step 39.5 ms
+2026-10-11 16:16:03.479 | INFO     | __main__:main:498 - Step 220/7000 LR 9.99e-04 train 3.1901 bits/byte opt step 41.1 ms
+2026-10-11 16:16:04.665 | INFO     | __main__:main:498 - Step 230/7000 LR 9.99e-04 train 3.3866 bits/byte opt step 40.3 ms
+2026-10-11 16:16:05.846 | INFO     | __main__:main:498 - Step 240/7000 LR 9.99e-04 train 2.9838 bits/byte opt step 39.8 ms
+2026-10-11 16:16:07.115 | INFO     | __main__:main:498 - Step 250/7000 LR 9.99e-04 train 3.0386 bits/byte opt step 45.8 ms
+2026-10-11 16:16:08.370 | INFO     | __main__:main:498 - Step 260/7000 LR 9.99e-04 train 2.9516 bits/byte opt step 44.4 ms
+2026-10-11 16:16:09.591 | INFO     | __main__:main:498 - Step 270/7000 LR 9.99e-04 train 2.7968 bits/byte opt step 41.2 ms
+2026-10-11 16:16:10.773 | INFO     | __main__:main:498 - Step 280/7000 LR 9.98e-04 train 3.1501 bits/byte opt step 42.0 ms
+2026-10-11 16:16:11.960 | INFO     | __main__:main:498 - Step 290/7000 LR 9.98e-04 train 2.9485 bits/byte opt step 38.1 ms
+2026-10-11 16:16:13.147 | INFO     | __main__:main:498 - Step 300/7000 LR 9.98e-04 train 2.5870 bits/byte opt step 40.0 ms
+2026-10-11 16:16:13.347 | INFO     | __main__:log_val:451 - Step 300: validation 2.6599 bits/byte
+2026-10-11 16:16:14.514 | INFO     | __main__:main:498 - Step 310/7000 LR 9.98e-04 train 2.6912 bits/byte opt step 39.9 ms
+2026-10-11 16:16:15.686 | INFO     | __main__:main:498 - Step 320/7000 LR 9.97e-04 train 2.7158 bits/byte opt step 39.8 ms
+2026-10-11 16:16:16.941 | INFO     | __main__:main:498 - Step 330/7000 LR 9.97e-04 train 2.5382 bits/byte opt step 44.5 ms
+2026-10-11 16:16:18.179 | INFO     | __main__:main:498 - Step 340/7000 LR 9.97e-04 train 2.5000 bits/byte opt step 43.0 ms
+2026-10-11 16:16:19.422 | INFO     | __main__:main:498 - Step 350/7000 LR 9.97e-04 train 2.6151 bits/byte opt step 41.6 ms
+2026-10-11 16:16:20.583 | INFO     | __main__:main:498 - Step 360/7000 LR 9.97e-04 train 2.5881 bits/byte opt step 39.5 ms
+2026-10-11 16:16:21.774 | INFO     | __main__:main:498 - Step 370/7000 LR 9.96e-04 train 2.8346 bits/byte opt step 41.4 ms
+2026-10-11 16:16:22.946 | INFO     | __main__:main:498 - Step 380/7000 LR 9.96e-04 train 2.3521 bits/byte opt step 39.6 ms
+2026-10-11 16:16:24.127 | INFO     | __main__:main:498 - Step 390/7000 LR 9.96e-04 train 2.4913 bits/byte opt step 41.4 ms
+2026-10-11 16:16:25.300 | INFO     | __main__:main:498 - Step 400/7000 LR 9.95e-04 train 2.4170 bits/byte opt step 41.6 ms
+2026-10-11 16:16:25.499 | INFO     | __main__:log_val:451 - Step 400: validation 2.3406 bits/byte
+2026-10-11 16:16:26.683 | INFO     | __main__:main:498 - Step 410/7000 LR 9.95e-04 train 2.3332 bits/byte opt step 41.2 ms
+2026-10-11 16:16:27.857 | INFO     | __main__:main:498 - Step 420/7000 LR 9.95e-04 train 2.5049 bits/byte opt step 41.3 ms
+2026-10-11 16:16:29.031 | INFO     | __main__:main:498 - Step 430/7000 LR 9.94e-04 train 2.2777 bits/byte opt step 41.1 ms
+2026-10-11 16:16:30.242 | INFO     | __main__:main:498 - Step 440/7000 LR 9.94e-04 train 2.5314 bits/byte opt step 47.3 ms
+2026-10-11 16:16:31.425 | INFO     | __main__:main:498 - Step 450/7000 LR 9.94e-04 train 2.4394 bits/byte opt step 41.0 ms
+2026-10-11 16:16:32.614 | INFO     | __main__:main:498 - Step 460/7000 LR 9.93e-04 train 2.3786 bits/byte opt step 40.9 ms
+2026-10-11 16:16:33.797 | INFO     | __main__:main:498 - Step 470/7000 LR 9.93e-04 train 2.3089 bits/byte opt step 39.6 ms
+2026-10-11 16:16:34.969 | INFO     | __main__:main:498 - Step 480/7000 LR 9.93e-04 train 2.1932 bits/byte opt step 40.8 ms
+2026-10-11 16:16:36.177 | INFO     | __main__:main:498 - Step 490/7000 LR 9.92e-04 train 2.3565 bits/byte opt step 78.2 ms
+2026-10-11 16:16:37.480 | INFO     | __main__:main:498 - Step 500/7000 LR 9.92e-04 train 2.2175 bits/byte opt step 40.7 ms
+2026-10-11 16:16:37.697 | INFO     | __main__:log_val:451 - Step 500: validation 2.2052 bits/byte
+2026-10-11 16:16:38.950 | INFO     | __main__:main:498 - Step 510/7000 LR 9.91e-04 train 2.3541 bits/byte opt step 43.9 ms
+2026-10-11 16:16:40.154 | INFO     | __main__:main:498 - Step 520/7000 LR 9.91e-04 train 2.2175 bits/byte opt step 40.9 ms
+2026-10-11 16:16:41.339 | INFO     | __main__:main:498 - Step 530/7000 LR 9.90e-04 train 2.4108 bits/byte opt step 42.9 ms
+2026-10-11 16:16:42.528 | INFO     | __main__:main:498 - Step 540/7000 LR 9.90e-04 train 2.4688 bits/byte opt step 42.2 ms
+2026-10-11 16:16:43.701 | INFO     | __main__:main:498 - Step 550/7000 LR 9.90e-04 train 2.1878 bits/byte opt step 42.9 ms
+2026-10-11 16:16:44.895 | INFO     | __main__:main:498 - Step 560/7000 LR 9.89e-04 train 2.3697 bits/byte opt step 39.1 ms
+2026-10-11 16:16:46.091 | INFO     | __main__:main:498 - Step 570/7000 LR 9.89e-04 train 2.2734 bits/byte opt step 45.7 ms
+2026-10-11 16:16:47.431 | INFO     | __main__:main:498 - Step 580/7000 LR 9.88e-04 train 2.1857 bits/byte opt step 79.1 ms
+2026-10-11 16:16:48.695 | INFO     | __main__:main:498 - Step 590/7000 LR 9.88e-04 train 2.3091 bits/byte opt step 43.2 ms
+2026-10-11 16:16:49.917 | INFO     | __main__:main:498 - Step 600/7000 LR 9.87e-04 train 2.1392 bits/byte opt step 38.5 ms
+2026-10-11 16:16:50.128 | INFO     | __main__:log_val:451 - Step 600: validation 2.1287 bits/byte
+2026-10-11 16:16:51.287 | INFO     | __main__:main:498 - Step 610/7000 LR 9.87e-04 train 2.1932 bits/byte opt step 38.4 ms
+2026-10-11 16:16:52.458 | INFO     | __main__:main:498 - Step 620/7000 LR 9.86e-04 train 2.4570 bits/byte opt step 41.9 ms
+2026-10-11 16:16:53.644 | INFO     | __main__:main:498 - Step 630/7000 LR 9.86e-04 train 2.2634 bits/byte opt step 40.9 ms
+2026-10-11 16:16:54.871 | INFO     | __main__:main:498 - Step 640/7000 LR 9.85e-04 train 2.1041 bits/byte opt step 41.0 ms
+2026-10-11 16:16:56.048 | INFO     | __main__:main:498 - Step 650/7000 LR 9.84e-04 train 2.3481 bits/byte opt step 42.6 ms
+2026-10-11 16:16:57.291 | INFO     | __main__:main:498 - Step 660/7000 LR 9.84e-04 train 2.2162 bits/byte opt step 40.9 ms
+2026-10-11 16:16:58.468 | INFO     | __main__:main:498 - Step 670/7000 LR 9.83e-04 train 2.1140 bits/byte opt step 40.5 ms
+2026-10-11 16:16:59.659 | INFO     | __main__:main:498 - Step 680/7000 LR 9.83e-04 train 2.2462 bits/byte opt step 40.1 ms
+2026-10-11 16:17:00.857 | INFO     | __main__:main:498 - Step 690/7000 LR 9.82e-04 train 2.1867 bits/byte opt step 42.7 ms
+2026-10-11 16:17:02.054 | INFO     | __main__:main:498 - Step 700/7000 LR 9.81e-04 train 2.1371 bits/byte opt step 42.4 ms
+2026-10-11 16:17:02.249 | INFO     | __main__:log_val:451 - Step 700: validation 2.0862 bits/byte
+2026-10-11 16:17:03.423 | INFO     | __main__:main:498 - Step 710/7000 LR 9.81e-04 train 2.2304 bits/byte opt step 40.5 ms
+2026-10-11 16:17:04.597 | INFO     | __main__:main:498 - Step 720/7000 LR 9.80e-04 train 2.1609 bits/byte opt step 41.7 ms
+2026-10-11 16:17:05.789 | INFO     | __main__:main:498 - Step 730/7000 LR 9.80e-04 train 2.1588 bits/byte opt step 41.9 ms
+2026-10-11 16:17:07.027 | INFO     | __main__:main:498 - Step 740/7000 LR 9.79e-04 train 2.1604 bits/byte opt step 43.5 ms
+2026-10-11 16:17:08.282 | INFO     | __main__:main:498 - Step 750/7000 LR 9.78e-04 train 2.3278 bits/byte opt step 46.8 ms
+2026-10-11 16:17:09.509 | INFO     | __main__:main:498 - Step 760/7000 LR 9.78e-04 train 2.3001 bits/byte opt step 44.1 ms
+2026-10-11 16:17:10.679 | INFO     | __main__:main:498 - Step 770/7000 LR 9.77e-04 train 2.0791 bits/byte opt step 37.6 ms
+2026-10-11 16:17:11.872 | INFO     | __main__:main:498 - Step 780/7000 LR 9.76e-04 train 1.9581 bits/byte opt step 40.5 ms
+2026-10-11 16:17:13.074 | INFO     | __main__:main:498 - Step 790/7000 LR 9.76e-04 train 2.0028 bits/byte opt step 44.0 ms
+2026-10-11 16:17:14.269 | INFO     | __main__:main:498 - Step 800/7000 LR 9.75e-04 train 2.0630 bits/byte opt step 41.8 ms
+2026-10-11 16:17:14.484 | INFO     | __main__:log_val:451 - Step 800: validation 2.0550 bits/byte
+2026-10-11 16:17:15.675 | INFO     | __main__:main:498 - Step 810/7000 LR 9.74e-04 train 2.1692 bits/byte opt step 42.3 ms
+2026-10-11 16:17:16.930 | INFO     | __main__:main:498 - Step 820/7000 LR 9.73e-04 train 2.0650 bits/byte opt step 43.4 ms
+2026-10-11 16:17:18.203 | INFO     | __main__:main:498 - Step 830/7000 LR 9.73e-04 train 2.1484 bits/byte opt step 42.6 ms
+2026-10-11 16:17:19.439 | INFO     | __main__:main:498 - Step 840/7000 LR 9.72e-04 train 2.0510 bits/byte opt step 40.2 ms
+2026-10-11 16:17:20.624 | INFO     | __main__:main:498 - Step 850/7000 LR 9.71e-04 train 2.1581 bits/byte opt step 40.9 ms
+2026-10-11 16:17:21.801 | INFO     | __main__:main:498 - Step 860/7000 LR 9.70e-04 train 2.0772 bits/byte opt step 39.8 ms
+2026-10-11 16:17:22.979 | INFO     | __main__:main:498 - Step 870/7000 LR 9.70e-04 train 2.1401 bits/byte opt step 40.8 ms
+2026-10-11 16:17:24.152 | INFO     | __main__:main:498 - Step 880/7000 LR 9.69e-04 train 2.1682 bits/byte opt step 41.3 ms
+2026-10-11 16:17:25.335 | INFO     | __main__:main:498 - Step 890/7000 LR 9.68e-04 train 2.0056 bits/byte opt step 40.6 ms
+2026-10-11 16:17:26.515 | INFO     | __main__:main:498 - Step 900/7000 LR 9.67e-04 train 2.1418 bits/byte opt step 39.8 ms
+2026-10-11 16:17:26.719 | INFO     | __main__:log_val:451 - Step 900: validation 2.0178 bits/byte
+2026-10-11 16:17:27.897 | INFO     | __main__:main:498 - Step 910/7000 LR 9.66e-04 train 1.9993 bits/byte opt step 41.2 ms
+2026-10-11 16:17:29.072 | INFO     | __main__:main:498 - Step 920/7000 LR 9.66e-04 train 2.0949 bits/byte opt step 42.3 ms
+2026-10-11 16:17:30.251 | INFO     | __main__:main:498 - Step 930/7000 LR 9.65e-04 train 2.0490 bits/byte opt step 41.1 ms
+2026-10-11 16:17:31.431 | INFO     | __main__:main:498 - Step 940/7000 LR 9.64e-04 train 2.1620 bits/byte opt step 42.4 ms
+2026-10-11 16:17:32.601 | INFO     | __main__:main:498 - Step 950/7000 LR 9.63e-04 train 2.1274 bits/byte opt step 38.3 ms
+2026-10-11 16:17:33.796 | INFO     | __main__:main:498 - Step 960/7000 LR 9.62e-04 train 2.7868 bits/byte opt step 43.4 ms
+2026-10-11 16:17:34.969 | INFO     | __main__:main:498 - Step 970/7000 LR 9.61e-04 train 2.1171 bits/byte opt step 39.5 ms
+2026-10-11 16:17:36.142 | INFO     | __main__:main:498 - Step 980/7000 LR 9.60e-04 train 1.9939 bits/byte opt step 41.2 ms
+2026-10-11 16:17:37.447 | INFO     | __main__:main:498 - Step 990/7000 LR 9.60e-04 train 2.2070 bits/byte opt step 46.0 ms
+2026-10-11 16:17:38.697 | INFO     | __main__:main:498 - Step 1000/7000 LR 9.59e-04 train 2.1923 bits/byte opt step 43.3 ms
+2026-10-11 16:17:38.902 | INFO     | __main__:log_val:451 - Step 1000: validation 2.0079 bits/byte
+2026-10-11 16:17:40.104 | INFO     | __main__:main:498 - Step 1010/7000 LR 9.58e-04 train 2.0659 bits/byte opt step 39.6 ms
+2026-10-11 16:17:41.276 | INFO     | __main__:main:498 - Step 1020/7000 LR 9.57e-04 train 2.0328 bits/byte opt step 38.9 ms
+2026-10-11 16:17:42.451 | INFO     | __main__:main:498 - Step 1030/7000 LR 9.56e-04 train 2.0355 bits/byte opt step 39.3 ms
+2026-10-11 16:17:43.633 | INFO     | __main__:main:498 - Step 1040/7000 LR 9.55e-04 train 1.9428 bits/byte opt step 40.8 ms
+2026-10-11 16:17:44.815 | INFO     | __main__:main:498 - Step 1050/7000 LR 9.54e-04 train 2.2008 bits/byte opt step 40.7 ms
+2026-10-11 16:17:45.997 | INFO     | __main__:main:498 - Step 1060/7000 LR 9.53e-04 train 2.0686 bits/byte opt step 42.6 ms
+2026-10-11 16:17:47.285 | INFO     | __main__:main:498 - Step 1070/7000 LR 9.52e-04 train 2.0421 bits/byte opt step 43.9 ms
+2026-10-11 16:17:48.526 | INFO     | __main__:main:498 - Step 1080/7000 LR 9.51e-04 train 2.1580 bits/byte opt step 43.8 ms
+2026-10-11 16:17:49.737 | INFO     | __main__:main:498 - Step 1090/7000 LR 9.50e-04 train 2.0477 bits/byte opt step 39.6 ms
+2026-10-11 16:17:50.911 | INFO     | __main__:main:498 - Step 1100/7000 LR 9.49e-04 train 2.1163 bits/byte opt step 47.5 ms
+2026-10-11 16:17:51.116 | INFO     | __main__:log_val:451 - Step 1100: validation 1.9866 bits/byte
+2026-10-11 16:17:52.300 | INFO     | __main__:main:498 - Step 1110/7000 LR 9.48e-04 train 2.0115 bits/byte opt step 41.9 ms
+2026-10-11 16:17:53.480 | INFO     | __main__:main:498 - Step 1120/7000 LR 9.47e-04 train 2.0777 bits/byte opt step 40.4 ms
+2026-10-11 16:17:54.644 | INFO     | __main__:main:498 - Step 1130/7000 LR 9.46e-04 train 2.0608 bits/byte opt step 38.7 ms
+2026-10-11 16:17:55.812 | INFO     | __main__:main:498 - Step 1140/7000 LR 9.45e-04 train 2.2266 bits/byte opt step 39.0 ms
+2026-10-11 16:17:57.020 | INFO     | __main__:main:498 - Step 1150/7000 LR 9.44e-04 train 1.9902 bits/byte opt step 40.7 ms
+2026-10-11 16:17:58.192 | INFO     | __main__:main:498 - Step 1160/7000 LR 9.43e-04 train 2.1577 bits/byte opt step 40.8 ms
+2026-10-11 16:17:59.359 | INFO     | __main__:main:498 - Step 1170/7000 LR 9.42e-04 train 1.9425 bits/byte opt step 39.1 ms
+2026-10-11 16:18:00.526 | INFO     | __main__:main:498 - Step 1180/7000 LR 9.41e-04 train 2.1909 bits/byte opt step 38.5 ms
+2026-10-11 16:18:01.709 | INFO     | __main__:main:498 - Step 1190/7000 LR 9.40e-04 train 2.0999 bits/byte opt step 40.1 ms
+2026-10-11 16:18:02.881 | INFO     | __main__:main:498 - Step 1200/7000 LR 9.39e-04 train 2.0360 bits/byte opt step 41.0 ms
+2026-10-11 16:18:03.084 | INFO     | __main__:log_val:451 - Step 1200: validation 1.9597 bits/byte
+2026-10-11 16:18:04.263 | INFO     | __main__:main:498 - Step 1210/7000 LR 9.37e-04 train 2.0317 bits/byte opt step 41.2 ms
+2026-10-11 16:18:05.437 | INFO     | __main__:main:498 - Step 1220/7000 LR 9.36e-04 train 2.1142 bits/byte opt step 40.7 ms
+2026-10-11 16:18:06.646 | INFO     | __main__:main:498 - Step 1230/7000 LR 9.35e-04 train 2.0001 bits/byte opt step 46.3 ms
+2026-10-11 16:18:07.960 | INFO     | __main__:main:498 - Step 1240/7000 LR 9.34e-04 train 2.0474 bits/byte opt step 46.7 ms
+2026-10-11 16:18:09.202 | INFO     | __main__:main:498 - Step 1250/7000 LR 9.33e-04 train 2.0035 bits/byte opt step 44.1 ms
+2026-10-11 16:18:10.349 | INFO     | __main__:main:498 - Step 1260/7000 LR 9.32e-04 train 2.1336 bits/byte opt step 38.2 ms
+2026-10-11 16:18:11.474 | INFO     | __main__:main:498 - Step 1270/7000 LR 9.31e-04 train 2.1810 bits/byte opt step 37.0 ms
+2026-10-11 16:18:12.592 | INFO     | __main__:main:498 - Step 1280/7000 LR 9.30e-04 train 2.2175 bits/byte opt step 36.9 ms
+2026-10-11 16:18:13.700 | INFO     | __main__:main:498 - Step 1290/7000 LR 9.28e-04 train 2.0526 bits/byte opt step 37.7 ms
+2026-10-11 16:18:14.817 | INFO     | __main__:main:498 - Step 1300/7000 LR 9.27e-04 train 2.1411 bits/byte opt step 37.0 ms
+2026-10-11 16:18:14.998 | INFO     | __main__:log_val:451 - Step 1300: validation 1.9431 bits/byte
+2026-10-11 16:18:16.121 | INFO     | __main__:main:498 - Step 1310/7000 LR 9.26e-04 train 2.0350 bits/byte opt step 39.4 ms
+2026-10-11 16:18:17.345 | INFO     | __main__:main:498 - Step 1320/7000 LR 9.25e-04 train 2.0603 bits/byte opt step 38.6 ms
+2026-10-11 16:18:18.527 | INFO     | __main__:main:498 - Step 1330/7000 LR 9.24e-04 train 1.9348 bits/byte opt step 39.6 ms
+2026-10-11 16:18:19.721 | INFO     | __main__:main:498 - Step 1340/7000 LR 9.22e-04 train 1.9675 bits/byte opt step 44.9 ms
+2026-10-11 16:18:20.850 | INFO     | __main__:main:498 - Step 1350/7000 LR 9.21e-04 train 2.0384 bits/byte opt step 37.0 ms
+2026-10-11 16:18:21.982 | INFO     | __main__:main:498 - Step 1360/7000 LR 9.20e-04 train 1.9028 bits/byte opt step 39.0 ms
+2026-10-11 16:18:23.121 | INFO     | __main__:main:498 - Step 1370/7000 LR 9.19e-04 train 2.0716 bits/byte opt step 39.1 ms
+2026-10-11 16:18:24.258 | INFO     | __main__:main:498 - Step 1380/7000 LR 9.17e-04 train 2.1133 bits/byte opt step 38.1 ms
+2026-10-11 16:18:25.404 | INFO     | __main__:main:498 - Step 1390/7000 LR 9.16e-04 train 2.1245 bits/byte opt step 37.4 ms
+2026-10-11 16:18:26.554 | INFO     | __main__:main:498 - Step 1400/7000 LR 9.15e-04 train 1.9774 bits/byte opt step 37.5 ms
+2026-10-11 16:18:26.745 | INFO     | __main__:log_val:451 - Step 1400: validation 1.9295 bits/byte
+2026-10-11 16:18:27.876 | INFO     | __main__:main:498 - Step 1410/7000 LR 9.14e-04 train 1.9799 bits/byte opt step 38.9 ms
+2026-10-11 16:18:29.008 | INFO     | __main__:main:498 - Step 1420/7000 LR 9.12e-04 train 1.9788 bits/byte opt step 37.4 ms
+2026-10-11 16:18:30.117 | INFO     | __main__:main:498 - Step 1430/7000 LR 9.11e-04 train 1.9772 bits/byte opt step 35.9 ms
+2026-10-11 16:18:31.239 | INFO     | __main__:main:498 - Step 1440/7000 LR 9.10e-04 train 2.0642 bits/byte opt step 37.0 ms
+2026-10-11 16:18:32.369 | INFO     | __main__:main:498 - Step 1450/7000 LR 9.08e-04 train 2.0042 bits/byte opt step 37.5 ms
+2026-10-11 16:18:33.493 | INFO     | __main__:main:498 - Step 1460/7000 LR 9.07e-04 train 2.0166 bits/byte opt step 37.9 ms
+2026-10-11 16:18:34.639 | INFO     | __main__:main:498 - Step 1470/7000 LR 9.06e-04 train 1.9841 bits/byte opt step 48.1 ms
+2026-10-11 16:18:35.736 | INFO     | __main__:main:498 - Step 1480/7000 LR 9.05e-04 train 2.0087 bits/byte opt step 36.3 ms
+2026-10-11 16:18:36.903 | INFO     | __main__:main:498 - Step 1490/7000 LR 9.03e-04 train 1.9314 bits/byte opt step 39.4 ms
+2026-10-11 16:18:38.094 | INFO     | __main__:main:498 - Step 1500/7000 LR 9.02e-04 train 1.9466 bits/byte opt step 40.9 ms
+2026-10-11 16:18:38.297 | INFO     | __main__:log_val:451 - Step 1500: validation 1.9152 bits/byte
+2026-10-11 16:18:39.481 | INFO     | __main__:main:498 - Step 1510/7000 LR 9.00e-04 train 2.1194 bits/byte opt step 39.5 ms
+2026-10-11 16:18:40.603 | INFO     | __main__:main:498 - Step 1520/7000 LR 8.99e-04 train 1.9884 bits/byte opt step 39.0 ms
+2026-10-11 16:18:41.720 | INFO     | __main__:main:498 - Step 1530/7000 LR 8.98e-04 train 2.0214 bits/byte opt step 37.6 ms
+2026-10-11 16:18:42.843 | INFO     | __main__:main:498 - Step 1540/7000 LR 8.96e-04 train 1.9660 bits/byte opt step 36.9 ms
+2026-10-11 16:18:43.959 | INFO     | __main__:main:498 - Step 1550/7000 LR 8.95e-04 train 2.1153 bits/byte opt step 38.3 ms
+2026-10-11 16:18:45.085 | INFO     | __main__:main:498 - Step 1560/7000 LR 8.94e-04 train 1.9752 bits/byte opt step 37.6 ms
+2026-10-11 16:18:46.207 | INFO     | __main__:main:498 - Step 1570/7000 LR 8.92e-04 train 2.1967 bits/byte opt step 36.9 ms
+2026-10-11 16:18:47.392 | INFO     | __main__:main:498 - Step 1580/7000 LR 8.91e-04 train 1.8721 bits/byte opt step 41.8 ms
+2026-10-11 16:18:48.607 | INFO     | __main__:main:498 - Step 1590/7000 LR 8.89e-04 train 1.9024 bits/byte opt step 41.9 ms
+2026-10-11 16:18:49.791 | INFO     | __main__:main:498 - Step 1600/7000 LR 8.88e-04 train 1.9278 bits/byte opt step 37.7 ms
+2026-10-11 16:18:49.974 | INFO     | __main__:log_val:451 - Step 1600: validation 1.9145 bits/byte
+2026-10-11 16:18:51.107 | INFO     | __main__:main:498 - Step 1610/7000 LR 8.86e-04 train 1.8897 bits/byte opt step 36.1 ms
+2026-10-11 16:18:52.239 | INFO     | __main__:main:498 - Step 1620/7000 LR 8.85e-04 train 2.0336 bits/byte opt step 46.8 ms
+2026-10-11 16:18:53.376 | INFO     | __main__:main:498 - Step 1630/7000 LR 8.84e-04 train 1.9689 bits/byte opt step 38.3 ms
+2026-10-11 16:18:54.495 | INFO     | __main__:main:498 - Step 1640/7000 LR 8.82e-04 train 2.0004 bits/byte opt step 40.3 ms
+2026-10-11 16:18:55.617 | INFO     | __main__:main:498 - Step 1650/7000 LR 8.81e-04 train 2.1195 bits/byte opt step 37.6 ms
+2026-10-11 16:18:56.785 | INFO     | __main__:main:498 - Step 1660/7000 LR 8.79e-04 train 1.9222 bits/byte opt step 38.0 ms
+2026-10-11 16:18:57.917 | INFO     | __main__:main:498 - Step 1670/7000 LR 8.78e-04 train 2.2184 bits/byte opt step 38.3 ms
+2026-10-11 16:18:59.045 | INFO     | __main__:main:498 - Step 1680/7000 LR 8.76e-04 train 1.9641 bits/byte opt step 41.5 ms
+2026-10-11 16:19:00.169 | INFO     | __main__:main:498 - Step 1690/7000 LR 8.75e-04 train 1.9789 bits/byte opt step 37.6 ms
+2026-10-11 16:19:01.299 | INFO     | __main__:main:498 - Step 1700/7000 LR 8.73e-04 train 2.0752 bits/byte opt step 37.9 ms
+2026-10-11 16:19:01.485 | INFO     | __main__:log_val:451 - Step 1700: validation 1.8964 bits/byte
+2026-10-11 16:19:02.621 | INFO     | __main__:main:498 - Step 1710/7000 LR 8.72e-04 train 1.9538 bits/byte opt step 43.9 ms
+2026-10-11 16:19:03.745 | INFO     | __main__:main:498 - Step 1720/7000 LR 8.70e-04 train 1.9072 bits/byte opt step 39.2 ms
+2026-10-11 16:19:04.880 | INFO     | __main__:main:498 - Step 1730/7000 LR 8.69e-04 train 1.9491 bits/byte opt step 40.0 ms
+2026-10-11 16:19:06.020 | INFO     | __main__:main:498 - Step 1740/7000 LR 8.67e-04 train 2.0712 bits/byte opt step 36.9 ms
+2026-10-11 16:19:07.226 | INFO     | __main__:main:498 - Step 1750/7000 LR 8.65e-04 train 1.9147 bits/byte opt step 44.7 ms
+2026-10-11 16:19:08.435 | INFO     | __main__:main:498 - Step 1760/7000 LR 8.64e-04 train 1.9554 bits/byte opt step 41.4 ms
+2026-10-11 16:19:09.642 | INFO     | __main__:main:498 - Step 1770/7000 LR 8.62e-04 train 1.9942 bits/byte opt step 41.2 ms
+2026-10-11 16:19:10.761 | INFO     | __main__:main:498 - Step 1780/7000 LR 8.61e-04 train 2.1690 bits/byte opt step 37.0 ms
+2026-10-11 16:19:11.906 | INFO     | __main__:main:498 - Step 1790/7000 LR 8.59e-04 train 2.0309 bits/byte opt step 39.2 ms
+2026-10-11 16:19:13.038 | INFO     | __main__:main:498 - Step 1800/7000 LR 8.58e-04 train 1.9169 bits/byte opt step 36.0 ms
+2026-10-11 16:19:13.213 | INFO     | __main__:log_val:451 - Step 1800: validation 1.8786 bits/byte
+2026-10-11 16:19:14.341 | INFO     | __main__:main:498 - Step 1810/7000 LR 8.56e-04 train 1.9081 bits/byte opt step 39.8 ms
+2026-10-11 16:19:15.472 | INFO     | __main__:main:498 - Step 1820/7000 LR 8.54e-04 train 1.9965 bits/byte opt step 37.6 ms
+2026-10-11 16:19:16.633 | INFO     | __main__:main:498 - Step 1830/7000 LR 8.53e-04 train 1.9089 bits/byte opt step 57.3 ms
+2026-10-11 16:19:17.862 | INFO     | __main__:main:498 - Step 1840/7000 LR 8.51e-04 train 1.9781 bits/byte opt step 41.9 ms
+2026-10-11 16:19:19.110 | INFO     | __main__:main:498 - Step 1850/7000 LR 8.50e-04 train 1.9043 bits/byte opt step 40.2 ms
+2026-10-11 16:19:20.251 | INFO     | __main__:main:498 - Step 1860/7000 LR 8.48e-04 train 1.9456 bits/byte opt step 36.7 ms
+2026-10-11 16:19:21.385 | INFO     | __main__:main:498 - Step 1870/7000 LR 8.46e-04 train 1.9102 bits/byte opt step 39.6 ms
+2026-10-11 16:19:22.524 | INFO     | __main__:main:498 - Step 1880/7000 LR 8.45e-04 train 1.8986 bits/byte opt step 36.7 ms
+2026-10-11 16:19:23.664 | INFO     | __main__:main:498 - Step 1890/7000 LR 8.43e-04 train 2.0051 bits/byte opt step 37.7 ms
+2026-10-11 16:19:24.796 | INFO     | __main__:main:498 - Step 1900/7000 LR 8.41e-04 train 1.9574 bits/byte opt step 38.5 ms
+2026-10-11 16:19:24.999 | INFO     | __main__:log_val:451 - Step 1900: validation 1.8652 bits/byte
+2026-10-11 16:19:26.135 | INFO     | __main__:main:498 - Step 1910/7000 LR 8.40e-04 train 1.9086 bits/byte opt step 37.5 ms
+2026-10-11 16:19:27.275 | INFO     | __main__:main:498 - Step 1920/7000 LR 8.38e-04 train 1.9754 bits/byte opt step 36.8 ms
+2026-10-11 16:19:28.412 | INFO     | __main__:main:498 - Step 1930/7000 LR 8.36e-04 train 1.8790 bits/byte opt step 38.1 ms
+2026-10-11 16:19:29.559 | INFO     | __main__:main:498 - Step 1940/7000 LR 8.35e-04 train 1.9944 bits/byte opt step 36.6 ms
+2026-10-11 16:19:30.668 | INFO     | __main__:main:498 - Step 1950/7000 LR 8.33e-04 train 2.0191 bits/byte opt step 36.8 ms
+2026-10-11 16:19:31.780 | INFO     | __main__:main:498 - Step 1960/7000 LR 8.31e-04 train 1.9333 bits/byte opt step 36.8 ms
+2026-10-11 16:19:32.882 | INFO     | __main__:main:498 - Step 1970/7000 LR 8.29e-04 train 1.9318 bits/byte opt step 36.4 ms
+2026-10-11 16:19:33.998 | INFO     | __main__:main:498 - Step 1980/7000 LR 8.28e-04 train 1.9067 bits/byte opt step 36.1 ms
+2026-10-11 16:19:35.120 | INFO     | __main__:main:498 - Step 1990/7000 LR 8.26e-04 train 2.3534 bits/byte opt step 37.4 ms
+2026-10-11 16:19:36.283 | INFO     | __main__:main:498 - Step 2000/7000 LR 8.24e-04 train 1.9339 bits/byte opt step 40.0 ms
+2026-10-11 16:19:36.493 | INFO     | __main__:log_val:451 - Step 2000: validation 1.8613 bits/byte
+2026-10-11 16:19:37.802 | INFO     | __main__:main:498 - Step 2010/7000 LR 8.23e-04 train 1.9085 bits/byte opt step 43.4 ms
+2026-10-11 16:19:39.052 | INFO     | __main__:main:498 - Step 2020/7000 LR 8.21e-04 train 1.8833 bits/byte opt step 42.2 ms
+2026-10-11 16:19:40.231 | INFO     | __main__:main:498 - Step 2030/7000 LR 8.19e-04 train 1.9713 bits/byte opt step 37.9 ms
+2026-10-11 16:19:41.397 | INFO     | __main__:main:498 - Step 2040/7000 LR 8.17e-04 train 2.0633 bits/byte opt step 41.5 ms
+2026-10-11 16:19:42.527 | INFO     | __main__:main:498 - Step 2050/7000 LR 8.16e-04 train 1.9277 bits/byte opt step 37.2 ms
+2026-10-11 16:19:43.742 | INFO     | __main__:main:498 - Step 2060/7000 LR 8.14e-04 train 1.9066 bits/byte opt step 43.8 ms
+2026-10-11 16:19:44.952 | INFO     | __main__:main:498 - Step 2070/7000 LR 8.12e-04 train 1.9949 bits/byte opt step 42.1 ms
+2026-10-11 16:19:46.170 | INFO     | __main__:main:498 - Step 2080/7000 LR 8.10e-04 train 1.9003 bits/byte opt step 41.8 ms
+2026-10-11 16:19:47.449 | INFO     | __main__:main:498 - Step 2090/7000 LR 8.08e-04 train 1.9200 bits/byte opt step 44.2 ms
+2026-10-11 16:19:48.728 | INFO     | __main__:main:498 - Step 2100/7000 LR 8.07e-04 train 2.0499 bits/byte opt step 44.2 ms
+2026-10-11 16:19:48.940 | INFO     | __main__:log_val:451 - Step 2100: validation 1.8484 bits/byte
+2026-10-11 16:19:50.176 | INFO     | __main__:main:498 - Step 2110/7000 LR 8.05e-04 train 1.9105 bits/byte opt step 42.5 ms
+2026-10-11 16:19:51.374 | INFO     | __main__:main:498 - Step 2120/7000 LR 8.03e-04 train 2.0738 bits/byte opt step 41.3 ms
+2026-10-11 16:19:52.605 | INFO     | __main__:main:498 - Step 2130/7000 LR 8.01e-04 train 1.8590 bits/byte opt step 44.8 ms
+2026-10-11 16:19:53.828 | INFO     | __main__:main:498 - Step 2140/7000 LR 7.99e-04 train 1.9826 bits/byte opt step 45.1 ms
+2026-10-11 16:19:55.050 | INFO     | __main__:main:498 - Step 2150/7000 LR 7.98e-04 train 1.9522 bits/byte opt step 43.3 ms
+2026-10-11 16:19:56.278 | INFO     | __main__:main:498 - Step 2160/7000 LR 7.96e-04 train 1.8956 bits/byte opt step 43.5 ms
+2026-10-11 16:19:57.573 | INFO     | __main__:main:498 - Step 2170/7000 LR 7.94e-04 train 2.2197 bits/byte opt step 46.3 ms
+2026-10-11 16:19:58.778 | INFO     | __main__:main:498 - Step 2180/7000 LR 7.92e-04 train 2.0292 bits/byte opt step 45.2 ms
+2026-10-11 16:20:00.008 | INFO     | __main__:main:498 - Step 2190/7000 LR 7.90e-04 train 2.0454 bits/byte opt step 42.9 ms
+2026-10-11 16:20:01.240 | INFO     | __main__:main:498 - Step 2200/7000 LR 7.88e-04 train 1.9433 bits/byte opt step 35.9 ms
+2026-10-11 16:20:01.449 | INFO     | __main__:log_val:451 - Step 2200: validation 1.8486 bits/byte
+2026-10-11 16:20:02.665 | INFO     | __main__:main:498 - Step 2210/7000 LR 7.86e-04 train 1.8892 bits/byte opt step 43.6 ms
+2026-10-11 16:20:03.881 | INFO     | __main__:main:498 - Step 2220/7000 LR 7.85e-04 train 1.9550 bits/byte opt step 43.2 ms
+2026-10-11 16:20:05.111 | INFO     | __main__:main:498 - Step 2230/7000 LR 7.83e-04 train 1.9183 bits/byte opt step 41.9 ms
+2026-10-11 16:20:06.331 | INFO     | __main__:main:498 - Step 2240/7000 LR 7.81e-04 train 1.9293 bits/byte opt step 42.3 ms
+2026-10-11 16:20:07.640 | INFO     | __main__:main:498 - Step 2250/7000 LR 7.79e-04 train 1.8454 bits/byte opt step 47.7 ms
+2026-10-11 16:20:08.945 | INFO     | __main__:main:498 - Step 2260/7000 LR 7.77e-04 train 1.9759 bits/byte opt step 47.4 ms
+2026-10-11 16:20:10.173 | INFO     | __main__:main:498 - Step 2270/7000 LR 7.75e-04 train 1.8759 bits/byte opt step 39.5 ms
+2026-10-11 16:20:11.375 | INFO     | __main__:main:498 - Step 2280/7000 LR 7.73e-04 train 1.9218 bits/byte opt step 42.5 ms
+2026-10-11 16:20:12.574 | INFO     | __main__:main:498 - Step 2290/7000 LR 7.71e-04 train 1.8777 bits/byte opt step 41.5 ms
+2026-10-11 16:20:13.779 | INFO     | __main__:main:498 - Step 2300/7000 LR 7.69e-04 train 1.9840 bits/byte opt step 43.1 ms
+2026-10-11 16:20:13.983 | INFO     | __main__:log_val:451 - Step 2300: validation 1.8380 bits/byte
+2026-10-11 16:20:15.181 | INFO     | __main__:main:498 - Step 2310/7000 LR 7.68e-04 train 2.0106 bits/byte opt step 39.5 ms
+2026-10-11 16:20:16.373 | INFO     | __main__:main:498 - Step 2320/7000 LR 7.66e-04 train 1.9167 bits/byte opt step 40.9 ms
+2026-10-11 16:20:17.701 | INFO     | __main__:main:498 - Step 2330/7000 LR 7.64e-04 train 2.0168 bits/byte opt step 46.8 ms
+2026-10-11 16:20:19.000 | INFO     | __main__:main:498 - Step 2340/7000 LR 7.62e-04 train 1.7363 bits/byte opt step 45.2 ms
+2026-10-11 16:20:20.241 | INFO     | __main__:main:498 - Step 2350/7000 LR 7.60e-04 train 1.9002 bits/byte opt step 41.0 ms
+2026-10-11 16:20:21.422 | INFO     | __main__:main:498 - Step 2360/7000 LR 7.58e-04 train 1.9179 bits/byte opt step 41.2 ms
+2026-10-11 16:20:22.614 | INFO     | __main__:main:498 - Step 2370/7000 LR 7.56e-04 train 1.9396 bits/byte opt step 41.3 ms
+2026-10-11 16:20:23.816 | INFO     | __main__:main:498 - Step 2380/7000 LR 7.54e-04 train 1.8190 bits/byte opt step 42.3 ms
+2026-10-11 16:20:25.028 | INFO     | __main__:main:498 - Step 2390/7000 LR 7.52e-04 train 1.8354 bits/byte opt step 40.4 ms
+2026-10-11 16:20:26.246 | INFO     | __main__:main:498 - Step 2400/7000 LR 7.50e-04 train 1.8693 bits/byte opt step 36.9 ms
+2026-10-11 16:20:26.432 | INFO     | __main__:log_val:451 - Step 2400: validation 1.8309 bits/byte
+2026-10-11 16:20:27.576 | INFO     | __main__:main:498 - Step 2410/7000 LR 7.48e-04 train 1.8845 bits/byte opt step 37.8 ms
+2026-10-11 16:20:28.698 | INFO     | __main__:main:498 - Step 2420/7000 LR 7.46e-04 train 1.9869 bits/byte opt step 38.5 ms
+2026-10-11 16:20:29.827 | INFO     | __main__:main:498 - Step 2430/7000 LR 7.44e-04 train 1.9061 bits/byte opt step 37.9 ms
+2026-10-11 16:20:30.961 | INFO     | __main__:main:498 - Step 2440/7000 LR 7.42e-04 train 1.8903 bits/byte opt step 37.3 ms
+2026-10-11 16:20:32.100 | INFO     | __main__:main:498 - Step 2450/7000 LR 7.40e-04 train 1.8701 bits/byte opt step 37.8 ms
+2026-10-11 16:20:33.238 | INFO     | __main__:main:498 - Step 2460/7000 LR 7.38e-04 train 1.9054 bits/byte opt step 37.5 ms
+2026-10-11 16:20:34.371 | INFO     | __main__:main:498 - Step 2470/7000 LR 7.36e-04 train 1.9899 bits/byte opt step 38.9 ms
+2026-10-11 16:20:35.501 | INFO     | __main__:main:498 - Step 2480/7000 LR 7.34e-04 train 2.0164 bits/byte opt step 37.2 ms
+2026-10-11 16:20:36.652 | INFO     | __main__:main:498 - Step 2490/7000 LR 7.32e-04 train 1.8563 bits/byte opt step 43.9 ms
+2026-10-11 16:20:37.921 | INFO     | __main__:main:498 - Step 2500/7000 LR 7.30e-04 train 2.1460 bits/byte opt step 44.0 ms
+2026-10-11 16:20:38.120 | INFO     | __main__:log_val:451 - Step 2500: validation 1.8109 bits/byte
+2026-10-11 16:20:39.326 | INFO     | __main__:main:498 - Step 2510/7000 LR 7.28e-04 train 1.9217 bits/byte opt step 45.0 ms
+2026-10-11 16:20:40.483 | INFO     | __main__:main:498 - Step 2520/7000 LR 7.26e-04 train 2.0802 bits/byte opt step 37.1 ms
+2026-10-11 16:20:41.609 | INFO     | __main__:main:498 - Step 2530/7000 LR 7.24e-04 train 1.8138 bits/byte opt step 38.5 ms
+2026-10-11 16:20:42.737 | INFO     | __main__:main:498 - Step 2540/7000 LR 7.22e-04 train 1.8923 bits/byte opt step 38.0 ms
+2026-10-11 16:20:43.855 | INFO     | __main__:main:498 - Step 2550/7000 LR 7.20e-04 train 1.8164 bits/byte opt step 37.3 ms
+2026-10-11 16:20:44.981 | INFO     | __main__:main:498 - Step 2560/7000 LR 7.18e-04 train 1.8864 bits/byte opt step 37.4 ms
+2026-10-11 16:20:46.087 | INFO     | __main__:main:498 - Step 2570/7000 LR 7.16e-04 train 1.8542 bits/byte opt step 36.7 ms
+2026-10-11 16:20:47.276 | INFO     | __main__:main:498 - Step 2580/7000 LR 7.14e-04 train 1.8236 bits/byte opt step 40.7 ms
+2026-10-11 16:20:48.458 | INFO     | __main__:main:498 - Step 2590/7000 LR 7.12e-04 train 1.8902 bits/byte opt step 40.5 ms
+2026-10-11 16:20:49.635 | INFO     | __main__:main:498 - Step 2600/7000 LR 7.10e-04 train 1.8985 bits/byte opt step 40.9 ms
+2026-10-11 16:20:49.826 | INFO     | __main__:log_val:451 - Step 2600: validation 1.8044 bits/byte
+2026-10-11 16:20:50.936 | INFO     | __main__:main:498 - Step 2610/7000 LR 7.08e-04 train 1.8065 bits/byte opt step 36.3 ms
+2026-10-11 16:20:52.041 | INFO     | __main__:main:498 - Step 2620/7000 LR 7.05e-04 train 1.8596 bits/byte opt step 36.6 ms
+2026-10-11 16:20:53.149 | INFO     | __main__:main:498 - Step 2630/7000 LR 7.03e-04 train 1.8455 bits/byte opt step 36.6 ms
+2026-10-11 16:20:54.260 | INFO     | __main__:main:498 - Step 2640/7000 LR 7.01e-04 train 1.9575 bits/byte opt step 37.1 ms
+2026-10-11 16:20:55.368 | INFO     | __main__:main:498 - Step 2650/7000 LR 6.99e-04 train 1.8763 bits/byte opt step 36.3 ms
+2026-10-11 16:20:56.476 | INFO     | __main__:main:498 - Step 2660/7000 LR 6.97e-04 train 1.8365 bits/byte opt step 36.7 ms
+2026-10-11 16:20:57.652 | INFO     | __main__:main:498 - Step 2670/7000 LR 6.95e-04 train 1.9268 bits/byte opt step 36.9 ms
+2026-10-11 16:20:58.760 | INFO     | __main__:main:498 - Step 2680/7000 LR 6.93e-04 train 1.9615 bits/byte opt step 36.4 ms
+2026-10-11 16:20:59.866 | INFO     | __main__:main:498 - Step 2690/7000 LR 6.91e-04 train 1.9004 bits/byte opt step 36.1 ms
+2026-10-11 16:21:00.972 | INFO     | __main__:main:498 - Step 2700/7000 LR 6.89e-04 train 1.8363 bits/byte opt step 36.1 ms
+2026-10-11 16:21:01.145 | INFO     | __main__:log_val:451 - Step 2700: validation 1.7881 bits/byte
+2026-10-11 16:21:02.252 | INFO     | __main__:main:498 - Step 2710/7000 LR 6.87e-04 train 2.0955 bits/byte opt step 36.6 ms
+2026-10-11 16:21:03.356 | INFO     | __main__:main:498 - Step 2720/7000 LR 6.84e-04 train 1.9025 bits/byte opt step 36.0 ms
+2026-10-11 16:21:04.471 | INFO     | __main__:main:498 - Step 2730/7000 LR 6.82e-04 train 1.8587 bits/byte opt step 36.2 ms
+2026-10-11 16:21:05.659 | INFO     | __main__:main:498 - Step 2740/7000 LR 6.80e-04 train 1.8545 bits/byte opt step 42.1 ms
+2026-10-11 16:21:06.835 | INFO     | __main__:main:498 - Step 2750/7000 LR 6.78e-04 train 1.9381 bits/byte opt step 46.1 ms
+2026-10-11 16:21:08.133 | INFO     | __main__:main:498 - Step 2760/7000 LR 6.76e-04 train 1.9001 bits/byte opt step 46.7 ms
+2026-10-11 16:21:09.415 | INFO     | __main__:main:498 - Step 2770/7000 LR 6.74e-04 train 2.0253 bits/byte opt step 42.8 ms
+2026-10-11 16:21:10.628 | INFO     | __main__:main:498 - Step 2780/7000 LR 6.72e-04 train 1.8869 bits/byte opt step 39.6 ms
+2026-10-11 16:21:11.813 | INFO     | __main__:main:498 - Step 2790/7000 LR 6.70e-04 train 1.9063 bits/byte opt step 43.3 ms
+2026-10-11 16:21:13.005 | INFO     | __main__:main:498 - Step 2800/7000 LR 6.67e-04 train 1.7999 bits/byte opt step 42.0 ms
+2026-10-11 16:21:13.203 | INFO     | __main__:log_val:451 - Step 2800: validation 1.7815 bits/byte
+2026-10-11 16:21:14.408 | INFO     | __main__:main:498 - Step 2810/7000 LR 6.65e-04 train 1.9047 bits/byte opt step 41.3 ms
+2026-10-11 16:21:15.616 | INFO     | __main__:main:498 - Step 2820/7000 LR 6.63e-04 train 1.9728 bits/byte opt step 41.2 ms
+2026-10-11 16:21:16.842 | INFO     | __main__:main:498 - Step 2830/7000 LR 6.61e-04 train 1.8634 bits/byte opt step 61.3 ms
+2026-10-11 16:21:18.154 | INFO     | __main__:main:498 - Step 2840/7000 LR 6.59e-04 train 1.8015 bits/byte opt step 45.6 ms
+2026-10-11 16:21:19.461 | INFO     | __main__:main:498 - Step 2850/7000 LR 6.57e-04 train 1.8579 bits/byte opt step 47.8 ms
+2026-10-11 16:21:20.680 | INFO     | __main__:main:498 - Step 2860/7000 LR 6.55e-04 train 1.8043 bits/byte opt step 42.6 ms
+2026-10-11 16:21:21.873 | INFO     | __main__:main:498 - Step 2870/7000 LR 6.52e-04 train 1.8882 bits/byte opt step 41.1 ms
+2026-10-11 16:21:23.072 | INFO     | __main__:main:498 - Step 2880/7000 LR 6.50e-04 train 1.8428 bits/byte opt step 42.1 ms
+2026-10-11 16:21:24.271 | INFO     | __main__:main:498 - Step 2890/7000 LR 6.48e-04 train 1.8907 bits/byte opt step 36.7 ms
+2026-10-11 16:21:25.484 | INFO     | __main__:main:498 - Step 2900/7000 LR 6.46e-04 train 1.9451 bits/byte opt step 45.7 ms
+2026-10-11 16:21:25.692 | INFO     | __main__:log_val:451 - Step 2900: validation 1.7758 bits/byte
+2026-10-11 16:21:26.895 | INFO     | __main__:main:498 - Step 2910/7000 LR 6.44e-04 train 1.8472 bits/byte opt step 42.9 ms
+2026-10-11 16:21:28.088 | INFO     | __main__:main:498 - Step 2920/7000 LR 6.41e-04 train 1.8246 bits/byte opt step 42.0 ms
+2026-10-11 16:21:29.283 | INFO     | __main__:main:498 - Step 2930/7000 LR 6.39e-04 train 1.8623 bits/byte opt step 42.9 ms
+2026-10-11 16:21:30.478 | INFO     | __main__:main:498 - Step 2940/7000 LR 6.37e-04 train 1.8548 bits/byte opt step 38.8 ms
+2026-10-11 16:21:31.662 | INFO     | __main__:main:498 - Step 2950/7000 LR 6.35e-04 train 1.8958 bits/byte opt step 35.7 ms
+2026-10-11 16:21:32.850 | INFO     | __main__:main:498 - Step 2960/7000 LR 6.33e-04 train 1.8633 bits/byte opt step 42.5 ms
+2026-10-11 16:21:34.039 | INFO     | __main__:main:498 - Step 2970/7000 LR 6.31e-04 train 1.8614 bits/byte opt step 40.9 ms
+2026-10-11 16:21:35.248 | INFO     | __main__:main:498 - Step 2980/7000 LR 6.28e-04 train 1.7833 bits/byte opt step 42.6 ms
+2026-10-11 16:21:36.439 | INFO     | __main__:main:498 - Step 2990/7000 LR 6.26e-04 train 1.8141 bits/byte opt step 44.9 ms
+2026-10-11 16:21:37.863 | INFO     | __main__:main:498 - Step 3000/7000 LR 6.24e-04 train 1.9531 bits/byte opt step 56.0 ms
+2026-10-11 16:21:38.093 | INFO     | __main__:log_val:451 - Step 3000: validation 1.7685 bits/byte
+2026-10-11 16:21:39.394 | INFO     | __main__:main:498 - Step 3010/7000 LR 6.22e-04 train 1.8706 bits/byte opt step 47.0 ms
+2026-10-11 16:21:40.622 | INFO     | __main__:main:498 - Step 3020/7000 LR 6.19e-04 train 1.7778 bits/byte opt step 42.9 ms
+2026-10-11 16:21:41.822 | INFO     | __main__:main:498 - Step 3030/7000 LR 6.17e-04 train 2.0020 bits/byte opt step 41.5 ms
+2026-10-11 16:21:43.052 | INFO     | __main__:main:498 - Step 3040/7000 LR 6.15e-04 train 1.8726 bits/byte opt step 43.2 ms
+2026-10-11 16:21:44.276 | INFO     | __main__:main:498 - Step 3050/7000 LR 6.13e-04 train 1.9004 bits/byte opt step 39.9 ms
+2026-10-11 16:21:45.518 | INFO     | __main__:main:498 - Step 3060/7000 LR 6.11e-04 train 1.9061 bits/byte opt step 45.9 ms
+2026-10-11 16:21:46.760 | INFO     | __main__:main:498 - Step 3070/7000 LR 6.08e-04 train 1.7952 bits/byte opt step 43.8 ms
+2026-10-11 16:21:48.105 | INFO     | __main__:main:498 - Step 3080/7000 LR 6.06e-04 train 1.8868 bits/byte opt step 47.6 ms
+2026-10-11 16:21:49.422 | INFO     | __main__:main:498 - Step 3090/7000 LR 6.04e-04 train 1.8059 bits/byte opt step 46.9 ms
+2026-10-11 16:21:50.601 | INFO     | __main__:main:498 - Step 3100/7000 LR 6.02e-04 train 1.8359 bits/byte opt step 36.5 ms
+2026-10-11 16:21:50.785 | INFO     | __main__:log_val:451 - Step 3100: validation 1.7596 bits/byte
+2026-10-11 16:21:51.895 | INFO     | __main__:main:498 - Step 3110/7000 LR 5.99e-04 train 2.0124 bits/byte opt step 36.3 ms
+2026-10-11 16:21:53.016 | INFO     | __main__:main:498 - Step 3120/7000 LR 5.97e-04 train 1.7009 bits/byte opt step 37.1 ms
+2026-10-11 16:21:54.141 | INFO     | __main__:main:498 - Step 3130/7000 LR 5.95e-04 train 1.8194 bits/byte opt step 38.4 ms
+2026-10-11 16:21:55.282 | INFO     | __main__:main:498 - Step 3140/7000 LR 5.93e-04 train 1.8941 bits/byte opt step 36.3 ms
+2026-10-11 16:21:56.400 | INFO     | __main__:main:498 - Step 3150/7000 LR 5.91e-04 train 1.8214 bits/byte opt step 37.9 ms
+2026-10-11 16:21:57.616 | INFO     | __main__:main:498 - Step 3160/7000 LR 5.88e-04 train 1.8269 bits/byte opt step 42.2 ms
+2026-10-11 16:21:58.733 | INFO     | __main__:main:498 - Step 3170/7000 LR 5.86e-04 train 1.7375 bits/byte opt step 37.4 ms
+2026-10-11 16:21:59.880 | INFO     | __main__:main:498 - Step 3180/7000 LR 5.84e-04 train 1.7264 bits/byte opt step 38.9 ms
+2026-10-11 16:22:01.025 | INFO     | __main__:main:498 - Step 3190/7000 LR 5.82e-04 train 1.9189 bits/byte opt step 37.2 ms
+2026-10-11 16:22:02.166 | INFO     | __main__:main:498 - Step 3200/7000 LR 5.79e-04 train 1.8013 bits/byte opt step 37.4 ms
+2026-10-11 16:22:02.364 | INFO     | __main__:log_val:451 - Step 3200: validation 1.7525 bits/byte
+2026-10-11 16:22:03.491 | INFO     | __main__:main:498 - Step 3210/7000 LR 5.77e-04 train 1.8207 bits/byte opt step 36.6 ms
+2026-10-11 16:22:04.599 | INFO     | __main__:main:498 - Step 3220/7000 LR 5.75e-04 train 1.8732 bits/byte opt step 36.4 ms
+2026-10-11 16:22:05.713 | INFO     | __main__:main:498 - Step 3230/7000 LR 5.73e-04 train 1.8411 bits/byte opt step 37.1 ms
+2026-10-11 16:22:06.952 | INFO     | __main__:main:498 - Step 3240/7000 LR 5.70e-04 train 1.8340 bits/byte opt step 60.9 ms
+2026-10-11 16:22:08.209 | INFO     | __main__:main:498 - Step 3250/7000 LR 5.68e-04 train 1.9195 bits/byte opt step 43.9 ms
+2026-10-11 16:22:09.451 | INFO     | __main__:main:498 - Step 3260/7000 LR 5.66e-04 train 1.7617 bits/byte opt step 39.3 ms
+2026-10-11 16:22:10.698 | INFO     | __main__:main:498 - Step 3270/7000 LR 5.64e-04 train 1.8419 bits/byte opt step 41.8 ms
+2026-10-11 16:22:11.896 | INFO     | __main__:main:498 - Step 3280/7000 LR 5.61e-04 train 1.7017 bits/byte opt step 42.1 ms
+2026-10-11 16:22:13.109 | INFO     | __main__:main:498 - Step 3290/7000 LR 5.59e-04 train 1.9686 bits/byte opt step 41.7 ms
+2026-10-11 16:22:14.322 | INFO     | __main__:main:498 - Step 3300/7000 LR 5.57e-04 train 1.7708 bits/byte opt step 46.1 ms
+2026-10-11 16:22:14.543 | INFO     | __main__:log_val:451 - Step 3300: validation 1.7449 bits/byte
+2026-10-11 16:22:15.768 | INFO     | __main__:main:498 - Step 3310/7000 LR 5.55e-04 train 1.9855 bits/byte opt step 42.1 ms
+2026-10-11 16:22:17.043 | INFO     | __main__:main:498 - Step 3320/7000 LR 5.52e-04 train 1.8072 bits/byte opt step 64.1 ms
+2026-10-11 16:22:18.364 | INFO     | __main__:main:498 - Step 3330/7000 LR 5.50e-04 train 1.8002 bits/byte opt step 47.7 ms
+2026-10-11 16:22:19.683 | INFO     | __main__:main:498 - Step 3340/7000 LR 5.48e-04 train 1.8151 bits/byte opt step 48.8 ms
+2026-10-11 16:22:20.903 | INFO     | __main__:main:498 - Step 3350/7000 LR 5.45e-04 train 1.8868 bits/byte opt step 44.6 ms
+2026-10-11 16:22:22.139 | INFO     | __main__:main:498 - Step 3360/7000 LR 5.43e-04 train 1.9312 bits/byte opt step 44.6 ms
+2026-10-11 16:22:23.286 | INFO     | __main__:main:498 - Step 3370/7000 LR 5.41e-04 train 2.0171 bits/byte opt step 39.4 ms
+2026-10-11 16:22:24.414 | INFO     | __main__:main:498 - Step 3380/7000 LR 5.39e-04 train 1.7275 bits/byte opt step 37.6 ms
+2026-10-11 16:22:25.540 | INFO     | __main__:main:498 - Step 3390/7000 LR 5.36e-04 train 1.7820 bits/byte opt step 37.9 ms
+2026-10-11 16:22:26.670 | INFO     | __main__:main:498 - Step 3400/7000 LR 5.34e-04 train 1.8715 bits/byte opt step 43.2 ms
+2026-10-11 16:22:26.862 | INFO     | __main__:log_val:451 - Step 3400: validation 1.7395 bits/byte
+2026-10-11 16:22:28.012 | INFO     | __main__:main:498 - Step 3410/7000 LR 5.32e-04 train 1.8912 bits/byte opt step 38.4 ms
+2026-10-11 16:22:29.140 | INFO     | __main__:main:498 - Step 3420/7000 LR 5.30e-04 train 1.7756 bits/byte opt step 39.5 ms
+2026-10-11 16:22:30.289 | INFO     | __main__:main:498 - Step 3430/7000 LR 5.27e-04 train 1.7754 bits/byte opt step 38.3 ms
+2026-10-11 16:22:31.405 | INFO     | __main__:main:498 - Step 3440/7000 LR 5.25e-04 train 1.8162 bits/byte opt step 36.6 ms
+2026-10-11 16:22:32.521 | INFO     | __main__:main:498 - Step 3450/7000 LR 5.23e-04 train 1.7343 bits/byte opt step 40.9 ms
+2026-10-11 16:22:33.697 | INFO     | __main__:main:498 - Step 3460/7000 LR 5.20e-04 train 1.7453 bits/byte opt step 40.5 ms
+2026-10-11 16:22:34.886 | INFO     | __main__:main:498 - Step 3470/7000 LR 5.18e-04 train 1.8220 bits/byte opt step 43.4 ms
+2026-10-11 16:22:36.101 | INFO     | __main__:main:498 - Step 3480/7000 LR 5.16e-04 train 1.7580 bits/byte opt step 42.0 ms
+2026-10-11 16:22:37.416 | INFO     | __main__:main:498 - Step 3490/7000 LR 5.14e-04 train 1.8201 bits/byte opt step 45.8 ms
+2026-10-11 16:22:38.678 | INFO     | __main__:main:498 - Step 3500/7000 LR 5.11e-04 train 1.7937 bits/byte opt step 41.4 ms
+2026-10-11 16:22:38.883 | INFO     | __main__:log_val:451 - Step 3500: validation 1.7323 bits/byte
+2026-10-11 16:22:40.059 | INFO     | __main__:main:498 - Step 3510/7000 LR 5.09e-04 train 2.0177 bits/byte opt step 36.0 ms
+2026-10-11 16:22:41.182 | INFO     | __main__:main:498 - Step 3520/7000 LR 5.07e-04 train 1.7393 bits/byte opt step 37.4 ms
+2026-10-11 16:22:42.312 | INFO     | __main__:main:498 - Step 3530/7000 LR 5.05e-04 train 1.8236 bits/byte opt step 39.1 ms
+2026-10-11 16:22:43.428 | INFO     | __main__:main:498 - Step 3540/7000 LR 5.02e-04 train 1.7897 bits/byte opt step 37.3 ms
+2026-10-11 16:22:44.556 | INFO     | __main__:main:498 - Step 3550/7000 LR 5.00e-04 train 1.8650 bits/byte opt step 36.8 ms
+2026-10-11 16:22:45.692 | INFO     | __main__:main:498 - Step 3560/7000 LR 4.98e-04 train 1.7516 bits/byte opt step 36.1 ms
+2026-10-11 16:22:46.824 | INFO     | __main__:main:498 - Step 3570/7000 LR 4.95e-04 train 1.8569 bits/byte opt step 41.1 ms
+2026-10-11 16:22:48.091 | INFO     | __main__:main:498 - Step 3580/7000 LR 4.93e-04 train 1.7577 bits/byte opt step 46.5 ms
+2026-10-11 16:22:49.381 | INFO     | __main__:main:498 - Step 3590/7000 LR 4.91e-04 train 1.7248 bits/byte opt step 44.9 ms
+2026-10-11 16:22:50.605 | INFO     | __main__:main:498 - Step 3600/7000 LR 4.89e-04 train 1.7703 bits/byte opt step 37.1 ms
+2026-10-11 16:22:50.791 | INFO     | __main__:log_val:451 - Step 3600: validation 1.7221 bits/byte
+2026-10-11 16:22:51.920 | INFO     | __main__:main:498 - Step 3610/7000 LR 4.86e-04 train 1.7325 bits/byte opt step 36.8 ms
+2026-10-11 16:22:53.056 | INFO     | __main__:main:498 - Step 3620/7000 LR 4.84e-04 train 1.8748 bits/byte opt step 38.5 ms
+2026-10-11 16:22:54.199 | INFO     | __main__:main:498 - Step 3630/7000 LR 4.82e-04 train 1.7240 bits/byte opt step 38.1 ms
+2026-10-11 16:22:55.341 | INFO     | __main__:main:498 - Step 3640/7000 LR 4.80e-04 train 1.7949 bits/byte opt step 36.6 ms
+2026-10-11 16:22:56.465 | INFO     | __main__:main:498 - Step 3650/7000 LR 4.77e-04 train 1.8491 bits/byte opt step 36.4 ms
+2026-10-11 16:22:57.707 | INFO     | __main__:main:498 - Step 3660/7000 LR 4.75e-04 train 1.8561 bits/byte opt step 41.7 ms
+2026-10-11 16:22:58.937 | INFO     | __main__:main:498 - Step 3670/7000 LR 4.73e-04 train 1.7678 bits/byte opt step 43.0 ms
+2026-10-11 16:23:00.092 | INFO     | __main__:main:498 - Step 3680/7000 LR 4.70e-04 train 1.8101 bits/byte opt step 37.8 ms
+2026-10-11 16:23:01.216 | INFO     | __main__:main:498 - Step 3690/7000 LR 4.68e-04 train 1.8738 bits/byte opt step 37.1 ms
+2026-10-11 16:23:02.355 | INFO     | __main__:main:498 - Step 3700/7000 LR 4.66e-04 train 1.8901 bits/byte opt step 37.1 ms
+2026-10-11 16:23:02.542 | INFO     | __main__:log_val:451 - Step 3700: validation 1.7218 bits/byte
+2026-10-11 16:23:03.664 | INFO     | __main__:main:498 - Step 3710/7000 LR 4.64e-04 train 1.7363 bits/byte opt step 38.1 ms
+2026-10-11 16:23:04.782 | INFO     | __main__:main:498 - Step 3720/7000 LR 4.61e-04 train 1.8053 bits/byte opt step 35.9 ms
+2026-10-11 16:23:05.908 | INFO     | __main__:main:498 - Step 3730/7000 LR 4.59e-04 train 1.8310 bits/byte opt step 36.1 ms
+2026-10-11 16:23:07.039 | INFO     | __main__:main:498 - Step 3740/7000 LR 4.57e-04 train 1.8297 bits/byte opt step 44.7 ms
+2026-10-11 16:23:08.257 | INFO     | __main__:main:498 - Step 3750/7000 LR 4.55e-04 train 1.9589 bits/byte opt step 43.2 ms
+2026-10-11 16:23:09.468 | INFO     | __main__:main:498 - Step 3760/7000 LR 4.52e-04 train 1.8319 bits/byte opt step 43.9 ms
+2026-10-11 16:23:10.620 | INFO     | __main__:main:498 - Step 3770/7000 LR 4.50e-04 train 1.6750 bits/byte opt step 36.6 ms
+2026-10-11 16:23:11.737 | INFO     | __main__:main:498 - Step 3780/7000 LR 4.48e-04 train 1.8235 bits/byte opt step 35.6 ms
+2026-10-11 16:23:12.865 | INFO     | __main__:main:498 - Step 3790/7000 LR 4.45e-04 train 1.6877 bits/byte opt step 36.8 ms
+2026-10-11 16:23:13.977 | INFO     | __main__:main:498 - Step 3800/7000 LR 4.43e-04 train 1.7729 bits/byte opt step 37.4 ms
+2026-10-11 16:23:14.158 | INFO     | __main__:log_val:451 - Step 3800: validation 1.7131 bits/byte
+2026-10-11 16:23:15.275 | INFO     | __main__:main:498 - Step 3810/7000 LR 4.41e-04 train 1.7820 bits/byte opt step 35.7 ms
+2026-10-11 16:23:16.360 | INFO     | __main__:main:498 - Step 3820/7000 LR 4.39e-04 train 1.7746 bits/byte opt step 36.0 ms
+2026-10-11 16:23:17.538 | INFO     | __main__:main:498 - Step 3830/7000 LR 4.36e-04 train 1.8410 bits/byte opt step 40.2 ms
+2026-10-11 16:23:18.704 | INFO     | __main__:main:498 - Step 3840/7000 LR 4.34e-04 train 1.7970 bits/byte opt step 40.7 ms
+2026-10-11 16:23:19.876 | INFO     | __main__:main:498 - Step 3850/7000 LR 4.32e-04 train 1.7142 bits/byte opt step 39.3 ms
+2026-10-11 16:23:20.975 | INFO     | __main__:main:498 - Step 3860/7000 LR 4.30e-04 train 1.7850 bits/byte opt step 36.7 ms
+2026-10-11 16:23:22.076 | INFO     | __main__:main:498 - Step 3870/7000 LR 4.27e-04 train 1.6868 bits/byte opt step 36.1 ms
+2026-10-11 16:23:23.169 | INFO     | __main__:main:498 - Step 3880/7000 LR 4.25e-04 train 1.8731 bits/byte opt step 36.3 ms
+2026-10-11 16:23:24.262 | INFO     | __main__:main:498 - Step 3890/7000 LR 4.23e-04 train 1.8145 bits/byte opt step 35.8 ms
+2026-10-11 16:23:25.355 | INFO     | __main__:main:498 - Step 3900/7000 LR 4.21e-04 train 1.7774 bits/byte opt step 35.6 ms
+2026-10-11 16:23:25.528 | INFO     | __main__:log_val:451 - Step 3900: validation 1.7075 bits/byte
+2026-10-11 16:23:26.613 | INFO     | __main__:main:498 - Step 3910/7000 LR 4.18e-04 train 1.7826 bits/byte opt step 36.3 ms
+2026-10-11 16:23:27.705 | INFO     | __main__:main:498 - Step 3920/7000 LR 4.16e-04 train 1.8626 bits/byte opt step 36.1 ms
+2026-10-11 16:23:28.794 | INFO     | __main__:main:498 - Step 3930/7000 LR 4.14e-04 train 1.7338 bits/byte opt step 36.1 ms
+2026-10-11 16:23:29.884 | INFO     | __main__:main:498 - Step 3940/7000 LR 4.12e-04 train 1.8354 bits/byte opt step 37.5 ms
+2026-10-11 16:23:30.975 | INFO     | __main__:main:498 - Step 3950/7000 LR 4.09e-04 train 1.7636 bits/byte opt step 35.9 ms
+2026-10-11 16:23:32.062 | INFO     | __main__:main:498 - Step 3960/7000 LR 4.07e-04 train 1.8500 bits/byte opt step 36.0 ms
+2026-10-11 16:23:33.161 | INFO     | __main__:main:498 - Step 3970/7000 LR 4.05e-04 train 1.8180 bits/byte opt step 36.5 ms
+2026-10-11 16:23:34.280 | INFO     | __main__:main:498 - Step 3980/7000 LR 4.03e-04 train 1.7556 bits/byte opt step 37.1 ms
+2026-10-11 16:23:35.366 | INFO     | __main__:main:498 - Step 3990/7000 LR 4.01e-04 train 1.8002 bits/byte opt step 36.2 ms
+2026-10-11 16:23:36.448 | INFO     | __main__:main:498 - Step 4000/7000 LR 3.98e-04 train 1.7301 bits/byte opt step 36.2 ms
+2026-10-11 16:23:36.616 | INFO     | __main__:log_val:451 - Step 4000: validation 1.7047 bits/byte
+2026-10-11 16:23:37.849 | INFO     | __main__:main:498 - Step 4010/7000 LR 3.96e-04 train 1.7193 bits/byte opt step 40.4 ms
+2026-10-11 16:23:39.024 | INFO     | __main__:main:498 - Step 4020/7000 LR 3.94e-04 train 1.8020 bits/byte opt step 40.8 ms
+2026-10-11 16:23:40.181 | INFO     | __main__:main:498 - Step 4030/7000 LR 3.92e-04 train 1.7195 bits/byte opt step 36.4 ms
+2026-10-11 16:23:41.277 | INFO     | __main__:main:498 - Step 4040/7000 LR 3.89e-04 train 1.7683 bits/byte opt step 35.8 ms
+2026-10-11 16:23:42.366 | INFO     | __main__:main:498 - Step 4050/7000 LR 3.87e-04 train 1.8404 bits/byte opt step 35.6 ms
+2026-10-11 16:23:43.469 | INFO     | __main__:main:498 - Step 4060/7000 LR 3.85e-04 train 1.7519 bits/byte opt step 43.8 ms
+2026-10-11 16:23:44.570 | INFO     | __main__:main:498 - Step 4070/7000 LR 3.83e-04 train 1.6543 bits/byte opt step 35.9 ms
+2026-10-11 16:23:45.657 | INFO     | __main__:main:498 - Step 4080/7000 LR 3.81e-04 train 1.7734 bits/byte opt step 35.9 ms
+2026-10-11 16:23:46.742 | INFO     | __main__:main:498 - Step 4090/7000 LR 3.78e-04 train 1.8442 bits/byte opt step 36.0 ms
+2026-10-11 16:23:47.908 | INFO     | __main__:main:498 - Step 4100/7000 LR 3.76e-04 train 1.6988 bits/byte opt step 39.4 ms
+2026-10-11 16:23:48.087 | INFO     | __main__:log_val:451 - Step 4100: validation 1.6948 bits/byte
+2026-10-11 16:23:49.255 | INFO     | __main__:main:498 - Step 4110/7000 LR 3.74e-04 train 1.7393 bits/byte opt step 39.5 ms
+2026-10-11 16:23:50.392 | INFO     | __main__:main:498 - Step 4120/7000 LR 3.72e-04 train 1.7844 bits/byte opt step 36.4 ms
+2026-10-11 16:23:51.487 | INFO     | __main__:main:498 - Step 4130/7000 LR 3.69e-04 train 1.8417 bits/byte opt step 35.3 ms
+2026-10-11 16:23:52.591 | INFO     | __main__:main:498 - Step 4140/7000 LR 3.67e-04 train 1.9056 bits/byte opt step 35.8 ms
+2026-10-11 16:23:53.689 | INFO     | __main__:main:498 - Step 4150/7000 LR 3.65e-04 train 1.8751 bits/byte opt step 36.7 ms
+2026-10-11 16:23:54.779 | INFO     | __main__:main:498 - Step 4160/7000 LR 3.63e-04 train 1.7497 bits/byte opt step 36.9 ms
+2026-10-11 16:23:55.867 | INFO     | __main__:main:498 - Step 4170/7000 LR 3.61e-04 train 1.9016 bits/byte opt step 36.0 ms
+2026-10-11 16:23:56.968 | INFO     | __main__:main:498 - Step 4180/7000 LR 3.59e-04 train 1.8155 bits/byte opt step 39.6 ms
+2026-10-11 16:23:58.097 | INFO     | __main__:main:498 - Step 4190/7000 LR 3.56e-04 train 1.7273 bits/byte opt step 36.8 ms
+2026-10-11 16:23:59.190 | INFO     | __main__:main:498 - Step 4200/7000 LR 3.54e-04 train 1.8445 bits/byte opt step 36.6 ms
+2026-10-11 16:23:59.366 | INFO     | __main__:log_val:451 - Step 4200: validation 1.6931 bits/byte
+2026-10-11 16:24:00.460 | INFO     | __main__:main:498 - Step 4210/7000 LR 3.52e-04 train 1.7301 bits/byte opt step 35.5 ms
+2026-10-11 16:24:01.551 | INFO     | __main__:main:498 - Step 4220/7000 LR 3.50e-04 train 1.8477 bits/byte opt step 36.7 ms
+2026-10-11 16:24:02.682 | INFO     | __main__:main:498 - Step 4230/7000 LR 3.48e-04 train 1.8455 bits/byte opt step 37.8 ms
+2026-10-11 16:24:03.780 | INFO     | __main__:main:498 - Step 4240/7000 LR 3.45e-04 train 1.8155 bits/byte opt step 36.4 ms
+2026-10-11 16:24:04.872 | INFO     | __main__:main:498 - Step 4250/7000 LR 3.43e-04 train 1.7762 bits/byte opt step 36.1 ms
+2026-10-11 16:24:05.963 | INFO     | __main__:main:498 - Step 4260/7000 LR 3.41e-04 train 1.7158 bits/byte opt step 35.5 ms
+2026-10-11 16:24:07.054 | INFO     | __main__:main:498 - Step 4270/7000 LR 3.39e-04 train 1.7445 bits/byte opt step 36.9 ms
+2026-10-11 16:24:08.240 | INFO     | __main__:main:498 - Step 4280/7000 LR 3.37e-04 train 1.8695 bits/byte opt step 39.5 ms
+2026-10-11 16:24:09.400 | INFO     | __main__:main:498 - Step 4290/7000 LR 3.35e-04 train 1.7351 bits/byte opt step 39.2 ms
+2026-10-11 16:24:10.532 | INFO     | __main__:main:498 - Step 4300/7000 LR 3.33e-04 train 1.7994 bits/byte opt step 35.8 ms
+2026-10-11 16:24:10.705 | INFO     | __main__:log_val:451 - Step 4300: validation 1.6835 bits/byte
+2026-10-11 16:24:11.809 | INFO     | __main__:main:498 - Step 4310/7000 LR 3.30e-04 train 1.7662 bits/byte opt step 36.6 ms
+2026-10-11 16:24:12.914 | INFO     | __main__:main:498 - Step 4320/7000 LR 3.28e-04 train 1.7442 bits/byte opt step 36.5 ms
+2026-10-11 16:24:14.006 | INFO     | __main__:main:498 - Step 4330/7000 LR 3.26e-04 train 1.7088 bits/byte opt step 36.6 ms
+2026-10-11 16:24:15.102 | INFO     | __main__:main:498 - Step 4340/7000 LR 3.24e-04 train 1.8518 bits/byte opt step 36.3 ms
+2026-10-11 16:24:16.188 | INFO     | __main__:main:498 - Step 4350/7000 LR 3.22e-04 train 1.6926 bits/byte opt step 35.2 ms
+2026-10-11 16:24:17.341 | INFO     | __main__:main:498 - Step 4360/7000 LR 3.20e-04 train 1.7173 bits/byte opt step 44.2 ms
+2026-10-11 16:24:18.539 | INFO     | __main__:main:498 - Step 4370/7000 LR 3.18e-04 train 1.7221 bits/byte opt step 40.8 ms
+2026-10-11 16:24:19.726 | INFO     | __main__:main:498 - Step 4380/7000 LR 3.16e-04 train 1.7731 bits/byte opt step 40.5 ms
+2026-10-11 16:24:20.829 | INFO     | __main__:main:498 - Step 4390/7000 LR 3.13e-04 train 1.7445 bits/byte opt step 37.2 ms
+2026-10-11 16:24:21.931 | INFO     | __main__:main:498 - Step 4400/7000 LR 3.11e-04 train 1.7751 bits/byte opt step 35.9 ms
+2026-10-11 16:24:22.102 | INFO     | __main__:log_val:451 - Step 4400: validation 1.6799 bits/byte
+2026-10-11 16:24:23.196 | INFO     | __main__:main:498 - Step 4410/7000 LR 3.09e-04 train 1.7453 bits/byte opt step 37.2 ms
+2026-10-11 16:24:24.288 | INFO     | __main__:main:498 - Step 4420/7000 LR 3.07e-04 train 1.7225 bits/byte opt step 44.0 ms
+2026-10-11 16:24:25.422 | INFO     | __main__:main:498 - Step 4430/7000 LR 3.05e-04 train 1.7908 bits/byte opt step 40.3 ms
+2026-10-11 16:24:26.532 | INFO     | __main__:main:498 - Step 4440/7000 LR 3.03e-04 train 1.7022 bits/byte opt step 35.9 ms
+2026-10-11 16:24:27.673 | INFO     | __main__:main:498 - Step 4450/7000 LR 3.01e-04 train 1.8095 bits/byte opt step 36.9 ms
+2026-10-11 16:24:28.784 | INFO     | __main__:main:498 - Step 4460/7000 LR 2.99e-04 train 1.6810 bits/byte opt step 36.6 ms
+2026-10-11 16:24:29.922 | INFO     | __main__:main:498 - Step 4470/7000 LR 2.97e-04 train 1.7697 bits/byte opt step 38.2 ms
+2026-10-11 16:24:31.034 | INFO     | __main__:main:498 - Step 4480/7000 LR 2.95e-04 train 1.7575 bits/byte opt step 37.1 ms
+2026-10-11 16:24:32.131 | INFO     | __main__:main:498 - Step 4490/7000 LR 2.92e-04 train 1.8502 bits/byte opt step 36.2 ms
+2026-10-11 16:24:33.216 | INFO     | __main__:main:498 - Step 4500/7000 LR 2.90e-04 train 1.8448 bits/byte opt step 35.9 ms
+2026-10-11 16:24:33.387 | INFO     | __main__:log_val:451 - Step 4500: validation 1.6730 bits/byte
+2026-10-11 16:24:34.472 | INFO     | __main__:main:498 - Step 4510/7000 LR 2.88e-04 train 1.8352 bits/byte opt step 36.5 ms
+2026-10-11 16:24:35.567 | INFO     | __main__:main:498 - Step 4520/7000 LR 2.86e-04 train 1.7207 bits/byte opt step 36.1 ms
+2026-10-11 16:24:36.659 | INFO     | __main__:main:498 - Step 4530/7000 LR 2.84e-04 train 1.6717 bits/byte opt step 35.4 ms
+2026-10-11 16:24:37.853 | INFO     | __main__:main:498 - Step 4540/7000 LR 2.82e-04 train 1.6854 bits/byte opt step 38.9 ms
+2026-10-11 16:24:38.994 | INFO     | __main__:main:498 - Step 4550/7000 LR 2.80e-04 train 1.7341 bits/byte opt step 37.3 ms
+2026-10-11 16:24:40.130 | INFO     | __main__:main:498 - Step 4560/7000 LR 2.78e-04 train 1.8096 bits/byte opt step 37.6 ms
+2026-10-11 16:24:41.291 | INFO     | __main__:main:498 - Step 4570/7000 LR 2.76e-04 train 1.8257 bits/byte opt step 36.0 ms
+2026-10-11 16:24:42.372 | INFO     | __main__:main:498 - Step 4580/7000 LR 2.74e-04 train 1.9919 bits/byte opt step 36.7 ms
+2026-10-11 16:24:43.462 | INFO     | __main__:main:498 - Step 4590/7000 LR 2.72e-04 train 1.7162 bits/byte opt step 35.9 ms
+2026-10-11 16:24:44.544 | INFO     | __main__:main:498 - Step 4600/7000 LR 2.70e-04 train 1.7086 bits/byte opt step 36.3 ms
+2026-10-11 16:24:44.716 | INFO     | __main__:log_val:451 - Step 4600: validation 1.6674 bits/byte
+2026-10-11 16:24:45.806 | INFO     | __main__:main:498 - Step 4610/7000 LR 2.68e-04 train 1.7180 bits/byte opt step 36.2 ms
+2026-10-11 16:24:46.896 | INFO     | __main__:main:498 - Step 4620/7000 LR 2.66e-04 train 1.6532 bits/byte opt step 38.2 ms
+2026-10-11 16:24:48.055 | INFO     | __main__:main:498 - Step 4630/7000 LR 2.64e-04 train 1.6857 bits/byte opt step 39.0 ms
+2026-10-11 16:24:49.204 | INFO     | __main__:main:498 - Step 4640/7000 LR 2.62e-04 train 1.7584 bits/byte opt step 39.6 ms
+2026-10-11 16:24:50.327 | INFO     | __main__:main:498 - Step 4650/7000 LR 2.60e-04 train 1.7551 bits/byte opt step 35.8 ms
+2026-10-11 16:24:51.406 | INFO     | __main__:main:498 - Step 4660/7000 LR 2.58e-04 train 1.7474 bits/byte opt step 36.3 ms
+2026-10-11 16:24:52.493 | INFO     | __main__:main:498 - Step 4670/7000 LR 2.56e-04 train 1.7256 bits/byte opt step 35.8 ms
+2026-10-11 16:24:53.580 | INFO     | __main__:main:498 - Step 4680/7000 LR 2.54e-04 train 2.0136 bits/byte opt step 35.9 ms
+2026-10-11 16:24:54.679 | INFO     | __main__:main:498 - Step 4690/7000 LR 2.52e-04 train 1.7654 bits/byte opt step 35.8 ms
+2026-10-11 16:24:55.811 | INFO     | __main__:main:498 - Step 4700/7000 LR 2.50e-04 train 1.6847 bits/byte opt step 37.2 ms
+2026-10-11 16:24:55.995 | INFO     | __main__:log_val:451 - Step 4700: validation 1.6657 bits/byte
+2026-10-11 16:24:57.110 | INFO     | __main__:main:498 - Step 4710/7000 LR 2.48e-04 train 1.6724 bits/byte opt step 41.5 ms
+2026-10-11 16:24:58.240 | INFO     | __main__:main:498 - Step 4720/7000 LR 2.46e-04 train 1.6271 bits/byte opt step 36.2 ms
+2026-10-11 16:24:59.322 | INFO     | __main__:main:498 - Step 4730/7000 LR 2.44e-04 train 1.6552 bits/byte opt step 36.5 ms
+2026-10-11 16:25:00.409 | INFO     | __main__:main:498 - Step 4740/7000 LR 2.42e-04 train 1.6516 bits/byte opt step 36.6 ms
+2026-10-11 16:25:01.523 | INFO     | __main__:main:498 - Step 4750/7000 LR 2.40e-04 train 1.7088 bits/byte opt step 36.1 ms
+2026-10-11 16:25:02.627 | INFO     | __main__:main:498 - Step 4760/7000 LR 2.38e-04 train 1.7088 bits/byte opt step 37.7 ms
+2026-10-11 16:25:03.766 | INFO     | __main__:main:498 - Step 4770/7000 LR 2.36e-04 train 1.7167 bits/byte opt step 37.2 ms
+2026-10-11 16:25:04.876 | INFO     | __main__:main:498 - Step 4780/7000 LR 2.34e-04 train 1.7170 bits/byte opt step 35.6 ms
+2026-10-11 16:25:06.059 | INFO     | __main__:main:498 - Step 4790/7000 LR 2.32e-04 train 1.6838 bits/byte opt step 37.3 ms
+2026-10-11 16:25:07.198 | INFO     | __main__:main:498 - Step 4800/7000 LR 2.31e-04 train 1.7943 bits/byte opt step 41.9 ms
+2026-10-11 16:25:07.387 | INFO     | __main__:log_val:451 - Step 4800: validation 1.6537 bits/byte
+2026-10-11 16:25:08.643 | INFO     | __main__:main:498 - Step 4810/7000 LR 2.29e-04 train 1.7660 bits/byte opt step 53.8 ms
+2026-10-11 16:25:09.923 | INFO     | __main__:main:498 - Step 4820/7000 LR 2.27e-04 train 1.9279 bits/byte opt step 53.3 ms
+2026-10-11 16:25:11.101 | INFO     | __main__:main:498 - Step 4830/7000 LR 2.25e-04 train 1.6911 bits/byte opt step 39.2 ms
+2026-10-11 16:25:12.216 | INFO     | __main__:main:498 - Step 4840/7000 LR 2.23e-04 train 1.6345 bits/byte opt step 37.0 ms
+2026-10-11 16:25:13.315 | INFO     | __main__:main:498 - Step 4850/7000 LR 2.21e-04 train 1.7457 bits/byte opt step 38.4 ms
+2026-10-11 16:25:14.415 | INFO     | __main__:main:498 - Step 4860/7000 LR 2.19e-04 train 1.7042 bits/byte opt step 38.3 ms
+2026-10-11 16:25:15.515 | INFO     | __main__:main:498 - Step 4870/7000 LR 2.17e-04 train 1.7709 bits/byte opt step 36.7 ms
+2026-10-11 16:25:16.604 | INFO     | __main__:main:498 - Step 4880/7000 LR 2.15e-04 train 1.7972 bits/byte opt step 35.4 ms
+2026-10-11 16:25:17.768 | INFO     | __main__:main:498 - Step 4890/7000 LR 2.14e-04 train 1.7276 bits/byte opt step 38.9 ms
+2026-10-11 16:25:18.907 | INFO     | __main__:main:498 - Step 4900/7000 LR 2.12e-04 train 1.7116 bits/byte opt step 37.1 ms
+2026-10-11 16:25:19.089 | INFO     | __main__:log_val:451 - Step 4900: validation 1.6536 bits/byte
+2026-10-11 16:25:20.226 | INFO     | __main__:main:498 - Step 4910/7000 LR 2.10e-04 train 1.6413 bits/byte opt step 38.3 ms
+2026-10-11 16:25:21.311 | INFO     | __main__:main:498 - Step 4920/7000 LR 2.08e-04 train 1.7755 bits/byte opt step 35.7 ms
+2026-10-11 16:25:22.393 | INFO     | __main__:main:498 - Step 4930/7000 LR 2.06e-04 train 1.7093 bits/byte opt step 35.7 ms
+2026-10-11 16:25:23.479 | INFO     | __main__:main:498 - Step 4940/7000 LR 2.04e-04 train 1.6925 bits/byte opt step 36.4 ms
+2026-10-11 16:25:24.569 | INFO     | __main__:main:498 - Step 4950/7000 LR 2.02e-04 train 1.8256 bits/byte opt step 36.2 ms
+2026-10-11 16:25:25.657 | INFO     | __main__:main:498 - Step 4960/7000 LR 2.01e-04 train 1.7385 bits/byte opt step 36.4 ms
+2026-10-11 16:25:26.762 | INFO     | __main__:main:498 - Step 4970/7000 LR 1.99e-04 train 1.7595 bits/byte opt step 36.6 ms
+2026-10-11 16:25:27.871 | INFO     | __main__:main:498 - Step 4980/7000 LR 1.97e-04 train 1.7888 bits/byte opt step 35.5 ms
+2026-10-11 16:25:28.970 | INFO     | __main__:main:498 - Step 4990/7000 LR 1.95e-04 train 1.7000 bits/byte opt step 36.2 ms
+2026-10-11 16:25:30.067 | INFO     | __main__:main:498 - Step 5000/7000 LR 1.93e-04 train 1.6988 bits/byte opt step 36.1 ms
+2026-10-11 16:25:30.239 | INFO     | __main__:log_val:451 - Step 5000: validation 1.6508 bits/byte
+2026-10-11 16:25:31.344 | INFO     | __main__:main:498 - Step 5010/7000 LR 1.92e-04 train 1.7722 bits/byte opt step 43.2 ms
+2026-10-11 16:25:32.464 | INFO     | __main__:main:498 - Step 5020/7000 LR 1.90e-04 train 1.6347 bits/byte opt step 35.9 ms
+2026-10-11 16:25:33.557 | INFO     | __main__:main:498 - Step 5030/7000 LR 1.88e-04 train 1.8142 bits/byte opt step 37.7 ms
+2026-10-11 16:25:34.649 | INFO     | __main__:main:498 - Step 5040/7000 LR 1.86e-04 train 1.7983 bits/byte opt step 35.9 ms
+2026-10-11 16:25:35.742 | INFO     | __main__:main:498 - Step 5050/7000 LR 1.84e-04 train 1.7336 bits/byte opt step 39.8 ms
+2026-10-11 16:25:36.875 | INFO     | __main__:main:498 - Step 5060/7000 LR 1.83e-04 train 1.6936 bits/byte opt step 42.5 ms
+2026-10-11 16:25:38.049 | INFO     | __main__:main:498 - Step 5070/7000 LR 1.81e-04 train 1.8975 bits/byte opt step 35.6 ms
+2026-10-11 16:25:39.134 | INFO     | __main__:main:498 - Step 5080/7000 LR 1.79e-04 train 1.6533 bits/byte opt step 35.1 ms
+2026-10-11 16:25:40.259 | INFO     | __main__:main:498 - Step 5090/7000 LR 1.77e-04 train 1.8139 bits/byte opt step 38.8 ms
+2026-10-11 16:25:41.393 | INFO     | __main__:main:498 - Step 5100/7000 LR 1.76e-04 train 1.8356 bits/byte opt step 38.1 ms
+2026-10-11 16:25:41.576 | INFO     | __main__:log_val:451 - Step 5100: validation 1.6475 bits/byte
+2026-10-11 16:25:42.713 | INFO     | __main__:main:498 - Step 5110/7000 LR 1.74e-04 train 1.6997 bits/byte opt step 37.8 ms
+2026-10-11 16:25:43.803 | INFO     | __main__:main:498 - Step 5120/7000 LR 1.72e-04 train 1.6961 bits/byte opt step 43.1 ms
+2026-10-11 16:25:44.910 | INFO     | __main__:main:498 - Step 5130/7000 LR 1.71e-04 train 1.6398 bits/byte opt step 35.8 ms
+2026-10-11 16:25:46.011 | INFO     | __main__:main:498 - Step 5140/7000 LR 1.69e-04 train 1.7161 bits/byte opt step 36.4 ms
+2026-10-11 16:25:47.122 | INFO     | __main__:main:498 - Step 5150/7000 LR 1.67e-04 train 1.7738 bits/byte opt step 44.1 ms
+2026-10-11 16:25:48.325 | INFO     | __main__:main:498 - Step 5160/7000 LR 1.65e-04 train 1.7167 bits/byte opt step 40.7 ms
+2026-10-11 16:25:49.521 | INFO     | __main__:main:498 - Step 5170/7000 LR 1.64e-04 train 1.7555 bits/byte opt step 41.4 ms
+2026-10-11 16:25:50.647 | INFO     | __main__:main:498 - Step 5180/7000 LR 1.62e-04 train 1.8185 bits/byte opt step 36.4 ms
+2026-10-11 16:25:51.730 | INFO     | __main__:main:498 - Step 5190/7000 LR 1.60e-04 train 1.7529 bits/byte opt step 36.2 ms
+2026-10-11 16:25:52.821 | INFO     | __main__:main:498 - Step 5200/7000 LR 1.59e-04 train 1.8409 bits/byte opt step 36.4 ms
+2026-10-11 16:25:52.992 | INFO     | __main__:log_val:451 - Step 5200: validation 1.6422 bits/byte
+2026-10-11 16:25:54.089 | INFO     | __main__:main:498 - Step 5210/7000 LR 1.57e-04 train 1.6782 bits/byte opt step 36.6 ms
+2026-10-11 16:25:55.187 | INFO     | __main__:main:498 - Step 5220/7000 LR 1.55e-04 train 1.7806 bits/byte opt step 36.3 ms
+2026-10-11 16:25:56.287 | INFO     | __main__:main:498 - Step 5230/7000 LR 1.54e-04 train 1.8269 bits/byte opt step 35.9 ms
+2026-10-11 16:25:57.436 | INFO     | __main__:main:498 - Step 5240/7000 LR 1.52e-04 train 1.7068 bits/byte opt step 40.9 ms
+2026-10-11 16:25:58.546 | INFO     | __main__:main:498 - Step 5250/7000 LR 1.50e-04 train 1.7717 bits/byte opt step 35.7 ms
+2026-10-11 16:25:59.668 | INFO     | __main__:main:498 - Step 5260/7000 LR 1.49e-04 train 1.6224 bits/byte opt step 36.4 ms
+2026-10-11 16:26:00.796 | INFO     | __main__:main:498 - Step 5270/7000 LR 1.47e-04 train 1.7799 bits/byte opt step 35.8 ms
+2026-10-11 16:26:01.914 | INFO     | __main__:main:498 - Step 5280/7000 LR 1.46e-04 train 1.7055 bits/byte opt step 35.7 ms
+2026-10-11 16:26:03.030 | INFO     | __main__:main:498 - Step 5290/7000 LR 1.44e-04 train 1.8330 bits/byte opt step 43.7 ms
+2026-10-11 16:26:04.129 | INFO     | __main__:main:498 - Step 5300/7000 LR 1.42e-04 train 1.8324 bits/byte opt step 35.7 ms
+2026-10-11 16:26:04.308 | INFO     | __main__:log_val:451 - Step 5300: validation 1.6447 bits/byte
+2026-10-11 16:26:05.444 | INFO     | __main__:main:498 - Step 5310/7000 LR 1.41e-04 train 1.7578 bits/byte opt step 44.6 ms
+2026-10-11 16:26:06.542 | INFO     | __main__:main:498 - Step 5320/7000 LR 1.39e-04 train 1.7734 bits/byte opt step 36.0 ms
+2026-10-11 16:26:07.673 | INFO     | __main__:main:498 - Step 5330/7000 LR 1.38e-04 train 1.7483 bits/byte opt step 41.4 ms
+2026-10-11 16:26:08.839 | INFO     | __main__:main:498 - Step 5340/7000 LR 1.36e-04 train 1.6045 bits/byte opt step 38.6 ms
+2026-10-11 16:26:09.976 | INFO     | __main__:main:498 - Step 5350/7000 LR 1.35e-04 train 1.6371 bits/byte opt step 38.2 ms
+2026-10-11 16:26:11.072 | INFO     | __main__:main:498 - Step 5360/7000 LR 1.33e-04 train 1.7181 bits/byte opt step 35.1 ms
+2026-10-11 16:26:12.157 | INFO     | __main__:main:498 - Step 5370/7000 LR 1.31e-04 train 1.7221 bits/byte opt step 35.9 ms
+2026-10-11 16:26:13.243 | INFO     | __main__:main:498 - Step 5380/7000 LR 1.30e-04 train 1.7517 bits/byte opt step 35.8 ms
+2026-10-11 16:26:14.355 | INFO     | __main__:main:498 - Step 5390/7000 LR 1.28e-04 train 1.6894 bits/byte opt step 41.9 ms
+2026-10-11 16:26:15.485 | INFO     | __main__:main:498 - Step 5400/7000 LR 1.27e-04 train 1.7018 bits/byte opt step 43.9 ms
+2026-10-11 16:26:15.664 | INFO     | __main__:log_val:451 - Step 5400: validation 1.6417 bits/byte
+2026-10-11 16:26:16.799 | INFO     | __main__:main:498 - Step 5410/7000 LR 1.25e-04 train 1.6860 bits/byte opt step 35.6 ms
+2026-10-11 16:26:18.015 | INFO     | __main__:main:498 - Step 5420/7000 LR 1.24e-04 train 1.7425 bits/byte opt step 38.7 ms
+2026-10-11 16:26:19.152 | INFO     | __main__:main:498 - Step 5430/7000 LR 1.22e-04 train 1.7178 bits/byte opt step 37.8 ms
+2026-10-11 16:26:20.288 | INFO     | __main__:main:498 - Step 5440/7000 LR 1.21e-04 train 1.7574 bits/byte opt step 38.0 ms
+2026-10-11 16:26:21.371 | INFO     | __main__:main:498 - Step 5450/7000 LR 1.19e-04 train 1.7174 bits/byte opt step 36.7 ms
+2026-10-11 16:26:22.493 | INFO     | __main__:main:498 - Step 5460/7000 LR 1.18e-04 train 1.7344 bits/byte opt step 45.9 ms
+2026-10-11 16:26:23.627 | INFO     | __main__:main:498 - Step 5470/7000 LR 1.16e-04 train 1.6494 bits/byte opt step 44.4 ms
+2026-10-11 16:26:24.784 | INFO     | __main__:main:498 - Step 5480/7000 LR 1.15e-04 train 1.7016 bits/byte opt step 43.5 ms
+2026-10-11 16:26:25.941 | INFO     | __main__:main:498 - Step 5490/7000 LR 1.14e-04 train 1.7647 bits/byte opt step 36.0 ms
+2026-10-11 16:26:27.092 | INFO     | __main__:main:498 - Step 5500/7000 LR 1.12e-04 train 1.6776 bits/byte opt step 45.1 ms
+2026-10-11 16:26:27.271 | INFO     | __main__:log_val:451 - Step 5500: validation 1.6365 bits/byte
+2026-10-11 16:26:28.395 | INFO     | __main__:main:498 - Step 5510/7000 LR 1.11e-04 train 1.6188 bits/byte opt step 35.8 ms
+2026-10-11 16:26:29.487 | INFO     | __main__:main:498 - Step 5520/7000 LR 1.09e-04 train 1.8519 bits/byte opt step 36.1 ms
+2026-10-11 16:26:30.606 | INFO     | __main__:main:498 - Step 5530/7000 LR 1.08e-04 train 1.7172 bits/byte opt step 44.7 ms
+2026-10-11 16:26:31.744 | INFO     | __main__:main:498 - Step 5540/7000 LR 1.06e-04 train 1.6826 bits/byte opt step 35.3 ms
+2026-10-11 16:26:32.895 | INFO     | __main__:main:498 - Step 5550/7000 LR 1.05e-04 train 1.6235 bits/byte opt step 35.7 ms
+2026-10-11 16:26:34.043 | INFO     | __main__:main:498 - Step 5560/7000 LR 1.04e-04 train 1.6807 bits/byte opt step 43.0 ms
+2026-10-11 16:26:35.171 | INFO     | __main__:main:498 - Step 5570/7000 LR 1.02e-04 train 1.7110 bits/byte opt step 42.7 ms
+2026-10-11 16:26:36.322 | INFO     | __main__:main:498 - Step 5580/7000 LR 1.01e-04 train 1.6848 bits/byte opt step 36.8 ms
+2026-10-11 16:26:37.531 | INFO     | __main__:main:498 - Step 5590/7000 LR 9.95e-05 train 1.6781 bits/byte opt step 40.5 ms
+2026-10-11 16:26:38.701 | INFO     | __main__:main:498 - Step 5600/7000 LR 9.82e-05 train 1.6938 bits/byte opt step 38.4 ms
+2026-10-11 16:26:38.886 | INFO     | __main__:log_val:451 - Step 5600: validation 1.6327 bits/byte
+2026-10-11 16:26:40.017 | INFO     | __main__:main:498 - Step 5610/7000 LR 9.68e-05 train 1.6544 bits/byte opt step 37.8 ms
+2026-10-11 16:26:41.114 | INFO     | __main__:main:498 - Step 5620/7000 LR 9.55e-05 train 1.8341 bits/byte opt step 36.2 ms
+2026-10-11 16:26:42.199 | INFO     | __main__:main:498 - Step 5630/7000 LR 9.42e-05 train 1.7646 bits/byte opt step 35.6 ms
+2026-10-11 16:26:43.286 | INFO     | __main__:main:498 - Step 5640/7000 LR 9.28e-05 train 1.6914 bits/byte opt step 36.0 ms
+2026-10-11 16:26:44.406 | INFO     | __main__:main:498 - Step 5650/7000 LR 9.15e-05 train 1.8149 bits/byte opt step 37.1 ms
+2026-10-11 16:26:45.521 | INFO     | __main__:main:498 - Step 5660/7000 LR 9.02e-05 train 1.8317 bits/byte opt step 37.0 ms
+2026-10-11 16:26:46.627 | INFO     | __main__:main:498 - Step 5670/7000 LR 8.89e-05 train 1.6815 bits/byte opt step 36.6 ms
+2026-10-11 16:26:47.765 | INFO     | __main__:main:498 - Step 5680/7000 LR 8.76e-05 train 1.7507 bits/byte opt step 41.4 ms
+2026-10-11 16:26:48.939 | INFO     | __main__:main:498 - Step 5690/7000 LR 8.63e-05 train 1.7606 bits/byte opt step 39.0 ms
+2026-10-11 16:26:50.085 | INFO     | __main__:main:498 - Step 5700/7000 LR 8.51e-05 train 1.6651 bits/byte opt step 38.8 ms
+2026-10-11 16:26:50.269 | INFO     | __main__:log_val:451 - Step 5700: validation 1.6308 bits/byte
+2026-10-11 16:26:51.348 | INFO     | __main__:main:498 - Step 5710/7000 LR 8.38e-05 train 1.7061 bits/byte opt step 35.5 ms
+2026-10-11 16:26:52.459 | INFO     | __main__:main:498 - Step 5720/7000 LR 8.25e-05 train 1.7536 bits/byte opt step 43.8 ms
+2026-10-11 16:26:53.568 | INFO     | __main__:main:498 - Step 5730/7000 LR 8.13e-05 train 1.6390 bits/byte opt step 35.7 ms
+2026-10-11 16:26:54.658 | INFO     | __main__:main:498 - Step 5740/7000 LR 8.00e-05 train 1.6990 bits/byte opt step 39.6 ms
+2026-10-11 16:26:55.759 | INFO     | __main__:main:498 - Step 5750/7000 LR 7.88e-05 train 1.6191 bits/byte opt step 39.5 ms
+2026-10-11 16:26:56.863 | INFO     | __main__:main:498 - Step 5760/7000 LR 7.76e-05 train 1.7728 bits/byte opt step 36.0 ms
+2026-10-11 16:26:58.027 | INFO     | __main__:main:498 - Step 5770/7000 LR 7.64e-05 train 1.6361 bits/byte opt step 36.2 ms
+2026-10-11 16:26:59.110 | INFO     | __main__:main:498 - Step 5780/7000 LR 7.52e-05 train 1.7786 bits/byte opt step 35.7 ms
+2026-10-11 16:27:00.196 | INFO     | __main__:main:498 - Step 5790/7000 LR 7.40e-05 train 1.7947 bits/byte opt step 35.3 ms
+2026-10-11 16:27:01.282 | INFO     | __main__:main:498 - Step 5800/7000 LR 7.28e-05 train 1.6770 bits/byte opt step 36.4 ms
+2026-10-11 16:27:01.454 | INFO     | __main__:log_val:451 - Step 5800: validation 1.6272 bits/byte
+2026-10-11 16:27:02.546 | INFO     | __main__:main:498 - Step 5810/7000 LR 7.16e-05 train 1.7108 bits/byte opt step 37.0 ms
+2026-10-11 16:27:03.633 | INFO     | __main__:main:498 - Step 5820/7000 LR 7.04e-05 train 1.8269 bits/byte opt step 36.0 ms
+2026-10-11 16:27:04.721 | INFO     | __main__:main:498 - Step 5830/7000 LR 6.93e-05 train 1.6515 bits/byte opt step 35.8 ms
+2026-10-11 16:27:05.815 | INFO     | __main__:main:498 - Step 5840/7000 LR 6.81e-05 train 1.6079 bits/byte opt step 37.0 ms
+2026-10-11 16:27:06.943 | INFO     | __main__:main:498 - Step 5850/7000 LR 6.70e-05 train 1.6826 bits/byte opt step 43.3 ms
+2026-10-11 16:27:08.109 | INFO     | __main__:main:498 - Step 5860/7000 LR 6.59e-05 train 1.7447 bits/byte opt step 39.7 ms
+2026-10-11 16:27:09.265 | INFO     | __main__:main:498 - Step 5870/7000 LR 6.47e-05 train 1.6916 bits/byte opt step 38.9 ms
+2026-10-11 16:27:10.398 | INFO     | __main__:main:498 - Step 5880/7000 LR 6.36e-05 train 1.6788 bits/byte opt step 38.0 ms
+2026-10-11 16:27:11.474 | INFO     | __main__:main:498 - Step 5890/7000 LR 6.25e-05 train 1.6930 bits/byte opt step 35.7 ms
+2026-10-11 16:27:12.580 | INFO     | __main__:main:498 - Step 5900/7000 LR 6.14e-05 train 1.7461 bits/byte opt step 38.4 ms
+2026-10-11 16:27:12.781 | INFO     | __main__:log_val:451 - Step 5900: validation 1.6250 bits/byte
+2026-10-11 16:27:13.871 | INFO     | __main__:main:498 - Step 5910/7000 LR 6.03e-05 train 1.6818 bits/byte opt step 35.8 ms
+2026-10-11 16:27:14.978 | INFO     | __main__:main:498 - Step 5920/7000 LR 5.92e-05 train 1.7603 bits/byte opt step 37.0 ms
+2026-10-11 16:27:16.068 | INFO     | __main__:main:498 - Step 5930/7000 LR 5.82e-05 train 1.7003 bits/byte opt step 36.9 ms
+2026-10-11 16:27:17.162 | INFO     | __main__:main:498 - Step 5940/7000 LR 5.71e-05 train 1.7008 bits/byte opt step 37.2 ms
+2026-10-11 16:27:18.357 | INFO     | __main__:main:498 - Step 5950/7000 LR 5.61e-05 train 1.7107 bits/byte opt step 39.2 ms
+2026-10-11 16:27:19.498 | INFO     | __main__:main:498 - Step 5960/7000 LR 5.50e-05 train 1.6343 bits/byte opt step 37.9 ms
+2026-10-11 16:27:20.626 | INFO     | __main__:main:498 - Step 5970/7000 LR 5.40e-05 train 1.7464 bits/byte opt step 36.2 ms
+2026-10-11 16:27:21.711 | INFO     | __main__:main:498 - Step 5980/7000 LR 5.30e-05 train 1.8637 bits/byte opt step 35.4 ms
+2026-10-11 16:27:22.805 | INFO     | __main__:main:498 - Step 5990/7000 LR 5.19e-05 train 1.7571 bits/byte opt step 36.1 ms
+2026-10-11 16:27:23.901 | INFO     | __main__:main:498 - Step 6000/7000 LR 5.09e-05 train 1.7000 bits/byte opt step 36.8 ms
+2026-10-11 16:27:24.079 | INFO     | __main__:log_val:451 - Step 6000: validation 1.6220 bits/byte
+2026-10-11 16:27:25.203 | INFO     | __main__:main:498 - Step 6010/7000 LR 4.99e-05 train 1.6443 bits/byte opt step 36.1 ms
+2026-10-11 16:27:26.289 | INFO     | __main__:main:498 - Step 6020/7000 LR 4.90e-05 train 1.8090 bits/byte opt step 36.2 ms
+2026-10-11 16:27:27.382 | INFO     | __main__:main:498 - Step 6030/7000 LR 4.80e-05 train 1.6848 bits/byte opt step 37.2 ms
+2026-10-11 16:27:28.489 | INFO     | __main__:main:498 - Step 6040/7000 LR 4.70e-05 train 1.7534 bits/byte opt step 36.0 ms
+2026-10-11 16:27:29.577 | INFO     | __main__:main:498 - Step 6050/7000 LR 4.60e-05 train 1.7268 bits/byte opt step 37.0 ms
+2026-10-11 16:27:30.689 | INFO     | __main__:main:498 - Step 6060/7000 LR 4.51e-05 train 1.6470 bits/byte opt step 36.8 ms
+2026-10-11 16:27:31.773 | INFO     | __main__:main:498 - Step 6070/7000 LR 4.42e-05 train 1.7722 bits/byte opt step 36.4 ms
+2026-10-11 16:27:32.856 | INFO     | __main__:main:498 - Step 6080/7000 LR 4.32e-05 train 1.6021 bits/byte opt step 35.6 ms
+2026-10-11 16:27:33.943 | INFO     | __main__:main:498 - Step 6090/7000 LR 4.23e-05 train 1.7494 bits/byte opt step 36.9 ms
+2026-10-11 16:27:35.033 | INFO     | __main__:main:498 - Step 6100/7000 LR 4.14e-05 train 1.6551 bits/byte opt step 36.3 ms
+2026-10-11 16:27:35.206 | INFO     | __main__:log_val:451 - Step 6100: validation 1.6203 bits/byte
+2026-10-11 16:27:36.294 | INFO     | __main__:main:498 - Step 6110/7000 LR 4.05e-05 train 1.5468 bits/byte opt step 38.2 ms
+2026-10-11 16:27:37.408 | INFO     | __main__:main:498 - Step 6120/7000 LR 3.96e-05 train 1.7264 bits/byte opt step 39.8 ms
+2026-10-11 16:27:38.625 | INFO     | __main__:main:498 - Step 6130/7000 LR 3.87e-05 train 1.7332 bits/byte opt step 38.2 ms
+2026-10-11 16:27:39.776 | INFO     | __main__:main:498 - Step 6140/7000 LR 3.78e-05 train 1.7916 bits/byte opt step 38.5 ms
+2026-10-11 16:27:40.895 | INFO     | __main__:main:498 - Step 6150/7000 LR 3.70e-05 train 1.5957 bits/byte opt step 35.3 ms
+2026-10-11 16:27:41.992 | INFO     | __main__:main:498 - Step 6160/7000 LR 3.61e-05 train 1.6970 bits/byte opt step 35.3 ms
+2026-10-11 16:27:43.122 | INFO     | __main__:main:498 - Step 6170/7000 LR 3.53e-05 train 1.7401 bits/byte opt step 44.1 ms
+2026-10-11 16:27:44.235 | INFO     | __main__:main:498 - Step 6180/7000 LR 3.44e-05 train 1.7926 bits/byte opt step 36.4 ms
+2026-10-11 16:27:45.331 | INFO     | __main__:main:498 - Step 6190/7000 LR 3.36e-05 train 1.9202 bits/byte opt step 36.6 ms
+2026-10-11 16:27:46.448 | INFO     | __main__:main:498 - Step 6200/7000 LR 3.28e-05 train 1.6822 bits/byte opt step 36.0 ms
+2026-10-11 16:27:46.627 | INFO     | __main__:log_val:451 - Step 6200: validation 1.6193 bits/byte
+2026-10-11 16:27:47.780 | INFO     | __main__:main:498 - Step 6210/7000 LR 3.20e-05 train 1.7426 bits/byte opt step 42.7 ms
+2026-10-11 16:27:48.951 | INFO     | __main__:main:498 - Step 6220/7000 LR 3.12e-05 train 1.6121 bits/byte opt step 37.6 ms
+2026-10-11 16:27:50.092 | INFO     | __main__:main:498 - Step 6230/7000 LR 3.04e-05 train 1.6978 bits/byte opt step 37.8 ms
+2026-10-11 16:27:51.194 | INFO     | __main__:main:498 - Step 6240/7000 LR 2.96e-05 train 1.5919 bits/byte opt step 35.6 ms
+2026-10-11 16:27:52.285 | INFO     | __main__:main:498 - Step 6250/7000 LR 2.89e-05 train 1.6267 bits/byte opt step 36.1 ms
+2026-10-11 16:27:53.397 | INFO     | __main__:main:498 - Step 6260/7000 LR 2.81e-05 train 1.6903 bits/byte opt step 36.8 ms
+2026-10-11 16:27:54.498 | INFO     | __main__:main:498 - Step 6270/7000 LR 2.74e-05 train 1.8585 bits/byte opt step 35.7 ms
+2026-10-11 16:27:55.597 | INFO     | __main__:main:498 - Step 6280/7000 LR 2.66e-05 train 1.6614 bits/byte opt step 37.6 ms
+2026-10-11 16:27:56.697 | INFO     | __main__:main:498 - Step 6290/7000 LR 2.59e-05 train 1.6926 bits/byte opt step 35.9 ms
+2026-10-11 16:27:57.863 | INFO     | __main__:main:498 - Step 6300/7000 LR 2.52e-05 train 1.7356 bits/byte opt step 39.8 ms
+2026-10-11 16:27:58.039 | INFO     | __main__:log_val:451 - Step 6300: validation 1.6186 bits/byte
+2026-10-11 16:27:59.150 | INFO     | __main__:main:498 - Step 6310/7000 LR 2.45e-05 train 1.7035 bits/byte opt step 35.9 ms
+2026-10-11 16:28:00.252 | INFO     | __main__:main:498 - Step 6320/7000 LR 2.38e-05 train 1.6622 bits/byte opt step 37.0 ms
+2026-10-11 16:28:01.386 | INFO     | __main__:main:498 - Step 6330/7000 LR 2.31e-05 train 1.6500 bits/byte opt step 36.0 ms
+2026-10-11 16:28:02.503 | INFO     | __main__:main:498 - Step 6340/7000 LR 2.24e-05 train 1.6951 bits/byte opt step 36.3 ms
+2026-10-11 16:28:03.634 | INFO     | __main__:main:498 - Step 6350/7000 LR 2.17e-05 train 1.6826 bits/byte opt step 43.1 ms
+2026-10-11 16:28:04.760 | INFO     | __main__:main:498 - Step 6360/7000 LR 2.11e-05 train 1.8017 bits/byte opt step 35.5 ms
+2026-10-11 16:28:05.916 | INFO     | __main__:main:498 - Step 6370/7000 LR 2.04e-05 train 1.6700 bits/byte opt step 36.1 ms
+2026-10-11 16:28:07.012 | INFO     | __main__:main:498 - Step 6380/7000 LR 1.98e-05 train 1.6281 bits/byte opt step 35.8 ms
+2026-10-11 16:28:08.164 | INFO     | __main__:main:498 - Step 6390/7000 LR 1.92e-05 train 1.6725 bits/byte opt step 43.7 ms
+2026-10-11 16:28:09.319 | INFO     | __main__:main:498 - Step 6400/7000 LR 1.85e-05 train 1.6798 bits/byte opt step 36.9 ms
+2026-10-11 16:28:09.504 | INFO     | __main__:log_val:451 - Step 6400: validation 1.6167 bits/byte
+2026-10-11 16:28:10.634 | INFO     | __main__:main:498 - Step 6410/7000 LR 1.79e-05 train 1.7840 bits/byte opt step 35.8 ms
+2026-10-11 16:28:11.710 | INFO     | __main__:main:498 - Step 6420/7000 LR 1.73e-05 train 1.7195 bits/byte opt step 35.4 ms
+2026-10-11 16:28:12.836 | INFO     | __main__:main:498 - Step 6430/7000 LR 1.67e-05 train 1.6472 bits/byte opt step 36.0 ms
+2026-10-11 16:28:13.945 | INFO     | __main__:main:498 - Step 6440/7000 LR 1.62e-05 train 1.7184 bits/byte opt step 35.1 ms
+2026-10-11 16:28:15.047 | INFO     | __main__:main:498 - Step 6450/7000 LR 1.56e-05 train 1.5966 bits/byte opt step 36.7 ms
+2026-10-11 16:28:16.171 | INFO     | __main__:main:498 - Step 6460/7000 LR 1.50e-05 train 1.6738 bits/byte opt step 36.5 ms
+2026-10-11 16:28:17.272 | INFO     | __main__:main:498 - Step 6470/7000 LR 1.45e-05 train 1.6703 bits/byte opt step 45.7 ms
+2026-10-11 16:28:18.484 | INFO     | __main__:main:498 - Step 6480/7000 LR 1.39e-05 train 1.6591 bits/byte opt step 39.1 ms
+2026-10-11 16:28:19.619 | INFO     | __main__:main:498 - Step 6490/7000 LR 1.34e-05 train 1.6585 bits/byte opt step 37.8 ms
+2026-10-11 16:28:20.754 | INFO     | __main__:main:498 - Step 6500/7000 LR 1.29e-05 train 1.7355 bits/byte opt step 36.5 ms
+2026-10-11 16:28:20.927 | INFO     | __main__:log_val:451 - Step 6500: validation 1.6159 bits/byte
+2026-10-11 16:28:22.009 | INFO     | __main__:main:498 - Step 6510/7000 LR 1.24e-05 train 1.7018 bits/byte opt step 36.1 ms
+2026-10-11 16:28:23.124 | INFO     | __main__:main:498 - Step 6520/7000 LR 1.19e-05 train 1.6059 bits/byte opt step 35.5 ms
+2026-10-11 16:28:24.215 | INFO     | __main__:main:498 - Step 6530/7000 LR 1.14e-05 train 1.7800 bits/byte opt step 37.7 ms
+2026-10-11 16:28:25.310 | INFO     | __main__:main:498 - Step 6540/7000 LR 1.09e-05 train 1.6691 bits/byte opt step 37.1 ms
+2026-10-11 16:28:26.408 | INFO     | __main__:main:498 - Step 6550/7000 LR 1.05e-05 train 1.6959 bits/byte opt step 35.5 ms
+2026-10-11 16:28:27.501 | INFO     | __main__:main:498 - Step 6560/7000 LR 1.00e-05 train 1.7285 bits/byte opt step 37.8 ms
+2026-10-11 16:28:28.598 | INFO     | __main__:main:498 - Step 6570/7000 LR 9.55e-06 train 1.6895 bits/byte opt step 36.1 ms
+2026-10-11 16:28:29.739 | INFO     | __main__:main:498 - Step 6580/7000 LR 9.11e-06 train 1.6716 bits/byte opt step 39.7 ms
+2026-10-11 16:28:30.904 | INFO     | __main__:main:498 - Step 6590/7000 LR 8.69e-06 train 1.8223 bits/byte opt step 38.1 ms
+2026-10-11 16:28:31.992 | INFO     | __main__:main:498 - Step 6600/7000 LR 8.27e-06 train 1.6451 bits/byte opt step 35.4 ms
+2026-10-11 16:28:32.164 | INFO     | __main__:log_val:451 - Step 6600: validation 1.6157 bits/byte
+2026-10-11 16:28:33.239 | INFO     | __main__:main:498 - Step 6610/7000 LR 7.86e-06 train 1.7073 bits/byte opt step 35.5 ms
+2026-10-11 16:28:34.317 | INFO     | __main__:main:498 - Step 6620/7000 LR 7.46e-06 train 1.6753 bits/byte opt step 36.3 ms
+2026-10-11 16:28:35.424 | INFO     | __main__:main:498 - Step 6630/7000 LR 7.08e-06 train 1.7374 bits/byte opt step 36.3 ms
+2026-10-11 16:28:36.516 | INFO     | __main__:main:498 - Step 6640/7000 LR 6.70e-06 train 1.6682 bits/byte opt step 35.5 ms
+2026-10-11 16:28:37.639 | INFO     | __main__:main:498 - Step 6650/7000 LR 6.34e-06 train 1.8526 bits/byte opt step 50.2 ms
+2026-10-11 16:28:38.811 | INFO     | __main__:main:498 - Step 6660/7000 LR 5.98e-06 train 1.7228 bits/byte opt step 37.3 ms
+2026-10-11 16:28:39.956 | INFO     | __main__:main:498 - Step 6670/7000 LR 5.63e-06 train 1.7283 bits/byte opt step 38.4 ms
+2026-10-11 16:28:41.068 | INFO     | __main__:main:498 - Step 6680/7000 LR 5.30e-06 train 1.7238 bits/byte opt step 35.6 ms
+2026-10-11 16:28:42.150 | INFO     | __main__:main:498 - Step 6690/7000 LR 4.97e-06 train 1.7125 bits/byte opt step 38.1 ms
+2026-10-11 16:28:43.269 | INFO     | __main__:main:498 - Step 6700/7000 LR 4.66e-06 train 1.6190 bits/byte opt step 36.1 ms
+2026-10-11 16:28:43.449 | INFO     | __main__:log_val:451 - Step 6700: validation 1.6150 bits/byte
+2026-10-11 16:28:44.553 | INFO     | __main__:main:498 - Step 6710/7000 LR 4.35e-06 train 1.5990 bits/byte opt step 36.3 ms
+2026-10-11 16:28:45.661 | INFO     | __main__:main:498 - Step 6720/7000 LR 4.06e-06 train 1.6809 bits/byte opt step 36.3 ms
+2026-10-11 16:28:46.747 | INFO     | __main__:main:498 - Step 6730/7000 LR 3.77e-06 train 1.7169 bits/byte opt step 36.5 ms
+2026-10-11 16:28:47.881 | INFO     | __main__:main:498 - Step 6740/7000 LR 3.50e-06 train 1.6924 bits/byte opt step 41.4 ms
+2026-10-11 16:28:49.043 | INFO     | __main__:main:498 - Step 6750/7000 LR 3.24e-06 train 1.6765 bits/byte opt step 37.6 ms
+2026-10-11 16:28:50.177 | INFO     | __main__:main:498 - Step 6760/7000 LR 2.98e-06 train 1.7000 bits/byte opt step 37.8 ms
+2026-10-11 16:28:51.318 | INFO     | __main__:main:498 - Step 6770/7000 LR 2.74e-06 train 1.6718 bits/byte opt step 36.1 ms
+2026-10-11 16:28:52.403 | INFO     | __main__:main:498 - Step 6780/7000 LR 2.51e-06 train 1.6623 bits/byte opt step 36.4 ms
+2026-10-11 16:28:53.505 | INFO     | __main__:main:498 - Step 6790/7000 LR 2.28e-06 train 1.6979 bits/byte opt step 36.8 ms
+2026-10-11 16:28:54.593 | INFO     | __main__:main:498 - Step 6800/7000 LR 2.07e-06 train 1.6046 bits/byte opt step 36.8 ms
+2026-10-11 16:28:54.761 | INFO     | __main__:log_val:451 - Step 6800: validation 1.6149 bits/byte
+2026-10-11 16:28:55.848 | INFO     | __main__:main:498 - Step 6810/7000 LR 1.87e-06 train 1.6107 bits/byte opt step 35.5 ms
+2026-10-11 16:28:56.927 | INFO     | __main__:main:498 - Step 6820/7000 LR 1.68e-06 train 1.7002 bits/byte opt step 36.8 ms
+2026-10-11 16:28:58.089 | INFO     | __main__:main:498 - Step 6830/7000 LR 1.50e-06 train 1.7103 bits/byte opt step 36.0 ms
+2026-10-11 16:28:59.179 | INFO     | __main__:main:498 - Step 6840/7000 LR 1.33e-06 train 1.6267 bits/byte opt step 43.1 ms
+2026-10-11 16:29:00.292 | INFO     | __main__:main:498 - Step 6850/7000 LR 1.17e-06 train 1.6616 bits/byte opt step 36.7 ms
+2026-10-11 16:29:01.378 | INFO     | __main__:main:498 - Step 6860/7000 LR 1.02e-06 train 1.7305 bits/byte opt step 36.2 ms
+2026-10-11 16:29:02.466 | INFO     | __main__:main:498 - Step 6870/7000 LR 8.76e-07 train 1.7516 bits/byte opt step 38.4 ms
+2026-10-11 16:29:03.557 | INFO     | __main__:main:498 - Step 6880/7000 LR 7.46e-07 train 1.6370 bits/byte opt step 37.0 ms
+2026-10-11 16:29:04.658 | INFO     | __main__:main:498 - Step 6890/7000 LR 6.27e-07 train 1.7978 bits/byte opt step 43.7 ms
+2026-10-11 16:29:05.829 | INFO     | __main__:main:498 - Step 6900/7000 LR 5.18e-07 train 1.6605 bits/byte opt step 44.1 ms
+2026-10-11 16:29:06.004 | INFO     | __main__:log_val:451 - Step 6900: validation 1.6147 bits/byte
+2026-10-11 16:29:07.087 | INFO     | __main__:main:498 - Step 6910/7000 LR 4.20e-07 train 1.7516 bits/byte opt step 35.7 ms
+2026-10-11 16:29:08.238 | INFO     | __main__:main:498 - Step 6920/7000 LR 3.32e-07 train 1.6618 bits/byte opt step 42.3 ms
+2026-10-11 16:29:09.391 | INFO     | __main__:main:498 - Step 6930/7000 LR 2.54e-07 train 1.7244 bits/byte opt step 37.8 ms
+2026-10-11 16:29:10.528 | INFO     | __main__:main:498 - Step 6940/7000 LR 1.87e-07 train 1.6609 bits/byte opt step 41.2 ms
+2026-10-11 16:29:11.630 | INFO     | __main__:main:498 - Step 6950/7000 LR 1.30e-07 train 1.7741 bits/byte opt step 36.3 ms
+2026-10-11 16:29:12.729 | INFO     | __main__:main:498 - Step 6960/7000 LR 8.29e-08 train 1.6998 bits/byte opt step 35.9 ms
+2026-10-11 16:29:13.849 | INFO     | __main__:main:498 - Step 6970/7000 LR 4.66e-08 train 1.6762 bits/byte opt step 35.2 ms
+2026-10-11 16:29:15.004 | INFO     | __main__:main:498 - Step 6980/7000 LR 2.07e-08 train 1.6846 bits/byte opt step 36.3 ms
+2026-10-11 16:29:16.148 | INFO     | __main__:main:498 - Step 6990/7000 LR 5.18e-09 train 1.6899 bits/byte opt step 36.0 ms
+2026-10-11 16:29:17.298 | INFO     | __main__:main:498 - Step 7000/7000 LR 0.00e+00 train 1.7010 bits/byte opt step 43.1 ms
+2026-10-11 16:29:17.491 | INFO     | __main__:log_val:451 - Step 7000: validation 1.6147 bits/byte
+2026-10-11 16:29:17.493 | INFO     | __main__:main:527 - total_minutes: 13.73528846136669
+2026-10-11 16:29:17.493 | INFO     | __main__:main:527 - first_opt_step_ms: 1589.8160069991718
+2026-10-11 16:29:17.494 | INFO     | __main__:main:527 - median_opt_step_ms: 38.51241650045267
+2026-10-11 16:29:17.495 | INFO     | __main__:main:527 - minutes_per_100_steps: 0.19621840659095272

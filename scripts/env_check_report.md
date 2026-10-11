@@ -1,7 +1,7 @@
 # ENV check report
 
-- Date: 2026-10-10T18:36:38
-- Command: `/mnt/c/Users/mbrun/Documents/University/Master Thesis/Muon on Molucules Generation/scripts/env_check.py --report env_check_report.md --wandb-mode online`
+- Date: 2026-10-11T14:32:01
+- Command: `/mnt/c/Users/mbrun/Documents/University/Master Thesis/Muon on Molucules Generation/scripts/env_check.py --report scripts/env_check_report.md --wandb-mode offline`
 - PyTorch 2.12.1+xpu, device `xpu`
 
 | Check | Required | Status |
@@ -13,7 +13,8 @@
 | fp64 on device | info | INFO |
 | Attention (SDPA, causal, bf16) | yes | PASS |
 | Optimizers (torch.optim.Muon, AdamW) | yes | PASS |
-| SVD (torch.linalg.svdvals) | yes | PASS |
+| torch.compile (tiny transformer block) | info | PASS |
+| SVD (torch.linalg.svdvals) | yes | FALLBACK |
 | wandb | yes | PASS |
 
 ## System info: INFO
@@ -39,8 +40,8 @@
 
 ## Matmul throughput: INFO
 
-- float32   4096x4096 matmul:    9.11 ms =  15.08 TFLOP/s
-- bfloat16  4096x4096 matmul:    2.30 ms =  59.66 TFLOP/s
+- float32   4096x4096 matmul:    8.59 ms =  16.01 TFLOP/s
+- bfloat16  4096x4096 matmul:    1.86 ms =  73.84 TFLOP/s
 - Useful later for BUDGET (time per run); not a pass/fail check
 
 ## fp64 on device: INFO
@@ -53,11 +54,11 @@
 
 - Shape (B, H, T, D) = (32, 8, 128, 64), causal
 - default bf16 rel. errors vs fp32 math (out, dq, dk, dv): 3.0e-03, 3.9e-03, 3.9e-03, 3.0e-03 (bound 5e-02)
-- default bf16 fwd+bwd: 3.33 ms
+- default bf16 fwd+bwd: 2.89 ms
 - backend FLASH_ATTENTION    : not available (RuntimeError: No available kernel. Aborting execution.)
-- backend EFFICIENT_ATTENTION: works, fwd+bwd    3.29 ms, out rel. error 3.0e-03
+- backend EFFICIENT_ATTENTION: works, fwd+bwd    2.86 ms, out rel. error 3.0e-03
 - backend OVERRIDEABLE       : not available (RuntimeError: No available kernel. Aborting execution.)
-- backend MATH               : works, fwd+bwd    3.42 ms, out rel. error 3.0e-03
+- backend MATH               : works, fwd+bwd    2.88 ms, out rel. error 3.0e-03
 - If default is much faster than MATH, a fused kernel is in use
 
 ## Optimizers (torch.optim.Muon, AdamW): PASS
@@ -70,14 +71,22 @@
 - AdamW (default implementation): step finite True
 - AdamW fused=True: not available, use default (RuntimeError: Required aspect fp64 is not supported on the device)
 
-## SVD (torch.linalg.svdvals): PASS
+## torch.compile (tiny transformer block): PASS
 
-- CPU: works, 14.4 ms for a 256x1024 float32 matrix
-- xpu: works, 18.5 ms, max rel. diff vs CPU 0.0e+00 (bound 1e-03)
+- triton 3.7.1 (Inductor uses it to generate GPU kernels)
+- first compiled call (compile forward + backward): 27.5 s
+- compiled vs eager rel. error: output 6.6e-05, worst gradient 3.5e-03 (bound 5e-02)
+- fwd+bwd: eager 5.24 ms, compiled 5.54 ms (speedup 0.95x)
+- warning: `torch.jit.script_method` is deprecated. Please switch to `torch.compile` or `torch.export`.
+
+## SVD (torch.linalg.svdvals): FALLBACK
+
+- CPU: works, 14.3 ms for a 256x1024 float32 matrix
+- xpu: works, 19.8 ms, max rel. diff vs CPU 0.0e+00 (bound 1e-03)
 - warning: Aten Op fallback from XPU to CPU happends. This may have performance implications. If need debug the fallback ops please set environment variable `PYTORCH_DEBUG_XPU_FALLBACK=1`  (Triggered internally 
+- -> PyTorch ran at least one op of this check on the CPU (see warning). Set PYTORCH_DEBUG_XPU_FALLBACK=1 to see which op.
 
 ## wandb: PASS
 
-- wandb 0.30.0, mode online
-- run URL: https://wandb.ai/brunner2-johannes-kepler-universit-t-linz/muonmol-env-check/runs/x999vtbd
+- wandb 0.30.0, mode offline
 - init / log / finish worked
