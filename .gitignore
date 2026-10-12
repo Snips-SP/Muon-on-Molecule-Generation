@@ -12,3 +12,6 @@ wandb/
 # Editable install (pip install -e .)
 *.egg-info/
 build/
+
+# Personal notes (not versioned)
+notes/
