@@ -1,0 +1,15 @@
+[build-system]
+requires = ["setuptools>=64"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "muonmol"
+version = "0.1.0"
+description = "Muon vs AdamW on molecule language models (Master's project)"
+requires-python = ">=3.11"
+# No dependencies listed on purpose: torch must stay the installed xpu build (2.12.1+xpu).
+# Listing torch here could make pip replace it with a CUDA/CPU build.
+dependencies = []
+
+[tool.setuptools]
+packages = ["muonmol"]

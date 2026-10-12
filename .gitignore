@@ -9,3 +9,6 @@ data/
 runs/
 checkpoints/
 wandb/
+# Editable install (pip install -e .)
+*.egg-info/
+build/
