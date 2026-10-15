@@ -13,5 +13,3 @@ wandb/
 *.egg-info/
 build/
 
-# Personal notes (not versioned)
-notes/

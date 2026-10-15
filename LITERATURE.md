@@ -1,7 +1,7 @@
 # Literature Notes: Muon vs AdamW on Molecules
 
 Only the facts and caveats this project relies on. Full references, PDFs and reading notes live in Zotero.
-Companion files: `PLAN.md`, `DECISIONS.md`. Last updated: 2026-10-10
+Companion files: `PLAN.md`, `DECISIONS.md`. Last updated: 2026-10-15
 
 Markers: (paper) = stated in the source · (my calc) = calculated from the source's numbers · (my view) = interpretation · [MISSING] = not found in the parts read.
 Check every number against the original source before it goes into the seminar paper or thesis.
@@ -11,7 +11,6 @@ Check every number against the original source before it goes into the seminar p
 | 1 | Liu et al. 2025, "Muon is Scalable for LLM Training" ([arXiv 2502.16982](https://arxiv.org/abs/2502.16982)) | Full | D1, D3, D5; Muon variant (O2); dynamics metrics |
 | 2 | Wen et al., ICLR 2026, "Fantastic Pretraining Optimizers and Where to Find Them" ([arXiv 2509.02046](https://arxiv.org/abs/2509.02046)) | Abstract, wandb report, slides | D6; COMPARE rules |
 | 3 | Balaji, Chitsaz et al. 2026, "A Large Scale Investigation of Scaling Limits in Chemical Language Models" ([arXiv 2508.13408 v3](https://arxiv.org/abs/2508.13408)) | Full | D9; O4, O8, O10 |
-| 4 | Xu et al. 2026, "Unveiling Scaling Behaviors in Molecular Language Models" ([arXiv 2601.22757](https://arxiv.org/abs/2601.22757)) | Full | Set aside (inconsistent tables) |
 
 Note: versions 1–2 of arXiv 2508.13408 are an earlier paper ("NovoMolGen", Chitsaz, Balaji et al. 2025), superseded by version 3.
 
@@ -72,11 +71,6 @@ Note: versions 1–2 of arXiv 2508.13408 are an earlier paper ("NovoMolGen", Chi
 - (my calc) A ~2.2M model on full MOSES is ≈ 6·10¹⁴ FLOPs, below the fitted range.
 - (my view) At D = 20N their larger MOSES models saw the data many times, which may partly explain the widening OOD gap on MOSES.
 - (my view) They use one LR for all sizes; per-size LR tuning is not mentioned.
-
-## 4. Xu et al. 2026 (set aside)
-
-- Why set aside (my calc): three ways of reading their optimal tokens-per-parameter trend give slopes −0.92, −0.69 and −0.28, and the Table 3 endpoints imply optimal sizes outside their own grid.
-- Still useful (paper): repeated epochs on fixed data still lower the loss, with most of the gain in the first passes; generation metrics (validity, uniqueness, novelty, diversity) saturate early and depend on sampling settings.
 
 ## Code and docs
 
