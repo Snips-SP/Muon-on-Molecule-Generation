@@ -13,3 +13,6 @@ wandb/
 *.egg-info/
 build/
 
+
+# Private hardware/server notes (not published)
+RESOURCES.md
