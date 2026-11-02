@@ -147,6 +147,35 @@ class OptimizerSet:
                     old.fill_(float(g["lr"]))
                     g["lr"] = old
 
+    def copy_state_from(self, sd: dict) -> None:
+        """Like load_state_dict, but copies saved state tensors INTO the existing state tensors (same
+        objects), so a compiled Muon step keeps its compiled code (Dynamo guards on the identity of the
+        momentum buffers; load_state_dict creates new tensors and triggers a recompile). Used by
+        muonmol.train.run_wsd to go back to the trunk after a branch. Falls back to load_state_dict when
+        the current state does not have the same entries (e.g. before the first step). LRs are not copied:
+        the WSD runner sets them every step."""
+        assert set(sd) == {label for label, _ in self.optimizers}, "optimizer set does not match the checkpoint"
+        for label, opt in self.optimizers:
+            saved = sd[label]["state"]
+            params = [p for g in opt.param_groups for p in g["params"]]
+            same = set(saved) == {i for i, p in enumerate(params) if p in opt.state} and all(
+                set(saved[i]) == set(opt.state[params[i]]) for i in saved)
+            if not same:
+                lr_tensors = [g["lr"] for g in opt.param_groups]
+                opt.load_state_dict(sd[label])
+                for g, old in zip(opt.param_groups, lr_tensors):
+                    if isinstance(old, torch.Tensor) and not isinstance(g["lr"], torch.Tensor):
+                        old.fill_(float(g["lr"]))
+                        g["lr"] = old
+                continue
+            for i, st in saved.items():
+                cur = opt.state[params[i]]
+                for k, v in st.items():
+                    if isinstance(cur[k], torch.Tensor):
+                        cur[k].copy_(v)
+                    else:
+                        cur[k] = v
+
     def describe(self) -> list[dict]:
         """One row per param group, for reports."""
         rows = []

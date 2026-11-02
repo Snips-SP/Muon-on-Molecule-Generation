@@ -1,9 +1,15 @@
-"""Train one run (PLAN.md stage LOOP). Run inside WSL2 from the repo root.
+"""Train one run (PLAN.md stages LOOP, DYN). Run inside WSL2 from the repo root.
+
+A config with budgets_epochs is a WSD run with cooldown branches (muonmol.train.run_wsd, D44–D46);
+a config with train_steps or epochs is a legacy cosine run (muonmol.train.run, D24).
 
     export MUONMOL_DATA=~/muonmol-work/data   MUONMOL_RUNS=~/muonmol-work/runs   # once, e.g. in ~/.bashrc
 
     # new run from a config file, with overrides (nested keys with dots, values parsed as JSON)
     python scripts/train.py --config configs/smoke_10k.json --set opt.arm=adamw --set opt.lr=2e-3
+
+    # WSD run, ~1M model, branches at 5 / 10 / 15 epochs (D49, D45)
+    python scripts/train.py --config configs/wsd_1m_10k.json --set opt.arm=adamw --set opt.lr=2e-3
 
     # show the resolved config without training
     python scripts/train.py --config configs/smoke_10k.json --set opt.arm=adamw --print-config
@@ -27,7 +33,7 @@ import os
 import sys
 from pathlib import Path
 
-from muonmol.train import TrainConfig, apply_overrides, merge, run
+from muonmol.train import TrainConfig, apply_overrides, merge, run, run_wsd
 
 RESUME_OVERRIDABLE = {"stop_at_step", "device", "wandb_mode"}
 
@@ -69,7 +75,8 @@ def main() -> int:
         print("ERROR: no runs root. Pass --runs-root or set MUONMOL_RUNS (e.g. ~/muonmol-work/runs).")
         return 1
 
-    summary = run(cfg, args.data_root, runs_root, resume=bool(args.resume))
+    runner = run_wsd if cfg.budgets_epochs is not None else run
+    summary = runner(cfg, args.data_root, runs_root, resume=bool(args.resume))
     return 0 if summary["status"] in ("finished", "stopped") else 1
 
 

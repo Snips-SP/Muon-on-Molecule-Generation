@@ -1,4 +1,40 @@
-"""Learning-rate schedule (PLAN.md stage LOOP; D24): linear warmup, then cosine decay.
+"""Learning-rate schedules.
+
+1. WSD with cooldown branches (D44, D45, D51), used by muonmol.train.run_wsd for all runs from 2026-11-02.
+2. Linear warmup + cosine decay (D24, replaced by D44), still used by muonmol.train.run and loop_check.
+
+--------------------------------------------------------------------------------------------------
+1. WSD (warmup–stable–decay) with cooldown branches
+--------------------------------------------------------------------------------------------------
+
+One run = a trunk (warmup, then constant LR) plus one cooldown branch per epoch budget b.
+With steps_per_epoch = P, W = warmup steps, r = min_lr_ratio (D51: 0.1), f = cooldown_frac (D44: 0.2):
+
+    branch end      E_b = ceil(b · P)                     (the branch's total length in steps)
+    cooldown length C_b = max(1, round(f · E_b))           (20% of the branch's whole length, D44)
+    branch start    S_b = E_b − C_b                        (trunk checkpoint the branch starts from)
+    trunk length    = max_b S_b                            (the trunk never needs to go further)
+
+LR factor (× base LR × lr_mult) for the optimizer update at step s:
+
+    s < W                    (s + 1) / W                   linear warmup (W = 0: no warmup)
+    trunk, s ≥ W             1
+    branch b, s ≥ S_b        1 − (1 − r) · (s − S_b + 1) / C_b      linear cooldown (D44: linear)
+
+So the first cooldown step already uses a slightly lower LR, and the last step of a branch
+(s = E_b − 1) uses exactly r · base LR, the same convention as the cosine schedule below.
+Equivalent torch schedulers (wsd_check 1 compares them): LinearLR(1/W → 1, W − 1 steps), then
+constant, then LinearLR(1 − (1 − r)/C_b → r, C_b − 1 steps).
+
+Warmup is counted in steps, not as a share of the run, because all branches share it (D44,
+PLAN.md SWEEP note). It must end before the first branch starts.
+
+The WSD runner sets the LR itself every step (OptimizerSet.set_lr(base LR × factor)), so there is no
+scheduler state to save: the factor depends only on the step and the branch.
+
+--------------------------------------------------------------------------------------------------
+2. Cosine (legacy, D24)
+--------------------------------------------------------------------------------------------------
 
 Implemented with torch.optim.lr_scheduler.LambdaLR, one per torch optimizer in the OptimizerSet.
 LambdaLR multiplies each param group's own starting LR (base LR × lr_mult) by the same factor, so
@@ -21,10 +57,57 @@ step (LR as tensor) does not recompile.
 from __future__ import annotations
 
 import math
+from dataclasses import dataclass
 from functools import partial
 
 from torch.optim.lr_scheduler import LambdaLR
 
+
+# ---------------------------------------------------------------------------
+# 1. WSD with cooldown branches
+# ---------------------------------------------------------------------------
+
+@dataclass(frozen=True)
+class Branch:
+    """One cooldown branch = one epoch budget (D45)."""
+    budget_epochs: float
+    start: int      # S_b: first step with the cooldown LR; the branch starts from the trunk state at this step
+    end: int        # E_b: total steps of this budget (the branch's last update is step end − 1)
+
+    @property
+    def name(self) -> str:
+        return f"e{self.budget_epochs:g}"
+
+    @property
+    def cooldown_steps(self) -> int:
+        return self.end - self.start
+
+
+def wsd_branches(budgets_epochs: list[float], steps_per_epoch: int, cooldown_frac: float) -> list[Branch]:
+    """Branches sorted by start step."""
+    out = []
+    for b in budgets_epochs:
+        end = int(math.ceil(b * steps_per_epoch))
+        cool = max(1, int(round(cooldown_frac * end)))
+        assert cool < end, f"budget {b} epochs: cooldown ({cool} steps) not shorter than the branch ({end} steps)"
+        out.append(Branch(float(b), end - cool, end))
+    out.sort(key=lambda br: (br.start, br.end))
+    return out
+
+
+def wsd_factor(step: int, warmup_steps: int, min_lr_ratio: float, branch: Branch | None = None) -> float:
+    """LR factor for the update at `step`; branch None = trunk (constant after warmup)."""
+    if step < warmup_steps:
+        return (step + 1) / warmup_steps
+    if branch is None or step < branch.start:
+        return 1.0
+    done = min(step - branch.start + 1, branch.cooldown_steps)
+    return 1.0 - (1.0 - min_lr_ratio) * done / branch.cooldown_steps
+
+
+# ---------------------------------------------------------------------------
+# 2. Cosine (legacy, D24)
+# ---------------------------------------------------------------------------
 
 def warmup_steps(total_steps: int, warmup_frac: float) -> int:
     return int(round(warmup_frac * total_steps))
