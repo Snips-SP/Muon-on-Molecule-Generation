@@ -755,7 +755,7 @@ def run_wsd(cfg: TrainConfig, data_root: Path | str, runs_root: Path | str, resu
     c = {"step": 0, "tokens": 0, "positions": 0, "molecules": 0, "flops_model": 0.0, "flops_ns": 0.0,
          "train_s": 0.0, "eval_s": 0.0, "dyn_s": 0.0, "wall_s": 0.0}
     st: dict = {"done": [], "results": {}, "main_evals": []}
-    tot = {"train_s": 0.0, "eval_s": 0.0, "dyn_s": 0.0, "wall_s": 0.0, "steps": 0}
+    tot = {"train_s": 0.0, "eval_s": 0.0, "dyn_s": 0.0, "dyn_expensive_s": 0.0, "wall_s": 0.0, "steps": 0}
 
     def load_main(in_place: bool = False) -> dict:
         """in_place (after a branch): copy the optimizer state into the existing tensors instead of
@@ -870,6 +870,7 @@ def run_wsd(cfg: TrainConfig, data_root: Path | str, runs_root: Path | str, resu
         dt = time.perf_counter() - t0
         c["dyn_s"] += dt
         tot["dyn_s"] += dt
+        tot["dyn_expensive_s"] += dt
         log.log({"kind": "dyn_expensive", **counters(phase), **rec})
 
     win: dict = {}
@@ -1039,7 +1040,7 @@ def run_wsd(cfg: TrainConfig, data_root: Path | str, runs_root: Path | str, resu
         summary = {"status": status, "run_dir": str(run_dir), "schedule": "wsd", "main": main.name,
                    "main_step_reached": c["step"], "steps_per_epoch": spe, "budgets": st["results"],
                    "total/train_s": tot["train_s"], "total/eval_s": tot["eval_s"], "total/dyn_s": tot["dyn_s"],
-                   "total/wall_s": tot["wall_s"], "total/steps_trained": tot["steps"],
+                   "total/dyn_expensive_s": tot["dyn_expensive_s"], "total/wall_s": tot["wall_s"], "total/steps_trained": tot["steps"],
                    "dyn_share_of_train_time": tot["dyn_s"] / tot["train_s"] if tot["train_s"] else None,
                    "eval_every_steps": ev_int, "peak_memory_mb": peak_memory_mb(device)}
         (run_dir / "summary.json").write_text(json.dumps(summary, indent=1), encoding="utf-8")

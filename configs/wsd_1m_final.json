@@ -1,0 +1,42 @@
+{
+ "run_name": null,
+ "project": "muonmol-wsd",
+ "seed": 0,
+ "data_seed": null,
+ "scale": "10k",
+ "batch_size": 256,
+ "budgets_epochs": [5, 10, 15],
+ "warmup_steps": 10,
+ "cooldown_frac": 0.2,
+ "min_lr_ratio": 0.1,
+ "grad_clip": 1.0,
+ "eval_every_epochs": 0.5,
+ "early_stop_patience": null,
+ "eval_batch_size": 512,
+ "final_eval_sets": ["test"],
+ "log_every": 10,
+ "dyn_every": 10,
+ "dyn_expensive": true,
+ "dyn_expensive_every_epochs": 1.0,
+ "ckpt_every": 0,
+ "device": "xpu",
+ "amp_bf16": true,
+ "wandb_mode": "online",
+ "model": {
+  "hidden_size": 128,
+  "num_layers": 4,
+  "num_heads": 4,
+  "intermediate_size": 512
+ },
+ "opt": {
+  "arm": "muon",
+  "lr": 0.001,
+  "weight_decay": 0.1,
+  "wd_on_norms": true,
+  "adamw_betas": [0.9, 0.95],
+  "adamw_eps": 1e-08,
+  "adamw_lr_mult": 1.0,
+  "muon_variant": "match_rms_adamw",
+  "compile_muon": true
+ }
+}
