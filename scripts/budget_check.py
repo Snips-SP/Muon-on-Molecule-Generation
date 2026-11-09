@@ -16,7 +16,8 @@ What it does:
 
     | # | Measurement                                                   | Runs                                          |
     |---|---------------------------------------------------------------|-----------------------------------------------|
-    | 1 | Eval cost: one pass over val (10k molecules) and test         | – (model at init)                             |
+    | 1 | Eval cost: one pass over val (10k molecules) and test (test   | – (model at init)                             |
+    |   | only for planning: no training run evaluates test, D58)       |                                               |
     | 2 | Complete tuning-setting WSD runs (main run + 2 branches)      | 10k and 100k: Muon and AdamW                  |
     | 3 | One final-setting run (D57: eval every 0.5 epoch, dynamics    | 10k: Muon                                     |
     |   | every 10 steps, expensive dynamics)                           |                                               |
@@ -102,7 +103,8 @@ def schedule_counts(cfg: TrainConfig, spe: int) -> dict:
     if cfg.dyn_expensive:
         expensive = 1 + sum(1 for k in range(1, main.end) if k % dx == 0) + len(budgets) + \
             sum(sum(1 for k in range(b.start + 1, b.end) if k % dx == 0) for b in sides)
-    return {"steps": steps, "val_evals": main_evals + side_evals, "test_evals": len(budgets),
+    n_sets = len([n for n in cfg.final_eval_sets if n != "val"])  # D58: empty in tuning and final runs
+    return {"steps": steps, "val_evals": main_evals + side_evals, "test_evals": len(budgets) * n_sets,
             "expensive": expensive, "branches": len(sides), "main_end": main.end}
 
 
@@ -134,7 +136,8 @@ def main() -> int:
     amp = tuning.amp_bf16 and device.type != "cpu"
     model = LlamaLM(tuning.model).to(device)
     ev_s = {}
-    for name in ["val"] + [n for n in tuning.final_eval_sets if n != "val"]:
+    # test is timed for planning the one test evaluation after selection (D58); no training run evaluates it
+    for name in ["val", "test"]:
         batches = [(*to_device(b, device), b.n_tokens, b.n_molecules) for b in data.eval_batches(name, tuning.eval_batch_size)]
         evaluate(model, batches, device, amp)  # warm-up
         t0 = time.perf_counter()
@@ -144,7 +147,7 @@ def main() -> int:
         n_mol = sum(b[-1] for b in batches)
         L.append(f"- {name}: {n_mol:,} molecules, one pass {ev_s[name]:.2f} s (mean of 3 after a warm-up)")
     del model
-    test_s = sum(v for k, v in ev_s.items() if k != "val")
+    test_s = ev_s["test"]
     L = ["## 1. Evaluation cost", ""] + L
 
     # --- 2–4: runs ----------------------------------------------------------------------------------

@@ -13,7 +13,7 @@
  "eval_every_epochs": 0.5,
  "early_stop_patience": null,
  "eval_batch_size": 512,
- "final_eval_sets": ["test"],
+ "final_eval_sets": [],
  "log_every": 10,
  "dyn_every": 10,
  "dyn_expensive": true,
