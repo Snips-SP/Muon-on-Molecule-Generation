@@ -4,7 +4,8 @@ Two runners share TrainConfig, the helpers and the per-step code style:
 
     | Runner   | Used for                                            | Schedule                       | Selected by          |
     |----------|-----------------------------------------------------|--------------------------------|----------------------|
-    | run_wsd  | all runs from 2026-11-02 (tuning, comparison)       | WSD + cooldown branches (D44)  | budgets_epochs set   |
+    | run_wsd  | all runs from 2026-11-02 (tuning, comparison)       | WSD: main run + side branches  | budgets_epochs set   |
+    |          |                                                     | (D44)                          |                      |
     | run      | legacy cosine runs, scripts/loop_check.py           | warmup + cosine (D24)          | train_steps / epochs |
 
 scripts/train.py picks the runner. The rest of this docstring describes the legacy runner `run`;
@@ -102,7 +103,7 @@ class TrainConfig:
     batch_size: int = 256                # molecules per step (D26)
     train_steps: int | None = None       # legacy cosine run: set exactly one of train_steps / epochs
     epochs: float | None = None          # → steps = ceil(epochs · molecules / batch_size)
-    budgets_epochs: list[float] | None = None  # WSD run (D44, D45): one cooldown branch per budget, e.g. [5, 10, 15]
+    budgets_epochs: list[float] | None = None  # WSD run (D44, D45): longest = main run, others = side branches, e.g. [5, 10, 15]
     warmup_steps: int | None = None      # WSD: warmup length in steps, shared by all branches (D44; tuned, D53)
     cooldown_frac: float = 0.2           # WSD: cooldown = last 20% of each branch (D44, Hägele et al. 2024)
     dyn_every: int = 0                   # cheap dynamics (weight/update RMS) every N steps; 0 = off (D50)
@@ -599,38 +600,66 @@ def run(cfg: TrainConfig, data_root: Path | str, runs_root: Path | str, resume: 
 
 
 # ---------------------------------------------------------------------------
-# WSD runner with cooldown branches (D44–D46, D50, D51)
+# WSD runner: main run + side branches (D44–D46, D50, D51)
 # ---------------------------------------------------------------------------
+
+def main_history(metrics_path: Path, main_name: str, upto_step: int) -> list[dict]:
+    """The main run's log lines up to `upto_step` (train, eval, dyn, dyn_expensive), in file order.
+    Copied into a side branch's wandb run when the branch starts, so every budget's wandb run shows its
+    complete curve from step 0 (option B, 2026-11-09)."""
+    out = []
+    if not metrics_path.exists():
+        return out
+    for ln in metrics_path.read_text(encoding="utf-8").splitlines():
+        if not ln.strip():
+            continue
+        r = json.loads(ln)
+        if r.get("phase") == main_name and r["kind"] != "final" and r["step"] <= upto_step:
+            out.append(r)
+    return out
+
 
 def run_wsd(cfg: TrainConfig, data_root: Path | str, runs_root: Path | str, resume: bool = False,
             printer=print) -> dict:
-    """Train one WSD run: a trunk (warmup, constant LR) plus one cooldown branch per epoch budget.
+    """Train one WSD run: a main run for the longest budget plus one side branch per shorter budget.
 
-    Schedule: muonmol/schedule.py (WSD). Branch b starts from the trunk state at step S_b and cools the
-    LR down linearly to min_lr_ratio · peak over its last cooldown_frac of steps; trunk length = max S_b.
+    Schedule: muonmol/schedule.py (WSD). Budget b ends at E_b and cools the LR down linearly to
+    min_lr_ratio · peak over its last cooldown_frac of steps, starting at S_b.
 
-    How a branch runs (in this process, one after the other): when the trunk reaches S_b, its full state
-    (model, optimizer, data-stream position, counters) is saved to ckpt_last.pt; the branch trains from
-    there to E_b with the cooldown LR, evaluates and saves its final weights; then the trunk state is
-    loaded back from ckpt_last.pt and the trunk continues. The branch sees the same batches the trunk
-    would have seen (same data stream). Resume after a crash restarts from the last trunk checkpoint
-    (an interrupted branch is re-run from its start).
+        main run      the longest budget (e.g. e15): warmup, constant LR, its own cooldown at the end
+        side branch   each shorter budget (e.g. e5, e10): starts from the main run's state at S_b
 
-    Results (D45, D46): at the end of every branch, the val loss and the final_eval_sets (default MOSES
+    How a side branch runs (in this process, one after the other): when the main run reaches S_b, its full
+    state (model, optimizer, data-stream position, counters) is saved to ckpt_last.pt; the branch trains
+    from there to E_b with the cooldown LR, evaluates and saves its final weights; then the main run's
+    state is copied back (optimizer state in place: no Muon recompile) and the main run continues. The
+    branch sees the same batches the main run would have seen. Resume after a crash restarts from the
+    last main-run checkpoint (an interrupted branch is re-run from its start).
+
+    Results (D45, D46): at the end of every budget, the val loss and the final_eval_sets (default MOSES
     test) of that fully annealed model. No early stopping, no best checkpoint; the lowest val loss along
-    the trunk + branch path is reported per branch as a diagnostic only ("best_val_diagnostic").
+    the budget's path is reported as a diagnostic only ("best_val_diagnostic").
+
+    Time (2026-11-09): every logged time is PATH time, i.e. what a standalone run of that budget would have
+    spent: time/train_s, time/eval_s, time/dyn_s and time/wall_s are saved with the main run's state at a
+    branch point and restored after the branch, so the main run never contains a branch's time, and a branch
+    starts from the main run's time at its branch point. Saving/restoring at branch points is left out of
+    path time. Whole-run totals (everything this process trained and evaluated, incl. that overhead) go to
+    summary.json only ("total/…"): they are what BUDGET needs for planning.
 
     Run folder <runs-root>/<project>/<run_name>/:
-        config.json        resolved config + derived values (branch table, parameter counts, git commit)
-        metrics.jsonl      every log line; field "phase" = "trunk" or the branch name (e.g. "e10")
-        ckpt_last.pt       trunk state (overwritten; at every branch start and every ckpt_every steps)
-        model_<branch>.pt  final weights of each branch (for later analyses)
-        summary.json       per-branch results, totals, status
-    wandb (D50 design note): one wandb run for the trunk (name = run_name) and one per branch
-    (name = <run_name>_<branch>), all in group wandb_group (default: run_name); x-axis "step".
+        config.json        resolved config + derived values (budget table, parameter counts, git commit)
+        metrics.jsonl      every log line once; field "phase" = budget name ("e15" = main run, "e5", …)
+        ckpt_last.pt       main-run state (overwritten; at every branch point and every ckpt_every steps)
+        model_<budget>.pt  final weights of each budget (for later analyses)
+        summary.json       per-budget results, path times, whole-run totals, status
+    wandb: one run per budget, named <run_name>_<budget> (main run: job_type "main"; side branches:
+    job_type "branch"), all in group wandb_group (default: run_name); x-axis "step". A side branch's
+    wandb run first gets a copy of the main run's lines up to its branch point (main_history), so each
+    wandb run shows its whole curve. metrics.jsonl keeps every line only once.
 
-    Dynamics (D50): cheap metrics every dyn_every steps in trunk and branches; expensive metrics
-    (dyn_expensive) every dyn_expensive_every_epochs and at every branch end. muonmol/dynamics.py.
+    Dynamics (D50): cheap metrics every dyn_every steps; expensive metrics (dyn_expensive) every
+    dyn_expensive_every_epochs and at the end of every budget. muonmol/dynamics.py.
     """
     from .dynamics import CheapDynamics, max_attention_logits, svd_entropies
     from .schedule import wsd_branches, wsd_factor
@@ -640,8 +669,8 @@ def run_wsd(cfg: TrainConfig, data_root: Path | str, runs_root: Path | str, resu
     # code object (the lambda in muonmol/optim.py), so each new run adds one recompile; after 8 runs in one
     # process (wsd_check, a future sweep driver) the recompile limit is hit, and optim.py makes that a hard
     # error on purpose. Clearing Dynamo's cache at the start of a run keeps runs independent. Within a run
-    # (trunk + branches) the optimizer and its state tensors stay the same objects (load_trunk(in_place=True)),
-    # so nothing is recompiled at branch switches (wsd_check 1d).
+    # (main run + branches) the optimizer and its state tensors stay the same objects (load_main(in_place=True)),
+    # so nothing is recompiled at branch points (wsd_check 1d).
     torch._dynamo.reset()
     device = torch.device(cfg.device)
     check_device(device)
@@ -673,11 +702,14 @@ def run_wsd(cfg: TrainConfig, data_root: Path | str, runs_root: Path | str, resu
     # --- data, schedule, model, optimizer ------------------------------------------------
     stream = BatchStream(data, cfg.scale, cfg.batch_size, cfg.data_seed)
     spe = stream.steps_per_epoch
-    branches = wsd_branches(cfg.budgets_epochs, spe, cfg.cooldown_frac)
-    trunk_end = max(b.start for b in branches)
-    assert cfg.warmup_steps <= min(b.start for b in branches), \
-        f"warmup ({cfg.warmup_steps} steps) must end before the first branch starts ({branches[0].start})"
-    stop = min(trunk_end, cfg.stop_at_step) if cfg.stop_at_step else trunk_end
+    budgets = wsd_branches(cfg.budgets_epochs, spe, cfg.cooldown_frac)   # sorted by start (and end)
+    main = budgets[-1]                                                    # longest budget
+    sides = budgets[:-1]
+    assert all(b.start < main.start for b in sides), "the main run's cooldown must start after all branch points"
+    assert cfg.warmup_steps <= budgets[0].start, \
+        f"warmup ({cfg.warmup_steps} steps) must end before the first cooldown starts ({budgets[0].start})"
+    branch_points = {b.start for b in sides}
+    stop = min(main.end, cfg.stop_at_step) if cfg.stop_at_step else main.end
     ev_int = cfg.eval_interval(spe)
     dx_int = max(1, int(round(cfg.dyn_expensive_every_epochs * spe)))
 
@@ -697,9 +729,9 @@ def run_wsd(cfg: TrainConfig, data_root: Path | str, runs_root: Path | str, resu
         split, val_rows = data.rows("val")
         dyn_xy = to_device(data.make_batch(split, val_rows[: cfg.dyn_batch_size]), device)
 
-    branch_table = [{"name": b.name, "budget_epochs": b.budget_epochs, "cooldown_start": b.start, "end": b.end,
-                     "cooldown_steps": b.cooldown_steps} for b in branches]
-    derived = {"schedule": "wsd", "trunk_steps": trunk_end, "warmup_steps": cfg.warmup_steps, "branches": branch_table,
+    budget_table = [{"name": b.name, "role": "main" if b is main else "branch", "budget_epochs": b.budget_epochs,
+                     "cooldown_start": b.start, "end": b.end, "cooldown_steps": b.cooldown_steps} for b in budgets]
+    derived = {"schedule": "wsd", "main": main.name, "warmup_steps": cfg.warmup_steps, "budgets": budget_table,
                "scale_molecules": stream.n_molecules, "steps_per_epoch": spe, "eval_every_steps": ev_int,
                "dyn_expensive_every_steps": dx_int if cfg.dyn_expensive else None,
                "params_total": ptab["total"], "params_non_embedding": ptab["non_embedding"],
@@ -711,23 +743,26 @@ def run_wsd(cfg: TrainConfig, data_root: Path | str, runs_root: Path | str, resu
     if not resume:
         (run_dir / "config.json").write_text(json.dumps(cfg.to_dict() | {"derived": derived}, indent=1),
                                              encoding="utf-8")
-    printer(f"WSD run {cfg.run_name}: {spe} steps/epoch, warmup {cfg.warmup_steps}, trunk {trunk_end} steps; "
-            + "; ".join(f"{b.name}: cooldown {b.start}→{b.end}" for b in branches))
+    printer(f"WSD run {cfg.run_name}: {spe} steps/epoch, warmup {cfg.warmup_steps}; main run {main.name}: "
+            f"cooldown {main.start}→{main.end}; branches: "
+            + ("; ".join(f"{b.name}: cooldown {b.start}→{b.end}" for b in sides) or "none"))
 
     # --- state -------------------------------------------------------------------------------
-    # c: counters of the current path (trunk, or trunk + branch while a branch runs); restored after a branch.
-    # st: run-level state that survives branch restores (finished branches, trunk evals).
-    # tot: time totals over everything trained/evaluated in this run (trunk + all branches).
-    c = {"step": 0, "tokens": 0, "positions": 0, "molecules": 0, "flops_model": 0.0, "flops_ns": 0.0, "train_s": 0.0}
-    st: dict = {"done": [], "results": {}, "trunk_evals": []}
+    # c: counters of the current PATH (main run, or main run up to S_b + branch while a branch runs), incl.
+    #    path times; restored from the checkpoint after a branch, so the main run never contains branch time.
+    # st: run-level state that survives branch restores (finished budgets, the main run's evals).
+    # tot: whole-run totals over everything this run trained/evaluated (summary.json only).
+    c = {"step": 0, "tokens": 0, "positions": 0, "molecules": 0, "flops_model": 0.0, "flops_ns": 0.0,
+         "train_s": 0.0, "eval_s": 0.0, "dyn_s": 0.0, "wall_s": 0.0}
+    st: dict = {"done": [], "results": {}, "main_evals": []}
     tot = {"train_s": 0.0, "eval_s": 0.0, "dyn_s": 0.0, "wall_s": 0.0, "steps": 0}
 
-    def load_trunk(in_place: bool = False) -> dict:
+    def load_main(in_place: bool = False) -> dict:
         """in_place (after a branch): copy the optimizer state into the existing tensors instead of
         replacing them, so the compiled Muon step is not recompiled (its guards check the identity of the
         momentum buffers; a recompile costs seconds and counts towards the recompile limit)."""
         ck = torch.load(ckpt_path, map_location="cpu", weights_only=True)
-        assert ck["trunk_steps"] == trunk_end and ck["branches"] == [b.name for b in branches], \
+        assert ck["budgets"] == [b.name for b in budgets] and ck["main_end"] == main.end, \
             "schedule differs from the checkpoint"
         model.load_state_dict(ck["model"])  # copies into the existing parameters
         if in_place:
@@ -740,10 +775,26 @@ def run_wsd(cfg: TrainConfig, data_root: Path | str, runs_root: Path | str, resu
         return ck
 
     if resume:
-        ck = load_trunk()
+        ck = load_main()
         st.update(ck["state"])
         tot.update(ck["tot"])
-        printer(f"Resumed {cfg.run_name} at trunk step {c['step']}/{trunk_end}; finished branches: {st['done']}")
+        printer(f"Resumed {cfg.run_name} at main-run step {c['step']}/{main.end}; finished branches: {st['done']}")
+
+    # --- clocks: path wall time (c["wall_s"]) and whole-run wall time (tot["wall_s"]) -----------------
+    clock = {"path": time.perf_counter(), "run": time.perf_counter()}
+
+    def tick() -> None:
+        """Add the time since the last tick to the current path and to the whole run."""
+        now = time.perf_counter()
+        c["wall_s"] += now - clock["path"]
+        tot["wall_s"] += now - clock["run"]
+        clock["path"] = clock["run"] = now
+
+    def skip() -> None:
+        """Count the time since the last tick for the whole run only (not part of this path)."""
+        now = time.perf_counter()
+        tot["wall_s"] += now - clock["run"]
+        clock["path"] = clock["run"] = now
 
     # --- logging and wandb ------------------------------------------------------------------------
     metrics_path = run_dir / "metrics.jsonl"
@@ -753,41 +804,40 @@ def run_wsd(cfg: TrainConfig, data_root: Path | str, runs_root: Path | str, resu
             if not ln.strip():
                 continue
             r = json.loads(ln)
-            if r.get("phase") in st["done"] or (r.get("phase") == "trunk" and r["step"] <= c["step"]):
+            if r.get("phase") in st["done"] or (r.get("phase") == main.name and r["step"] <= c["step"]):
                 keep.append(ln)
         metrics_path.write_text("".join(ln + "\n" for ln in keep), encoding="utf-8")
 
     ids_path = run_dir / "wandb_ids.json"
 
-    def wb_open(phase: str):
+    def wb_open(b):
         if cfg.wandb_mode == "disabled":
             return None
         import wandb
         ids = json.loads(ids_path.read_text()) if ids_path.exists() else {}
-        wid = ids.setdefault(phase, uuid.uuid4().hex[:12])
+        wid = ids.setdefault(b.name, uuid.uuid4().hex[:12])
         ids_path.write_text(json.dumps(ids, indent=1))
-        name = cfg.run_name if phase == "trunk" else f"{cfg.run_name}_{phase}"
-        r = wandb.init(project=cfg.project, name=name, id=wid, resume="allow", dir=str(run_dir),
-                       mode=cfg.wandb_mode, group=cfg.wandb_group or cfg.run_name,
-                       job_type="trunk" if phase == "trunk" else "branch",
-                       tags=list(cfg.wandb_tags) + ([] if phase == "trunk" else [phase]),
-                       config=cfg.to_dict() | {"derived": derived, "phase": phase})
+        role = "main" if b is main else "branch"
+        r = wandb.init(project=cfg.project, name=f"{cfg.run_name}_{b.name}", id=wid, resume="allow",
+                       dir=str(run_dir), mode=cfg.wandb_mode, group=cfg.wandb_group or cfg.run_name,
+                       job_type=role, tags=list(cfg.wandb_tags) + [role, b.name],
+                       config=cfg.to_dict() | {"derived": derived, "budget": b.name, "role": role})
         r.define_metric("step")
         r.define_metric("*", step_metric="step")
         return r
 
-    log = MetricsLog(metrics_path, wb_open("trunk"), printer)
-    t_start = time.perf_counter()
-    wall0 = tot["wall_s"]
+    def wb_log(wb, rec: dict) -> None:
+        wb.log({k: v for k, v in rec.items() if k not in ("kind", "phase")})
 
-    def wall() -> float:
-        return wall0 + (time.perf_counter() - t_start)
+    log = MetricsLog(metrics_path, wb_open(main), printer)
 
     def counters(phase: str) -> dict:
+        tick()
         return {"phase": phase, "step": c["step"], "epoch": stream.epochs_done, "tokens": c["tokens"],
                 "positions": c["positions"], "molecules": c["molecules"],
                 "flops/model": c["flops_model"], "flops/newton_schulz": c["flops_ns"],
-                "flops/total": c["flops_model"] + c["flops_ns"], "time/wall_s": wall(), "time/train_s": c["train_s"]}
+                "flops/total": c["flops_model"] + c["flops_ns"], "time/wall_s": c["wall_s"],
+                "time/train_s": c["train_s"], "time/eval_s": c["eval_s"], "time/dyn_s": c["dyn_s"]}
 
     def run_evals(names) -> tuple[dict, dict]:
         out, rec = {}, {}
@@ -805,10 +855,11 @@ def run_wsd(cfg: TrainConfig, data_root: Path | str, runs_root: Path | str, resu
         t0 = time.perf_counter()
         out, rec = run_evals(["val"])
         dt = time.perf_counter() - t0
+        c["eval_s"] += dt
         tot["eval_s"] += dt
         v = out["val"]
         history.append([c["step"], v["loss"], v["bits_per_molecule"]])
-        log.log({"kind": "eval", **rec, **counters(phase), "time/eval_s_all": tot["eval_s"]})
+        log.log({"kind": "eval", **rec, **counters(phase)})
         printer(f"  [{phase}] eval step {c['step']}: val {v['loss']:.4f} nats/tok, "
                 f"{v['bits_per_molecule']:.2f} bits/mol ({dt:.1f} s)")
         return v
@@ -816,7 +867,9 @@ def run_wsd(cfg: TrainConfig, data_root: Path | str, runs_root: Path | str, resu
     def expensive(phase: str) -> None:
         t0 = time.perf_counter()
         rec = svd_entropies(model) | max_attention_logits(model, *dyn_xy, amp=amp)
-        tot["dyn_s"] += time.perf_counter() - t0
+        dt = time.perf_counter() - t0
+        c["dyn_s"] += dt
+        tot["dyn_s"] += dt
         log.log({"kind": "dyn_expensive", **counters(phase), **rec})
 
     win: dict = {}
@@ -826,16 +879,16 @@ def run_wsd(cfg: TrainConfig, data_root: Path | str, runs_root: Path | str, resu
         win.update({"nats": 0.0, "tokens": 0, "positions": 0, "molecules": 0, "gn": [], "step_s": 0.0,
                     "opt_ms": [], "n": 0})
 
-    def train_step(phase: str, branch, phase_end: int) -> bool:
-        """One optimizer step at step c['step'] with the WSD factor of `branch` (None = trunk).
-        Returns False if the loss or gradient norm is not finite."""
+    def train_step(b, force_log: bool) -> bool:
+        """One optimizer step at step c['step'] on budget b's schedule (the main run uses main's schedule;
+        before S_b all budgets have the same LR). Returns False if the loss or gradient norm is not finite."""
         s = c["step"]
-        lr = cfg.opt.lr * wsd_factor(s, cfg.warmup_steps, cfg.min_lr_ratio, branch)
+        lr = cfg.opt.lr * wsd_factor(s, cfg.warmup_steps, cfg.min_lr_ratio, b)
         opt.set_lr(lr)
         do_dyn = dyn is not None and (s + 1) % cfg.dyn_every == 0
         t0 = time.perf_counter()
-        b = stream.next_batch()
-        x, y = to_device(b, device)
+        bt = stream.next_batch()
+        x, y = to_device(bt, device)
         opt.zero_grad(set_to_none=True)
         with torch.autocast(device_type=device.type, dtype=torch.bfloat16, enabled=amp):
             _, loss = model(x, y)
@@ -864,33 +917,34 @@ def run_wsd(cfg: TrainConfig, data_root: Path | str, runs_root: Path | str, resu
 
         step_s = (t3 - t0) - t_dyn
         c["step"] = s + 1
-        c["tokens"] += b.n_tokens
-        c["positions"] += b.n_positions
-        c["molecules"] += b.n_molecules
-        c["flops_model"] += model_flops(n_flop_params, b.n_tokens)
+        c["tokens"] += bt.n_tokens
+        c["positions"] += bt.n_positions
+        c["molecules"] += bt.n_molecules
+        c["flops_model"] += model_flops(n_flop_params, bt.n_tokens)
         c["flops_ns"] += ns_per_step
         c["train_s"] += step_s
+        c["dyn_s"] += t_dyn
         tot["train_s"] += step_s
         tot["dyn_s"] += t_dyn
         tot["steps"] += 1
-        win["nats"] += loss_v * b.n_tokens
-        win["tokens"] += b.n_tokens
-        win["positions"] += b.n_positions
-        win["molecules"] += b.n_molecules
+        win["nats"] += loss_v * bt.n_tokens
+        win["tokens"] += bt.n_tokens
+        win["positions"] += bt.n_positions
+        win["molecules"] += bt.n_molecules
         win["gn"].append(gnorm_v)
         win["step_s"] += step_s
         win["opt_ms"].append(1000 * (t2 - t1))
         win["n"] += 1
 
         if not (math.isfinite(loss_v) and math.isfinite(gnorm_v)):
-            printer(f"[{phase}] non-finite loss/grad norm at step {c['step']} (loss {loss_v}, grad norm {gnorm_v})")
-            log.log({"kind": "train", **counters(phase), "train/loss": loss_v, "train/grad_norm": gnorm_v, "lr": lr})
+            printer(f"[{b.name}] non-finite loss/grad norm at step {c['step']} (loss {loss_v}, grad norm {gnorm_v})")
+            log.log({"kind": "train", **counters(b.name), "train/loss": loss_v, "train/grad_norm": gnorm_v, "lr": lr})
             return False
         k = c["step"]
         if dyn_rec is not None:
-            log.log({"kind": "dyn", **counters(phase), **dyn_rec, "time/dyn_s_all": tot["dyn_s"]})
-        if k % cfg.log_every == 0 or k == phase_end:
-            rec = {"kind": "train", **counters(phase), "lr": lr,
+            log.log({"kind": "dyn", **counters(b.name), **dyn_rec})
+        if k % cfg.log_every == 0 or k == b.end or force_log:
+            rec = {"kind": "train", **counters(b.name), "lr": lr,
                    "train/loss": win["nats"] / win["tokens"],
                    "train/bits_per_molecule": win["nats"] / win["molecules"] / LN2,
                    "train/grad_norm": sum(win["gn"]) / len(win["gn"]), "train/grad_norm_max": max(win["gn"]),
@@ -899,111 +953,131 @@ def run_wsd(cfg: TrainConfig, data_root: Path | str, runs_root: Path | str, resu
                    "time/opt_step_ms": sum(win["opt_ms"]) / len(win["opt_ms"]),
                    "throughput/tokens_per_s": win["tokens"] / win["step_s"]}
             log.log(rec)
-            printer(f"[{phase}] step {k}/{phase_end} | loss {rec['train/loss']:.4f} | lr {lr:.2e} | "
+            printer(f"[{b.name}] step {k}/{b.end} | loss {rec['train/loss']:.4f} | lr {lr:.2e} | "
                     f"gnorm {rec['train/grad_norm']:.3f} | {rec['time/step_ms']:.0f} ms/step "
                     f"(opt {rec['time/opt_step_ms']:.0f}) | {rec['throughput/tokens_per_s']:.0f} tok/s")
             reset_win()
         return True
 
     def save_ckpt() -> None:
-        tot["wall_s"] = wall()
+        tick()
         ck = {"model": model.state_dict(), "opt": opt.state_dict(), "stream": stream.state_dict(),
-              "counters": dict(c), "state": st, "tot": dict(tot), "trunk_steps": trunk_end,
-              "branches": [b.name for b in branches], "config": json.dumps(cfg.to_dict())}
+              "counters": dict(c), "state": st, "tot": dict(tot), "budgets": [b.name for b in budgets],
+              "main_end": main.end, "config": json.dumps(cfg.to_dict())}
         tmp = ckpt_path.with_name(ckpt_path.name + ".tmp")
         torch.save(ck, tmp)
         os.replace(tmp, ckpt_path)
+        skip()  # checkpoint writing is not part of any path
 
-    def run_branch(br) -> None:
-        save_ckpt()  # trunk state at the branch start; also the restart point after a crash
-        printer(f"--- branch {br.name}: {br.budget_epochs:g} epochs, cooldown steps {br.start}→{br.end} ---")
+    def finalize(b, history: list) -> dict:
+        """End of budget b: final evals, expensive dynamics, weights, result dict."""
+        t0 = time.perf_counter()
+        out, rec = run_evals([n for n in cfg.final_eval_sets if n != "val"])
+        dt = time.perf_counter() - t0
+        c["eval_s"] += dt
+        tot["eval_s"] += dt
+        if cfg.dyn_expensive:
+            expensive(b.name)
+        torch.save({"model": model.state_dict(), "budget": b.name, "step": c["step"]},
+                   run_dir / f"model_{b.name}.pt")
+        path = history if b is main else [h for h in st["main_evals"] if h[0] <= b.start] + history
+        best = min(path, key=lambda h: h[1])
+        cnt = counters(b.name)
+        res = {"status": "finished", "role": "main" if b is main else "branch", "budget_epochs": b.budget_epochs,
+               "cooldown_start": b.start, "steps": c["step"], "epoch": stream.epochs_done, "tokens": c["tokens"],
+               "flops/total": c["flops_model"] + c["flops_ns"], "flops/newton_schulz": c["flops_ns"],
+               "val/loss": history[-1][1], "val/bits_per_molecule": history[-1][2], **rec,
+               "lr_last_step": cfg.opt.lr * wsd_factor(c["step"] - 1, cfg.warmup_steps, cfg.min_lr_ratio, b),
+               "time/wall_s": cnt["time/wall_s"], "time/train_s": c["train_s"], "time/eval_s": c["eval_s"],
+               "time/dyn_s": c["dyn_s"], "best_val_diagnostic": {"step": best[0], "val/loss": best[1]}}
+        log.log({"kind": "final", **cnt, **{k: v for k, v in res.items() if isinstance(v, (int, float))},
+                 "best_val_diagnostic/step": best[0], "best_val_diagnostic/val_loss": best[1]})
+        printer(f"  {b.name} done: val {res['val/loss']:.4f}"
+                + "".join(f", {n} {r['loss']:.4f}" for n, r in out.items()) + " nats/tok")
+        if log.wb is not None:
+            log.wb.summary.update({k: v for k, v in res.items() if isinstance(v, (int, float, str))})
+        return res
+
+    def run_branch(b) -> None:
+        save_ckpt()  # main-run state at the branch point; also the restart point after a crash
+        printer(f"--- branch {b.name}: {b.budget_epochs:g} epochs, cooldown steps {b.start}→{b.end} ---")
         if log.wb is not None:
             log.wb.finish()
-            log.wb = wb_open(br.name)
+            log.wb = wb_open(b)
+            for r in main_history(metrics_path, main.name, b.start):  # option B: the branch's whole curve
+                wb_log(log.wb, r)
+        skip()  # wandb switching and copying are not part of any path
         history: list = []
         reset_win()
         ok = True
-        while c["step"] < br.end:
-            ok = train_step(br.name, br, br.end)
+        while c["step"] < b.end:
+            ok = train_step(b, force_log=False)
             if not ok:
                 break
             k = c["step"]
-            if k % ev_int == 0 or k == br.end:
-                eval_val(br.name, history)
-            if cfg.dyn_expensive and k % dx_int == 0 and k != br.end:
-                expensive(br.name)
+            if k % ev_int == 0 or k == b.end:
+                eval_val(b.name, history)
+            if cfg.dyn_expensive and k % dx_int == 0 and k != b.end:
+                expensive(b.name)
         if ok:
-            t0 = time.perf_counter()
-            out, rec = run_evals([n for n in cfg.final_eval_sets if n != "val"])
-            tot["eval_s"] += time.perf_counter() - t0
-            if cfg.dyn_expensive:
-                expensive(br.name)
-            torch.save({"model": model.state_dict(), "branch": br.name, "step": c["step"]},
-                       run_dir / f"model_{br.name}.pt")
-            path = [h for h in st["trunk_evals"] if h[0] <= br.start] + history
-            best = min(path, key=lambda h: h[1])
-            res = {"status": "finished", "budget_epochs": br.budget_epochs, "cooldown_start": br.start,
-                   "steps": c["step"], "epoch": stream.epochs_done, "tokens": c["tokens"],
-                   "flops/total": c["flops_model"] + c["flops_ns"], "flops/newton_schulz": c["flops_ns"],
-                   "val/loss": history[-1][1], "val/bits_per_molecule": history[-1][2], **rec,
-                   "lr_last_step": cfg.opt.lr * wsd_factor(c["step"] - 1, cfg.warmup_steps, cfg.min_lr_ratio, br),
-                   "best_val_diagnostic": {"step": best[0], "val/loss": best[1]}}
-            log.log({"kind": "final", **counters(br.name), **{k: v for k, v in res.items() if
-                                                             isinstance(v, (int, float)) and k != "status"},
-                     "best_val_diagnostic/step": best[0], "best_val_diagnostic/val_loss": best[1]})
-            printer(f"  branch {br.name} done: val {res['val/loss']:.4f}"
-                    + "".join(f", {n} {r['loss']:.4f}" for n, r in out.items()) + " nats/tok")
+            res = finalize(b, history)
         else:
-            res = {"status": "diverged", "budget_epochs": br.budget_epochs, "steps": c["step"]}
+            res = {"status": "diverged", "role": "branch", "budget_epochs": b.budget_epochs, "steps": c["step"]}
         if log.wb is not None:
-            log.wb.summary.update({k: v for k, v in res.items() if isinstance(v, (int, float, str))})
+            log.wb.summary.update({"status": res["status"]})
             log.wb.finish()
-            log.wb = wb_open("trunk")
-        load_trunk(in_place=True)  # back to the trunk state at br.start
-        st["done"].append(br.name)
-        st["results"][br.name] = res
+            log.wb = wb_open(main)
+        load_main(in_place=True)  # back to the main-run state at the branch point (incl. its path times)
+        skip()                    # the branch's time and the restore are not part of the main run's path
+        st["done"].append(b.name)
+        st["results"][b.name] = res
         save_ckpt()
         reset_win()
 
     def finish(status: str) -> dict:
-        tot["wall_s"] = wall()
-        summary = {"status": status, "run_dir": str(run_dir), "schedule": "wsd", "trunk_steps": trunk_end,
-                   "trunk_step_reached": c["step"], "steps_per_epoch": spe, "branches": st["results"],
-                   "time/train_s_all": tot["train_s"], "time/eval_s_all": tot["eval_s"],
-                   "time/dyn_s_all": tot["dyn_s"], "time/wall_s": tot["wall_s"], "steps_trained_all": tot["steps"],
+        tick()
+        summary = {"status": status, "run_dir": str(run_dir), "schedule": "wsd", "main": main.name,
+                   "main_step_reached": c["step"], "steps_per_epoch": spe, "budgets": st["results"],
+                   "total/train_s": tot["train_s"], "total/eval_s": tot["eval_s"], "total/dyn_s": tot["dyn_s"],
+                   "total/wall_s": tot["wall_s"], "total/steps_trained": tot["steps"],
                    "dyn_share_of_train_time": tot["dyn_s"] / tot["train_s"] if tot["train_s"] else None,
                    "eval_every_steps": ev_int, "peak_memory_mb": peak_memory_mb(device)}
         (run_dir / "summary.json").write_text(json.dumps(summary, indent=1), encoding="utf-8")
         if log.wb is not None:
-            log.wb.summary.update({"status": status} | {f"{n}/{k}": v for n, r in st["results"].items()
-                                                         for k, v in r.items() if isinstance(v, (int, float))})
+            log.wb.summary.update({"status": status} | {k: v for k, v in summary.items()
+                                                         if k.startswith("total/") and v is not None})
             log.wb.finish()
-        printer(f"{status}: {cfg.run_name}, branches done {st['done']} → {run_dir}")
+        printer(f"{status}: {cfg.run_name}, budgets done {st['done']} → {run_dir}")
         return summary
 
-    # --- loop ---------------------------------------------------------------------------------------
+    # --- loop: the main run, with side branches at their branch points ------------------------------
     model.train()
     reset_win()
-    if c["step"] == 0 and not st["trunk_evals"]:
-        eval_val("trunk", st["trunk_evals"])
+    if c["step"] == 0 and not st["main_evals"]:
+        eval_val(main.name, st["main_evals"])
         if cfg.dyn_expensive:
-            expensive("trunk")
+            expensive(main.name)
     while True:
-        for br in branches:
-            if br.start == c["step"] and br.name not in st["done"]:
-                run_branch(br)
+        for b in sides:
+            if b.start == c["step"] and b.name not in st["done"]:
+                run_branch(b)
         if c["step"] >= stop:
             break
-        if not train_step("trunk", None, trunk_end):
+        if not train_step(main, force_log=(c["step"] + 1) in branch_points):
             return finish("diverged")
         k = c["step"]
-        if k % ev_int == 0 or k == trunk_end:
-            eval_val("trunk", st["trunk_evals"])
-        if cfg.dyn_expensive and k % dx_int == 0:
-            expensive("trunk")
-        if cfg.ckpt_every and k % cfg.ckpt_every == 0:
+        if k % ev_int == 0 or k == main.end or k in branch_points:
+            eval_val(main.name, st["main_evals"])
+        if cfg.dyn_expensive and k % dx_int == 0 and k != main.end:
+            expensive(main.name)
+        if cfg.ckpt_every and k % cfg.ckpt_every == 0 and k != main.end:
             save_ckpt()
 
-    status = "finished" if len(st["done"]) == len(branches) else "stopped"
+    if c["step"] == main.end:
+        st["results"][main.name] = finalize(main, [h for h in st["main_evals"]])
+        st["done"].append(main.name)
+        status = "finished"
+    else:
+        status = "stopped"
     save_ckpt()
     return finish(status)

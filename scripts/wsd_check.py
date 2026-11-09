@@ -4,7 +4,7 @@ code changes for D44–D46, D50, D51).
 Run inside WSL2 from the repo root (needs the DATA outputs):
 
     python scripts/wsd_check.py                              # all checks, report to scripts/wsd_report.md
-    python scripts/wsd_check.py --wandb-mode online          # also look at the trunk/branch runs in wandb
+    python scripts/wsd_check.py --wandb-mode online          # also look at run A's budgets in wandb
     python scripts/wsd_check.py --device cpu                 # dry run without the GPU (slow)
 
 Paths as in scripts/train.py: --data-root ($MUONMOL_DATA), --runs-root ($MUONMOL_RUNS).
@@ -17,22 +17,29 @@ Checks:
     |---|--------------------------------------------------------------------------------|----------|----------|
     | 1 | WSD schedule: branch table (10k / 100k / full, budgets 5/10/15), factors equal | –        | yes      |
     |   | torch SequentialLR(LinearLR, constant, LinearLR); lr_mult ratio and the        |          |          |
-    |   | compiled-Muon LR tensor kept by OptimizerSet.set_lr; going back to the trunk   |          |          |
-    |   | after a branch does not recompile the Muon step                                |          |          |
-    | 2 | A branch inside a multi-branch run = the same budget as a single-branch run    | --device | yes      |
-    |   | (state restore after a branch is exact): Δ ≤ 25% of the seed-to-seed Δ (D35)   |          |          |
-    | 3 | Stop in the trunk + resume = uninterrupted run (same rule); metrics.jsonl has  | --device | yes      |
-    |   | no duplicate lines after the resume                                           |          |          |
-    | 4 | Run outputs: branch weights re-evaluate to the logged val loss, LR at the last | --device | yes      |
-    |   | branch step = min_lr_ratio · peak, tokens and epochs per branch, summary keys  |          |          |
-    | 5 | Cheap dynamics: update RMS = 1 for AdamW's first step, 0.17–0.22 for Muon with | CPU      | yes      |
+    |   | compiled-Muon LR tensor kept by OptimizerSet.set_lr; going back to the main    |          |          |
+    |   | run after a branch does not recompile the Muon step                            |          |          |
+    | 2 | Every budget inside the multi-budget run A = a run with only that budget       | --device | yes      |
+    |   | (state restore at branch points is exact): Δ ≤ 25% of the seed-to-seed Δ (D35) |          |          |
+    | 3 | Stop in the main run + resume = uninterrupted run (same rule); metrics.jsonl   | --device | yes      |
+    |   | has no duplicate lines after the resume                                        |          |          |
+    | 4 | Run outputs: weights re-evaluate to the logged val loss, LR flat before and    | --device | yes      |
+    |   | = min_lr_ratio · peak at the end of each cooldown, one train line per step,    |          |          |
+    |   | each side branch's wandb copy of the main run's lines (option B), summary keys |          |          |
+    | 5 | Path time: the main run does not contain branch time; a branch at its end step | --device | yes      |
+    |   | is within 25% of the main run at the same step; whole-run total ≥ path time    |          |          |
+    | 6 | Cheap dynamics: update RMS = 1 for AdamW's first step, 0.17–0.22 for Muon with | CPU      | yes      |
     |   | full-rank gradients; weight decay is taken out (same RMS with and without WD); |          |          |
     |   | LR read from the live param groups after load_state_dict                       |          |          |
-    | 6 | Expensive dynamics: SVD entropy (orthogonal → 1, rank 1 → 0); recomputed       | CPU      | yes      |
+    | 7 | Expensive dynamics: SVD entropy (orthogonal → 1, rank 1 → 0); recomputed       | CPU      | yes      |
     |   | attention scores reproduce each layer's attention output                       |          |          |
-    | 7 | Logging overhead and timing (cheap every 10 steps; expensive every epoch)      | --device | info     |
+    | 8 | Logging overhead and timing (cheap every 10 steps; expensive every epoch)      | --device | info     |
 
-Bounds are our own (not from a source); measured values are always reported. Check 2 and 3 use the
+Short runs: budgets 2 / 4 / 6 epochs (main run e6, side branches e2 and e4), log_every 1 (one point per step).
+Runs: A (all budgets, wandb if --wandb-mode), one run per single budget, A with seed 1, a stopped + resumed
+copy of A, and F (A with the expensive metrics).
+
+Bounds are our own (not from a source); measured values are always reported. Checks 2 and 3 use the
 D35 rule because deterministic kernels crash on the A770 (D35 note); on CPU the Δ should be ~0.
 Exit code: 0 if no required check failed, 1 otherwise.
 """
@@ -57,7 +64,7 @@ from muonmol.dynamics import CheapDynamics, attention_scores, max_attention_logi
 from muonmol.model import LlamaLM, ModelConfig
 from muonmol.optim import OptConfig, build_optimizer
 from muonmol.schedule import wsd_branches, wsd_factor
-from muonmol.train import TrainConfig, evaluate, merge, run_wsd, to_device
+from muonmol.train import TrainConfig, evaluate, main_history, merge, run_wsd, to_device
 
 REPRO_RATIO = 0.25          # checks 2, 3 (D35)
 RMS_MUON = (0.17, 0.22)     # check 5: Muon update RMS / LR with full-rank gradients (opt_check bound)
@@ -110,11 +117,12 @@ def check_schedule(device: str):
             good = b.end == math.ceil(b.budget_epochs * spe) and b.cooldown_steps == round(0.2 * b.end) \
                 and b.start == b.end - b.cooldown_steps
             ok &= good
-            rows.append([scale, spe, b.name, b.start, b.end, b.cooldown_steps, f"{b.cooldown_steps / b.end:.3f}", good])
-        trunk = max(b.start for b in brs)
-        rows.append([scale, spe, "trunk", 0, trunk, "–", "–", trunk == brs[-1].start])
+            role = "main run" if b is brs[-1] else "side branch"
+            rows.append([scale, spe, b.name, role, b.start, b.end, b.cooldown_steps, f"{b.cooldown_steps / b.end:.3f}",
+                         good])
     det += ["(a) Branch table, budgets 5/10/15 epochs, cooldown_frac 0.2:"]
-    det += table(["Scale", "Steps/epoch", "Branch", "Cooldown start", "End", "Cooldown steps", "Share", "OK"], rows)
+    det += table(["Scale", "Steps/epoch", "Budget", "Role", "Cooldown start (branch point)", "End", "Cooldown steps",
+                  "Share", "OK"], rows)
 
     # (b) factors = torch reference: SequentialLR(LinearLR warmup, constant, LinearLR cooldown)
     from torch.optim.lr_scheduler import LambdaLR, LinearLR, SequentialLR
@@ -133,13 +141,13 @@ def check_schedule(device: str):
             sgd.step()
             ref_sched.step()
         ours = [wsd_factor(s, W, r, b) for s in range(b.end)]
-        trunk = [wsd_factor(s, W, r, None) for s in range(b.end)]
+        flat = [wsd_factor(s, W, r, None) for s in range(b.end)]
         diff = max(abs(a - c) for a, c in zip(ours, ref))
-        good = diff < 1e-9 and abs(ours[-1] - r) < 1e-12 and ours[W - 1] == 1.0 and all(t == 1.0 for t in trunk[W:]) \
+        good = diff < 1e-9 and abs(ours[-1] - r) < 1e-12 and ours[W - 1] == 1.0 and all(t == 1.0 for t in flat[W:]) \
             and all(x > y for x, y in zip(ours[b.start - 1:], ours[b.start:]))
         ok &= good
         det.append(f"(b) {b.name} at 39 steps/epoch (warmup {W}, cooldown {b.start}→{b.end}): max |ours − torch| "
-                   f"= {diff:.1e}; last step {ours[-1]:.4f} (= {r}); trunk factor 1 after warmup; strictly falling "
+                   f"= {diff:.1e}; last step {ours[-1]:.4f} (= {r}); factor 1 after warmup without cooldown; strictly falling "
                    f"in the cooldown: {good}")
 
     # (c) OptimizerSet.set_lr: lr_mult ratio, compiled-Muon LR tensor updated in place
@@ -159,7 +167,7 @@ def check_schedule(device: str):
         lrs = [f"{float(g['lr']):.3e}" for g in groups]
         det.append(f"(c) {arm}: set_lr({lr:.3e}) → group LRs {lrs} "
                    f"(lr_mult {[g['lr_mult'] for g in groups]}); tensor LRs kept in place ({len(tensors)}): {good}")
-    # (d) back to the trunk after a branch: optimizer state copied in place (OptimizerSet.copy_state_from)
+    # (d) back to the main run after a branch: optimizer state copied in place (OptimizerSet.copy_state_from)
     # → the compiled Muon step is not recompiled (recompile limit set to 1, so a recompile is an error)
     torch._dynamo.reset()
     old_limit = torch._dynamo.config.recompile_limit
@@ -212,6 +220,7 @@ def base_dict(args, name: str, budgets, seed: int = 0, **top) -> dict:
     d = merge(TrainConfig.default_dict(), json.loads((REPO / "configs" / "wsd_1m_10k.json").read_text()))
     d = merge(d, {"run_name": f"{STAMP}_{name}", "project": PROJECT, "seed": seed, "budgets_epochs": list(budgets),
                   "warmup_steps": args.warmup, "eval_every": None, "eval_every_epochs": 0.5, "ckpt_every": 0,
+                  "log_every": 1,  # every step a point, so even short cooldowns show as lines (Valeria, 2026-11-09)
                   "device": args.device, "wandb_mode": "disabled", "opt": {"arm": "muon", "lr": args.lr}})
     if args.device == "cpu":
         d["opt"]["compile_muon"] = False  # compile on CPU is slow and not what we test here
@@ -227,119 +236,183 @@ def do_run(args, name: str, d: dict, resume: bool = False) -> dict:
     return s
 
 
-def bval(s: dict, branch: str) -> float:
-    return s["branches"][branch]["val/loss"]
+def bval(s: dict, budget: str) -> float:
+    return s["budgets"][budget]["val/loss"]
+
+
+def names(args) -> list[str]:
+    return [f"e{b:g}" for b in sorted(args.budgets)]
+
+
+def read_lines(s: dict) -> list[dict]:
+    return [json.loads(ln) for ln in (Path(s["run_dir"]) / "metrics.jsonl").read_text().splitlines() if ln.strip()]
 
 
 def check_branch_restore(args):
-    b1, b2 = args.budgets
-    n1, n2 = f"e{b1:g}", f"e{b2:g}"
-    a = do_run(args, "A_both", base_dict(args, "A_both", [b1, b2], wandb_mode=args.wandb_mode))
-    b = do_run(args, "B_first", base_dict(args, "B_first", [b1]))
-    c = do_run(args, "C_second", base_dict(args, "C_second", [b2]))
-    d = do_run(args, "D_both_seed1", base_dict(args, "D_both_seed1", [b1, b2], seed=1))
+    a = do_run(args, "A_all", base_dict(args, "A_all", args.budgets, wandb_mode=args.wandb_mode))
+    singles = {n: do_run(args, f"B_only_{n}", base_dict(args, f"B_only_{n}", [b]))
+               for n, b in zip(names(args), sorted(args.budgets))}
+    d = do_run(args, "D_all_seed1", base_dict(args, "D_all_seed1", args.budgets, seed=1))
     det, ok, rows = [], True, []
-    for name, single in ((n1, b), (n2, c)):
-        same = abs(bval(a, name) - bval(single, name))
-        seeds = abs(bval(a, name) - bval(d, name))
+    for n in names(args):
+        same = abs(bval(a, n) - bval(singles[n], n))
+        seeds = abs(bval(a, n) - bval(d, n))
         good = same <= REPRO_RATIO * seeds
         ok &= good
-        rows.append([name, f"{bval(a, name):.5f}", f"{bval(single, name):.5f}", f"{same:.2e}", f"{bval(d, name):.5f}",
-                     f"{seeds:.2e}", f"{same / seeds:.1%}" if seeds else "–", good])
-    det += table(["Branch", "A (both branches)", "Single-branch run", "Same-seed Δ", "A, seed 1", "Seed Δ",
-                  "Ratio", f"≤ {REPRO_RATIO:.0%}"], rows)
-    det.append(f"Branch {n1} runs inside A before the trunk continues to {n2}; {n2} in A therefore starts from a trunk "
-               f"state that was saved, used for {n1} and loaded back. Values: final val loss (nats/token) at the "
-               f"branch end.")
+        rows.append([n, a["budgets"][n]["role"], f"{bval(a, n):.5f}", f"{bval(singles[n], n):.5f}", f"{same:.2e}",
+                     f"{bval(d, n):.5f}", f"{seeds:.2e}", f"{same / seeds:.1%}" if seeds else "–", good])
+    det += table(["Budget", "Role in A", "A (all budgets)", "Run with only this budget", "Same-seed Δ", "A, seed 1",
+                  "Seed Δ", "Ratio", f"≤ {REPRO_RATIO:.0%}"], rows)
+    det.append(f"In A the main run ({names(args)[-1]}) saves its state at every branch point, runs the side branch and "
+               f"copies its state back; every later budget therefore depends on exact restores. Values: final val "
+               f"loss (nats/token) at the end of each budget.")
     return (PASS if ok else FAIL), det
 
 
 def check_resume(args):
-    b1, b2 = args.budgets
-    a = RUNS["A_both"]
-    d = RUNS["D_both_seed1"]
-    br2 = [x for x in wsd_branches([b1, b2], a["steps_per_epoch"], 0.2) if x.budget_epochs == b2][0]
-    br1 = [x for x in wsd_branches([b1, b2], a["steps_per_epoch"], 0.2) if x.budget_epochs == b1][0]
-    stop_at = (br1.start + br2.start) // 2  # after branch 1, before branch 2
-    d1 = base_dict(args, "E_resume", [b1, b2], stop_at_step=stop_at)
+    a, d = RUNS["A_all"], RUNS["D_all_seed1"]
+    bs = wsd_branches(args.budgets, a["steps_per_epoch"], 0.2)
+    stop_at = (bs[0].start + bs[1].start) // 2  # after the first branch, before the second branch point
+    d1 = base_dict(args, "E_resume", args.budgets, stop_at_step=stop_at)
     s1 = do_run(args, "E_resume_part1", d1)
     d1["stop_at_step"] = None
     s2 = do_run(args, "E_resume", d1, resume=True)
     det, ok, rows = [], s1["status"] == "stopped" and s2["status"] == "finished", []
-    for name in (f"e{b1:g}", f"e{b2:g}"):
-        same = abs(bval(a, name) - bval(s2, name))
-        seeds = abs(bval(a, name) - bval(d, name))
+    for n in names(args):
+        same = abs(bval(a, n) - bval(s2, n))
+        seeds = abs(bval(a, n) - bval(d, n))
         good = same <= REPRO_RATIO * seeds
         ok &= good
-        rows.append([name, f"{bval(a, name):.5f}", f"{bval(s2, name):.5f}", f"{same:.2e}", f"{seeds:.2e}",
+        rows.append([n, f"{bval(a, n):.5f}", f"{bval(s2, n):.5f}", f"{same:.2e}", f"{seeds:.2e}",
                      f"{same / seeds:.1%}" if seeds else "–", good])
-    lines = [json.loads(ln) for ln in (Path(s2["run_dir"]) / "metrics.jsonl").read_text().splitlines() if ln.strip()]
-    keys = [(r["phase"], r["kind"], r["step"]) for r in lines]
+    keys = [(r["phase"], r["kind"], r["step"]) for r in read_lines(s2)]
     dupes = len(keys) - len(set(keys))
     ok &= dupes == 0
-    det += table(["Branch", "Uninterrupted (A)", "Stopped + resumed", "Δ", "Seed Δ", "Ratio", f"≤ {REPRO_RATIO:.0%}"], rows)
-    det.append(f"Part 1 stopped at trunk step {stop_at} (status {s1['status']}, branches done "
-               f"{list(s1['branches'])}); resumed run status {s2['status']}; duplicate (phase, kind, step) lines in "
+    det += table(["Budget", "Uninterrupted (A)", "Stopped + resumed", "Δ", "Seed Δ", "Ratio", f"≤ {REPRO_RATIO:.0%}"], rows)
+    det.append(f"Part 1 stopped at main-run step {stop_at} (status {s1['status']}, budgets done "
+               f"{list(s1['budgets'])}); resumed run status {s2['status']}; duplicate (phase, kind, step) lines in "
                f"metrics.jsonl: {dupes}")
     return (PASS if ok else FAIL), det
 
 
 def check_outputs(args):
-    a = RUNS["A_both"]
+    a = RUNS["A_all"]
     run_dir = Path(a["run_dir"])
-    cfg = TrainConfig.from_dict({k: v for k, v in json.loads((run_dir / "config.json").read_text()).items()})
+    cfg = TrainConfig.from_dict(json.loads((run_dir / "config.json").read_text()))
     data = MolData(args.data_root)
     device = torch.device(args.device)
     amp = cfg.amp_bf16 and device.type != "cpu"
     batches = [(*to_device(b, device), b.n_tokens, b.n_molecules) for b in data.eval_batches("val", cfg.eval_batch_size)]
-    lines = [json.loads(ln) for ln in (run_dir / "metrics.jsonl").read_text().splitlines() if ln.strip()]
-    det, ok, rows = [], True, []
+    lines = read_lines(a)
     spe = a["steps_per_epoch"]
-    for name, res in a["branches"].items():
+    main = a["main"]
+    bs = {b.name: b for b in wsd_branches(args.budgets, spe, 0.2)}
+    det, ok, rows = [], True, []
+    for n, res in a["budgets"].items():
+        b = bs[n]
         model = LlamaLM(cfg.model)
-        model.load_state_dict(torch.load(run_dir / f"model_{name}.pt", map_location="cpu", weights_only=True)["model"])
+        model.load_state_dict(torch.load(run_dir / f"model_{n}.pt", map_location="cpu", weights_only=True)["model"])
         model.to(device)
         re = evaluate(model, batches, device, amp)["loss"]
-        tr = [r for r in lines if r["phase"] == name and r["kind"] == "train"]
+        tr = [r for r in lines if r["phase"] == n and r["kind"] == "train"]
+        own = sorted(r["step"] for r in tr)
+        first = 1 if n == main else b.start + 1
+        contiguous = own == list(range(first, b.end + 1))  # log_every = 1: one line per step, nothing missing
+        # what a side branch's wandb run gets copied (option B): main-run lines up to its branch point
+        hist = main_history(run_dir / "metrics.jsonl", main, b.start) if n != main else []
+        hist_tr = [r["step"] for r in hist if r["kind"] == "train"]
+        hist_ok = n == main or (hist_tr == list(range(1, b.start + 1))
+                                and any(r["kind"] == "eval" and r["step"] == b.start for r in hist))
+        lr_flat = all(abs(r["lr"] - cfg.opt.lr) < 1e-15 for r in tr + [h for h in hist if h["kind"] == "train"]
+                      if cfg.warmup_steps < r["step"] <= b.start)
         last_lr = tr[-1]["lr"]
         want_lr = cfg.min_lr_ratio * cfg.opt.lr
-        steps_ok = res["steps"] == math.ceil(res["budget_epochs"] * spe) and abs(res["epoch"] - res["steps"] / spe) < 1e-9
-        has = all(k in res for k in ("val/loss", "test/loss", "val/bits_per_molecule", "best_val_diagnostic", "flops/total"))
-        good = rel(re, res["val/loss"]) <= 1e-3 and abs(last_lr - want_lr) <= 1e-12 + 1e-9 * want_lr and steps_ok and has
+        steps_ok = res["steps"] == b.end and abs(res["epoch"] - res["steps"] / spe) < 1e-9
+        has = all(k in res for k in ("val/loss", "test/loss", "val/bits_per_molecule", "best_val_diagnostic",
+                                     "flops/total", "time/wall_s"))
+        good = (rel(re, res["val/loss"]) <= 1e-3 and abs(last_lr - want_lr) <= 1e-12 + 1e-9 * want_lr and steps_ok
+                and has and contiguous and hist_ok and lr_flat)
         ok &= good
-        rows.append([name, res["steps"], f"{res['epoch']:.2f}", f"{res['tokens']:,}", f"{res['val/loss']:.5f}",
-                     f"{re:.5f}", f"{last_lr:.2e}", f"{res['test/loss']:.4f}", res["best_val_diagnostic"]["step"], good])
-    trunk_lr = [r["lr"] for r in lines if r["phase"] == "trunk" and r["kind"] == "train" and r["step"] > cfg.warmup_steps]
-    flat = all(abs(x - cfg.opt.lr) < 1e-15 for x in trunk_lr)
+        rows.append([n, res["role"], f"{own[0]}–{own[-1]} ({len(own)})", f"{len(hist_tr)} + {len(own)}" if n != main
+                     else f"{len(own)}", f"{res['val/loss']:.5f}", f"{re:.5f}", f"{last_lr:.2e}", lr_flat,
+                     f"{res['test/loss']:.4f}", res["best_val_diagnostic"]["step"], good])
     no_es = not any("early_stop" in k for r in lines for k in r)
-    ok &= flat and no_es
-    det += table(["Branch", "Steps", "Epochs", "Tokens", "Logged val", "Re-evaluated weights", "LR last step",
-                  "Test loss", "Lowest-val step (diagnostic)", "OK"], rows)
-    det.append(f"Trunk LR after warmup constant at {cfg.opt.lr:g}: {flat}; no early-stopping fields logged: {no_es}; "
-               f"re-evaluation bound 0.1% relative; LR at the last branch step must be min_lr_ratio · peak "
-               f"= {cfg.min_lr_ratio * cfg.opt.lr:.1e}")
+    no_all = not any(k.endswith("_all") for r in lines for k in r)
+    ok &= no_es and no_all
+    det += table(["Budget", "Role", "Own train lines (steps)", "Train points in its wandb run (copied + own)",
+                  "Logged val", "Re-evaluated weights", "LR last step", "LR flat before cooldown", "Test loss",
+                  "Lowest-val step (diagnostic)", "OK"], rows)
+    det.append(f"Own train lines must cover every step of the budget's own part (log_every 1); a side branch's wandb "
+               f"run additionally gets the main run's lines 1…S_b incl. the eval at S_b (main_history). LR at the last "
+               f"step must be min_lr_ratio · peak = {want_lr:.1e}; re-evaluation bound 0.1% relative. No early-stopping "
+               f"fields: {no_es}; no whole-run totals (…_all) in the log lines: {no_all}")
+    return (PASS if ok else FAIL), det
+
+
+def check_path_time(args):
+    a = RUNS["A_all"]
+    lines = read_lines(a)
+    main = a["main"]
+    bs = {b.name: b for b in wsd_branches(args.budgets, a["steps_per_epoch"], 0.2)}
+    tr = {}
+    for r in lines:
+        if r["kind"] == "train":
+            tr.setdefault(r["phase"], {})[r["step"]] = r
+    det, ok, rows = [], True, []
+    # (a) path times never decrease within a budget
+    for n, by_step in tr.items():
+        seq = [by_step[s] for s in sorted(by_step)]
+        mono = all(y[k] >= x[k] for x, y in zip(seq, seq[1:]) for k in ("time/wall_s", "time/train_s"))
+        ok &= mono
+        det.append(f"(a) {n}: time/wall_s and time/train_s never decrease along its own lines: {mono}")
+    # (b) per side branch: the main run does not contain the branch's time, and the branch is in sync with the
+    #     main run (same steps → about the same path time)
+    for n, b in bs.items():
+        if n == main:
+            continue
+        m, br = tr[main], tr[n]
+        branch_wall = br[b.end]["time/wall_s"] - m[b.start]["time/wall_s"]
+        main_jump = m[b.start + 1]["time/wall_s"] - m[b.start]["time/wall_s"]
+        excluded = main_jump < 0.5 * branch_wall
+        sync_wall = rel(br[b.end]["time/wall_s"], m[b.end]["time/wall_s"])
+        sync_train = rel(br[b.end]["time/train_s"], m[b.end]["time/train_s"])
+        good = excluded and sync_wall <= 0.25 and sync_train <= 0.25
+        ok &= good
+        rows.append([n, b.start, f"{m[b.start]['time/wall_s']:.2f}", f"{main_jump:.2f}", f"{branch_wall:.2f}",
+                     f"{br[b.end]['time/wall_s']:.2f} / {m[b.end]['time/wall_s']:.2f}", f"{sync_wall:.1%}",
+                     f"{br[b.end]['time/train_s']:.2f} / {m[b.end]['time/train_s']:.2f}", f"{sync_train:.1%}", good])
+    det += table(["Branch", "Branch point", "Main wall at the point (s)", "Main wall, next step − point (s)",
+                  "Branch's own wall (s)", "Wall at branch end: branch / main (s)", "Δ", "Train time: branch / main (s)",
+                  "Δ", "OK"], rows)
+    # (c) whole-run total ≥ the main run's path time
+    end_main = tr[main][max(tr[main])]["time/wall_s"]
+    tot_ok = a["total/wall_s"] >= end_main
+    ok &= tot_ok
+    det.append(f"(b) bounds: the main run's next step after a branch point takes < 50% of the branch's own wall time "
+               f"(branch time not in the main run); branch and main run at the branch's end step within 25%.")
+    det.append(f"(c) whole-run wall time {a['total/wall_s']:.1f} s (summary only) ≥ main run's path wall time "
+               f"{end_main:.1f} s: {tot_ok}")
     return (PASS if ok else FAIL), det
 
 
 def check_timing(args):
-    a = RUNS["A_both"]
-    x = do_run(args, "F_expensive", base_dict(args, "F_expensive", list(args.budgets), dyn_expensive=True))
-    lines = [json.loads(ln) for ln in (Path(a["run_dir"]) / "metrics.jsonl").read_text().splitlines() if ln.strip()]
-    tr = [r for r in lines if r["kind"] == "train" and r["phase"] == "trunk"][1:]
+    a = RUNS["A_all"]
+    x = do_run(args, "F_expensive", base_dict(args, "F_expensive", args.budgets, dyn_expensive=True))
+    lines = read_lines(a)
+    tr = [r for r in lines if r["kind"] == "train" and r["phase"] == a["main"]][1:]
     med = lambda key: sorted(r[key] for r in tr)[len(tr) // 2] if tr else float("nan")
-    xl = [json.loads(ln) for ln in (Path(x["run_dir"]) / "metrics.jsonl").read_text().splitlines() if ln.strip()]
-    exp = [r for r in xl if r["kind"] == "dyn_expensive"]
+    exp = [r for r in read_lines(x) if r["kind"] == "dyn_expensive"]
     dyn = [r for r in lines if r["kind"] == "dyn"]
-    rows = [["A: cheap every 10 steps", f"{a['time/train_s_all']:.1f}", f"{a['time/dyn_s_all']:.2f}",
+    rows = [["A: cheap every 10 steps", f"{a['total/train_s']:.1f}", f"{a['total/dyn_s']:.2f}",
              f"{a['dyn_share_of_train_time']:.1%}", len(dyn)],
-            ["F: + expensive every epoch and at branch ends", f"{x['time/train_s_all']:.1f}",
-             f"{x['time/dyn_s_all']:.2f}", f"{x['dyn_share_of_train_time']:.1%}", len(exp)]]
-    det = table(["Run", "Train time (s)", "Dynamics time (s)", "Dynamics / train time", "Dynamics log lines"], rows)
+            ["F: + expensive every epoch and at the end of each budget", f"{x['total/train_s']:.1f}",
+             f"{x['total/dyn_s']:.2f}", f"{x['dyn_share_of_train_time']:.1%}", len(exp)]]
+    det = table(["Run (whole-run totals)", "Train time (s)", "Dynamics time (s)", "Dynamics / train time",
+                 "Dynamics log lines"], rows)
     mem = "n/a" if a.get("peak_memory_mb") is None else f"{a['peak_memory_mb']:.0f} MB"
-    det.append(f"Run A: median step {med('time/step_ms'):.1f} ms (optimizer {med('time/opt_step_ms'):.1f} ms), "
-               f"{med('throughput/tokens_per_s'):,.0f} tokens/s, eval time {a['time/eval_s_all']:.1f} s, wall "
-               f"{a['time/wall_s']:.1f} s, peak memory "
-               f"{mem}")
+    det.append(f"Run A: median step {med('time/step_ms'):.1f} ms (optimizer {med('time/opt_step_ms'):.1f} ms; "
+               f"log_every 1, so single steps), {med('throughput/tokens_per_s'):,.0f} tokens/s; whole run: eval "
+               f"{a['total/eval_s']:.1f} s, wall {a['total/wall_s']:.1f} s, peak memory {mem}")
     if dyn:
         r = dyn[-1]
         det.append(f"Last cheap record (step {r['step']}, {r['phase']}): mean update RMS / LR Muon group "
@@ -467,15 +540,18 @@ def main() -> int:
     ap = argparse.ArgumentParser(description="WSD + DYN checks (see module docstring)")
     ap.add_argument("--device", default="xpu")
     ap.add_argument("--lr", type=float, default=1e-3, help="peak LR of the short runs")
-    ap.add_argument("--budgets", type=float, nargs=2, default=[1.0, 2.0],
-                    help="two short epoch budgets for checks 2–4, 7 (default 1 and 2 epochs of the 10k scale)")
+    ap.add_argument("--budgets", type=float, nargs="+", default=[2.0, 4.0, 6.0],
+                    help="epoch budgets of the short runs (checks 2–4, 7, 8; ≥ 2 values; default 2 4 6 epochs of 10k)")
     ap.add_argument("--warmup", type=int, default=5, help="warmup steps of the short runs")
     ap.add_argument("--wandb-mode", default="disabled", choices=("online", "offline", "disabled"),
-                    help="wandb mode of run A (trunk + one run per branch)")
+                    help="wandb mode of run A (one wandb run per budget)")
     ap.add_argument("--data-root", type=Path, default=os.environ.get("MUONMOL_DATA"))
     ap.add_argument("--runs-root", type=Path, default=os.environ.get("MUONMOL_RUNS"))
     ap.add_argument("--report", type=Path, default=REPO / "scripts" / "wsd_report.md")
     args = ap.parse_args()
+    if len(args.budgets) < 2 or len(set(args.budgets)) != len(args.budgets):
+        print("ERROR: --budgets needs at least two distinct values (main run + at least one side branch).")
+        return 1
     if args.data_root is None or args.runs_root is None:
         print("ERROR: set --data-root/--runs-root or MUONMOL_DATA/MUONMOL_RUNS.")
         return 1
@@ -486,8 +562,9 @@ def main() -> int:
 
     run_check("WSD schedule and branch table", True, check_schedule, args.device)
     run_check("Branch inside a multi-branch run = single-branch run", True, check_branch_restore, args)
-    run_check("Stop in the trunk + resume", True, check_resume, args)
-    run_check("Run outputs per branch", True, check_outputs, args)
+    run_check("Stop in the main run + resume", True, check_resume, args)
+    run_check("Run outputs per budget and wandb history of the branches", True, check_outputs, args)
+    run_check("Path time: branches in sync with the main run", True, check_path_time, args)
     run_check("Cheap dynamics (weight / update RMS)", True, check_cheap_dynamics)
     run_check("Expensive dynamics (SVD entropy, attention logits)", True, check_expensive_dynamics)
     run_check("Logging overhead and timing", False, check_timing, args)
@@ -497,7 +574,8 @@ def main() -> int:
               f"- Python {platform.python_version()}, PyTorch {torch.__version__}, device `{args.device}`",
               f"- Data: `{data.dir}` (MOSES SHA-256 `{data.meta.get('sha256')}`)",
               f"- Short runs: `configs/wsd_1m_10k.json` (~1M model), Muon arm, peak LR {args.lr:g}, budgets "
-              f"{args.budgets[0]:g} and {args.budgets[1]:g} epochs, warmup {args.warmup} steps, cooldown 20% to 0.1 × peak; "
+              f"{' / '.join(f'{b:g}' for b in sorted(args.budgets))} epochs (main run {max(args.budgets):g}), warmup "
+              f"{args.warmup} steps, cooldown 20% to 0.1 × peak, log_every 1; "
               f"runs in `{Path(args.runs_root) / PROJECT}`"]
     write_report(args.report, header)
     print(f"Report written to {args.report}")

@@ -7,18 +7,18 @@
 1. WSD (warmup–stable–decay) with cooldown branches
 --------------------------------------------------------------------------------------------------
 
-One run = a trunk (warmup, then constant LR) plus one cooldown branch per epoch budget b.
+One run = a main run for the longest budget (warmup, constant LR, its own cooldown at the end) plus one
+side branch per shorter budget b, which starts from the main run's state at S_b (muonmol.train.run_wsd).
 With steps_per_epoch = P, W = warmup steps, r = min_lr_ratio (D51: 0.1), f = cooldown_frac (D44: 0.2):
 
     branch end      E_b = ceil(b · P)                     (the branch's total length in steps)
     cooldown length C_b = max(1, round(f · E_b))           (20% of the branch's whole length, D44)
-    branch start    S_b = E_b − C_b                        (trunk checkpoint the branch starts from)
-    trunk length    = max_b S_b                            (the trunk never needs to go further)
+    cooldown start  S_b = E_b − C_b                        (branch point: main-run state the branch starts from)
 
 LR factor (× base LR × lr_mult) for the optimizer update at step s:
 
     s < W                    (s + 1) / W                   linear warmup (W = 0: no warmup)
-    trunk, s ≥ W             1
+    before S_b, s ≥ W        1                             (all budgets share this stable part)
     branch b, s ≥ S_b        1 − (1 − r) · (s − S_b + 1) / C_b      linear cooldown (D44: linear)
 
 So the first cooldown step already uses a slightly lower LR, and the last step of a branch
@@ -71,7 +71,7 @@ from torch.optim.lr_scheduler import LambdaLR
 class Branch:
     """One cooldown branch = one epoch budget (D45)."""
     budget_epochs: float
-    start: int      # S_b: first step with the cooldown LR; the branch starts from the trunk state at this step
+    start: int      # S_b: first step with the cooldown LR; a side branch starts from the main run's state here
     end: int        # E_b: total steps of this budget (the branch's last update is step end − 1)
 
     @property
@@ -96,7 +96,7 @@ def wsd_branches(budgets_epochs: list[float], steps_per_epoch: int, cooldown_fra
 
 
 def wsd_factor(step: int, warmup_steps: int, min_lr_ratio: float, branch: Branch | None = None) -> float:
-    """LR factor for the update at `step`; branch None = trunk (constant after warmup)."""
+    """LR factor for the update at `step`; branch None = constant after warmup (no cooldown)."""
     if step < warmup_steps:
         return (step + 1) / warmup_steps
     if branch is None or step < branch.start:
