@@ -653,7 +653,7 @@ def run_wsd(cfg: TrainConfig, data_root: Path | str, runs_root: Path | str, resu
         ckpt_last.pt       main-run state (overwritten; at every branch point and every ckpt_every steps)
         model_<budget>.pt  final weights of each budget (for later analyses)
         summary.json       per-budget results, path times, whole-run totals, status
-    wandb: one run per budget, named <run_name>_<budget> (main run: job_type "main"; side branches:
+    wandb: one run per budget, named <budget>_<run_name> (budget first, so it stays visible in the run list; main run: job_type "main"; side branches:
     job_type "branch"), all in group wandb_group (default: run_name); x-axis "step". A side branch's
     wandb run first gets a copy of the main run's lines up to its branch point (main_history), so each
     wandb run shows its whole curve. metrics.jsonl keeps every line only once.
@@ -818,7 +818,7 @@ def run_wsd(cfg: TrainConfig, data_root: Path | str, runs_root: Path | str, resu
         wid = ids.setdefault(b.name, uuid.uuid4().hex[:12])
         ids_path.write_text(json.dumps(ids, indent=1))
         role = "main" if b is main else "branch"
-        r = wandb.init(project=cfg.project, name=f"{cfg.run_name}_{b.name}", id=wid, resume="allow",
+        r = wandb.init(project=cfg.project, name=f"{b.name}_{cfg.run_name}", id=wid, resume="allow",
                        dir=str(run_dir), mode=cfg.wandb_mode, group=cfg.wandb_group or cfg.run_name,
                        job_type=role, tags=list(cfg.wandb_tags) + [role, b.name],
                        config=cfg.to_dict() | {"derived": derived, "budget": b.name, "role": role})

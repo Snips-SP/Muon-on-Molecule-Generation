@@ -32,6 +32,11 @@ Stages (per optimizer and scale):
     | aux     | 10k, Muon  | auxiliary-LR multiplier 0.25 / 0.5 / 2 / 4 at the middle budget's best     | D43, D61 (5)   |
     |         |            | configuration, seeds 100–102 (1× = the confirmation runs); check only      |                |
 
+wandb (project muonmol-sweep-1m-<scale>): one run per budget, named <budget>_s<seed>[_final]_<configuration>;
+group = the configuration without the seed (all seeds of one configuration together); tags = stage that
+created the run (noise / cd / check / confirm / aux), arm, scale, tuning / final, seed<n>. Useful in the UI:
+Group by "Group" and then config "budget" → mean ± range over seeds per configuration and budget; filter by tag.
+
 Outputs: <runs-root>/muonmol-sweep-1m-<scale>/_sweep/<arm>/state.json (stage results) and trials.jsonl (every
 trial in the order it was used, incl. look-ups of finished runs), report scripts/sweep_<scale>_<arm>_report.md.
 No run evaluates the test set (D58).
@@ -114,7 +119,8 @@ class Sweep:
         tmp.write_text(json.dumps(self.state, indent=1))
         os.replace(tmp, self.state_path)
 
-    def run_name(self, hp: dict, seed: int, preset: str, mult: float) -> str:
+    def hp_key(self, hp: dict, mult: float) -> str:
+        """The configuration without the seed: wandb group, so all seeds of one configuration group together."""
         n = (f"{self.arm}_lr{fmt(hp['lr'])}_wd{fmt(hp['wd'])}_wu{hp['warmup']}_gc{fmt(hp['clip'])}"
              f"_b{fmt(hp['beta1'])}-{fmt(hp['beta2'])}_eps{fmt(hp['eps'])}")
         if self.arm == "muon":
@@ -123,9 +129,14 @@ class Sweep:
             n += f"_aux{fmt(mult)}"
         if self.args.budgets:
             n += "_b" + "-".join(fmt(b) for b in self.budgets)
-        return n + f"_s{seed}" + ("_final" if preset == "final" else "")
+        return n
 
-    def cfg_dict(self, hp: dict, seed: int, preset: str, mult: float, name: str) -> dict:
+    def run_name(self, hp: dict, seed: int, preset: str, mult: float) -> str:
+        """Seed (and final) first, so the parts that differ between runs stay visible in the wandb list;
+        wandb shows <budget>_<run name>, e.g. e10_s0_muon_lr0.001_…"""
+        return f"s{seed}" + ("_final" if preset == "final" else "") + "_" + self.hp_key(hp, mult)
+
+    def cfg_dict(self, hp: dict, seed: int, preset: str, mult: float, name: str, stage: str = "") -> dict:
         d = merge(TrainConfig.default_dict(), json.loads((REPO / "configs" / f"wsd_1m_{preset}.json").read_text()))
         d = merge(d, {"run_name": name, "project": self.project, "scale": self.scale, "seed": seed,
                       "budgets_epochs": self.budgets, "warmup_steps": int(hp["warmup"]), "grad_clip": float(hp["clip"]),
@@ -137,6 +148,9 @@ class Sweep:
             d["opt"]["muon_momentum"] = float(hp["momentum"])
         if self.args.wandb_mode:
             d["wandb_mode"] = self.args.wandb_mode
+        d["wandb_group"] = self.hp_key(hp, mult)  # seeds of one configuration together (group, then budget)
+        d["wandb_tags"] = [t for t in (stage, self.arm, self.scale, preset, f"seed{seed}",
+                                       f"aux{fmt(mult)}" if mult != 1.0 else "") if t]
         if self.args.device == "cpu":
             d["opt"]["compile_muon"] = False
         return d
@@ -153,7 +167,7 @@ class Sweep:
             # crashed before its first checkpoint: keep the folder for inspection, start the run again
             run_dir.rename(run_dir.with_name(f"{name}_broken_{datetime.datetime.now():%Y%m%d-%H%M%S}"))
         if s is None or s["status"] not in ("finished", "diverged"):
-            cfg = TrainConfig.from_dict(self.cfg_dict(hp, seed, preset, mult, name))
+            cfg = TrainConfig.from_dict(self.cfg_dict(hp, seed, preset, mult, name, stage))
             resume = (run_dir / "ckpt_last.pt").exists()
             print(f"=== [{self.arm} {self.scale} {stage}] {name}{' (resume)' if resume else ''} ===")
             s = run_wsd(cfg, self.args.data_root, self.args.runs_root, resume=resume)
